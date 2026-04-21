@@ -40,6 +40,12 @@ export default defineConfig({
   server: {
     port: 3000,
     open: false,
+    allowedHosts: true,
+  },
+  /** Heroku (and other hosts): Vite preview blocks unknown Host headers unless allowed. */
+  preview: {
+    host: '0.0.0.0',
+    allowedHosts: true,
   },
   optimizeDeps: {
     exclude: ['lightning/modal', 'lightning/primitiveOverlay', 'lightning/overlayUtils', 'lightning/modalBase', 'lightning/utilsPrivate'],
