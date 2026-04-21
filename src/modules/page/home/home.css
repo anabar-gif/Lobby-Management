@@ -1,0 +1,11 @@
+/* page/home - styles if needed */
+
+.spinner-demo {
+    height: 100px;
+}
+
+@media (min-width: 48em) {
+    .home-input-item-second {
+        margin-top: 0;
+    }
+}

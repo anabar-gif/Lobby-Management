@@ -1,0 +1,32 @@
+<template>
+    <!-- Global shell: top, edge to edge, height by content -->
+    <shell-global-shell current-page={currentNavPage} nav-items={navItems} onnavigate={handleNavNavigate} onpanelselect={handlePanelSelect}>
+    </shell-global-shell>
+
+    <!-- Main content and docked panel -->
+    <main class="app-body">
+        <lightning-layout vertical-align="stretch" class="utility-full-height">
+            <lightning-layout-item flexibility="auto" class="app-body__content-cell">
+                <div class="app-body__scroll-wrapper">
+                    <div class="app-main">
+                        <div class="app-main__inner">
+                        <!-- Router outlet -->
+                        <template lwc:if={componentCtor}>
+                            <lwc:component lwc:is={componentCtor} onnavigateback={handleNavigateBack}></lwc:component>
+                        </template>
+                    </div>
+                    <shell-theme-switcher
+                        slds-version={_sldsVersion}
+                        dark-mode={_darkMode}
+                        ontoggleslds={handleToggleSLDS}
+                        ontoggledarkmode={handleToggleDarkMode}>
+                    </shell-theme-switcher>
+                    </div>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item class={panelClasses}>
+                <shell-panel selected-panel={selectedPanel} onpanelclose={handlePanelClose}></shell-panel>
+            </lightning-layout-item>
+        </lightning-layout>
+    </main>
+</template>

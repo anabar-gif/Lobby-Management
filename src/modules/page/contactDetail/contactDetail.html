@@ -1,0 +1,206 @@
+<template>
+    <template lwc:if={hasContact}>
+        <!-- Record Page Header -->
+        <div class="slds-page-header slds-page-header_record-home">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="standard:contact" size="medium"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span>Contact</span>
+                                        <span class="slds-page-header__title slds-truncate" title={contactName}>{contactName}</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <lightning-button
+                                label={followLabel}
+                                variant={followVariant}
+                                icon-name={followIconName}
+                                onclick={handleFollow}>
+                            </lightning-button>
+                        </div>
+                        <div class="slds-page-header__control">
+                            <lightning-button-group>
+                                <lightning-button label="Edit" variant="neutral"></lightning-button>
+                                <lightning-button label="Delete" variant="neutral"></lightning-button>
+                                <lightning-button label="Clone" variant="neutral"></lightning-button>
+                                <lightning-button-menu
+                                    alternative-text="More Actions"
+                                    variant="border-filled"
+                                    icon-size="medium"
+                                    menu-alignment="right">
+                                    <lightning-menu-item label="Send Email" value="send_email"></lightning-menu-item>
+                                    <lightning-menu-item label="Log a Call" value="log_call"></lightning-menu-item>
+                                    <lightning-menu-item label="Create Task" value="create_task"></lightning-menu-item>
+                                </lightning-button-menu>
+                            </lightning-button-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__row slds-page-header__row_gutters">
+                <div class="slds-page-header__col-details">
+                    <ul class="slds-page-header__detail-row">
+                        <li class="slds-page-header__detail-block">
+                            <div class="slds-text-title slds-truncate" title="Company">Company</div>
+                            <div class="slds-truncate" title={contact.company}>{contact.company}</div>
+                        </li>
+                        <li class="slds-page-header__detail-block">
+                            <div class="slds-text-title slds-truncate" title="Title">Title</div>
+                            <div class="slds-truncate" title={contact.title}>{contact.title}</div>
+                        </li>
+                        <li class="slds-page-header__detail-block">
+                            <div class="slds-text-title slds-truncate" title="Email">Email</div>
+                            <div class="slds-truncate" title={contact.email}>
+                                <lightning-formatted-email value={contact.email}></lightning-formatted-email>
+                            </div>
+                        </li>
+                        <li class="slds-page-header__detail-block">
+                            <div class="slds-text-title slds-truncate" title="Phone">Phone</div>
+                            <div class="slds-truncate" title={contact.phone}>
+                                <lightning-formatted-phone value={contact.phone}></lightning-formatted-phone>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body: 2/3 Details + 1/3 Activity -->
+        <div class="slds-grid slds-gutters slds-m-top_medium">
+            <!-- Left 2/3: Details Card -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_8-of-12">
+                <lightning-card title="Contact Details">
+                    <div class="slds-p-horizontal_small slds-p-bottom_small">
+                        <div class="slds-grid slds-wrap slds-gutters_small">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Full Name"
+                                    value={contact.name}
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Account Name"
+                                    value={contact.company}
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Title"
+                                    value={contact.title}
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Department"
+                                    value={contact.department}
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Email"
+                                    value={contact.email}
+                                    type="email"
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Phone"
+                                    value={contact.phone}
+                                    type="tel"
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Mobile"
+                                    value={contact.mobile}
+                                    type="tel"
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input
+                                    label="Mailing Address"
+                                    value={mailingAddress}
+                                    read-only>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                                <lightning-textarea
+                                    label="Description"
+                                    value={contact.description}
+                                    read-only>
+                                </lightning-textarea>
+                            </div>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <!-- Right 1/3: Activity Feed -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                <lightning-card title="Activity">
+                    <lightning-button-group slot="actions">
+                        <lightning-button label="Log a Call" variant="neutral"></lightning-button>
+                        <lightning-button label="New Task" variant="neutral"></lightning-button>
+                    </lightning-button-group>
+                    <div class="slds-p-horizontal_small slds-p-bottom_small">
+                        <ul class="slds-timeline">
+                            <template for:each={activityItems} for:item="item">
+                                <li key={item.id} class="slds-timeline__item">
+                                    <div class="slds-media slds-m-bottom_small">
+                                        <div class="slds-media__figure">
+                                            <template lwc:if={item.type}>
+                                                <lightning-icon
+                                                    icon-name={item.iconName}
+                                                    size="small"
+                                                    alternative-text={item.type}>
+                                                </lightning-icon>
+                                            </template>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <div class="slds-grid slds-grid_align-spread">
+                                                <p class="slds-truncate">
+                                                    <strong>{item.subject}</strong>
+                                                </p>
+                                                <p class="slds-text-body_small slds-text-color_weak slds-no-flex">{item.date}</p>
+                                            </div>
+                                            <p class="slds-text-body_small slds-m-top_xx-small">{item.description}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </lightning-card>
+            </div>
+        </div>
+    </template>
+
+    <template lwc:else>
+        <div class="slds-illustration slds-illustration_small slds-p-around_large slds-text-align_center">
+            <p class="slds-text-heading_medium">Contact not found</p>
+            <p class="slds-m-top_small">
+                <lightning-button label="Back to Contacts" variant="brand" onclick={handleBackToList}></lightning-button>
+            </p>
+        </div>
+    </template>
+</template>

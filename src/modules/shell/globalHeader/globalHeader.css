@@ -1,0 +1,49 @@
+.global-header {
+    background: var(--slds-g-color-surface-container-1, #ffffff);
+    /* Outer height for every toolbar control (32px cap per design) */
+    --global-header-toolbar-control-height: 32px;
+}
+
+lightning-layout.global-header__toolbar {
+    max-height: var(--global-header-toolbar-control-height);
+    align-items: center;
+    /* 5px between every toolbar control (favorites group, rings, avatar) */
+    gap: 5px;
+}
+
+/* Shared outer box: same height as first icon (button group) */
+.global-header__toolbar-control {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--global-header-toolbar-control-height);
+    min-height: var(--global-header-toolbar-control-height);
+    max-height: var(--global-header-toolbar-control-height);
+    overflow: visible;
+}
+
+.global-header__toolbar-control_group {
+    width: auto;
+}
+
+/* Thin outline around toolbar icon controls (matches “More actions” style) */
+.global-header__icon-ring {
+    width: var(--global-header-toolbar-control-height);
+    height: var(--global-header-toolbar-control-height);
+    min-height: var(--global-header-toolbar-control-height);
+    max-height: var(--global-header-toolbar-control-height);
+    border-radius: 50%;
+    border: 1px solid var(--slds-g-color-on-surface-1, #181818);
+}
+
+.global-header__icon-ring_menu {
+    width: auto;
+    min-width: var(--global-header-toolbar-control-height);
+    height: var(--global-header-toolbar-control-height);
+    min-height: var(--global-header-toolbar-control-height);
+    max-height: var(--global-header-toolbar-control-height);
+    padding-left: var(--slds-g-spacing-xx-small, 0.25rem);
+    padding-right: var(--slds-g-spacing-xx-small, 0.25rem);
+    border-radius: 1rem;
+}

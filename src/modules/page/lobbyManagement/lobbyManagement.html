@@ -1,0 +1,457 @@
+<template>
+    <div class="lobby-root">
+        <header class="lobby-header slds-p-vertical_small slds-p-horizontal_medium">
+            <div class="lobby-header__inner slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-wrap slds-gutters_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12">
+                    <div class="slds-media slds-media_center">
+                        <div class="slds-media__figure">
+                            <div class="lobby-header__icon">
+                                <img class="lobby-header__icon-img" src={queueIconUrl} alt="" />
+                            </div>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="lobby-header__eyebrow slds-m-bottom_xxx-small">Lobby Management</p>
+                            <div class="slds-grid slds-grid_vertical-align-center">
+                                <h1 class="lobby-header__title slds-m-right_xx-small">Market St Branch</h1>
+                                <lightning-button-icon
+                                    icon-name="utility:down"
+                                    variant="bare"
+                                    size="small"
+                                    alternative-text="Change branch"
+                                    title="Change branch">
+                                </lightning-button-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-text-align_right slds-m-top_small">
+                    <div class="lobby-toolbar__row slds-grid slds-grid_vertical-align-start slds-grid_align-end slds-wrap">
+                        <div class="slds-grid slds-grid_vertical-align-center slds-m-right_x-small slds-m-bottom_xx-small slds-medium-m-bottom_none">
+                            <span class="lobby-toolbar__label slds-p-right_x-small">View Waitlist</span>
+                            <lightning-combobox
+                                name="waitlistFilter"
+                                label="Waitlist filter"
+                                variant="label-hidden"
+                                value={selectedWaitlistFilter}
+                                placeholder="All"
+                                options={waitlistFilterOptions}
+                                onchange={handleWaitlistFilterChange}>
+                            </lightning-combobox>
+                        </div>
+                        <lightning-button-icon
+                            class="lobby-toolbar__refresh"
+                            icon-name="utility:refresh"
+                            variant="border-filled"
+                            alternative-text="Refresh"
+                            title="Refresh"
+                            onclick={handleRefresh}>
+                        </lightning-button-icon>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="lobby-main slds-p-top_medium slds-p-bottom_large slds-p-horizontal_medium">
+            <lightning-layout multiple-rows="true" pull-to-boundary="small" class="lobby-layout">
+                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                    <article class="lobby-card slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
+                                <div class="slds-media__body slds-has-flexi-truncate">
+                                    <h2 class="lobby-card__title slds-truncate" title="Scheduled Appointments">
+                                        Scheduled Appointments
+                                    </h2>
+                                    <p class="lobby-card__meta slds-m-top_xx-small">{metaLinePrimary}</p>
+                                    <p class="lobby-card__meta">{metaLineSecondary}</p>
+                                </div>
+                            </header>
+                            <div class="slds-no-flex">
+                                <lightning-button-menu
+                                    alternative-text="Filter appointments"
+                                    icon-name="utility:filterList"
+                                    variant="border-filled"
+                                    menu-alignment="right">
+                                    <lightning-menu-item label="All" value="all"></lightning-menu-item>
+                                </lightning-button-menu>
+                            </div>
+                        </div>
+                        <div class="lobby-card__separator-slot" aria-hidden="true">
+                            <div class="lobby-card__separator-line"></div>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner slds-scrollable_y lobby-card__body-scroll">
+                            <div class="lobby-card__heading slds-m-bottom_medium">
+                                <div class="lobby-section__header slds-m-bottom_medium">
+                                    <div class="lobby-section__label">Current</div>
+                                    <div class="lobby-section__meta slds-m-top_xx-small">{currentSectionMetaLine}</div>
+                                </div>
+                                <template for:each={currentAppointments} for:item="appt">
+                                    <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
+                                        <div class="lobby-appt__body slds-p-around_small">
+                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                <div class="lobby-appt__identity">
+                                                    <div
+                                                        class="lobby-appt__name slds-truncate"
+                                                        role="button"
+                                                        tabindex="0"
+                                                        title={appt.customerName}>
+                                                        {appt.customerName}
+                                                    </div>
+                                                    <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>
+                                                        {appt.subtitle}
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                    <template lwc:if={appt.showCheckin}>
+                                                        <lightning-button
+                                                            label="Checkin"
+                                                            variant="neutral"
+                                                            data-id={appt.id}
+                                                            onclick={handleCheckin}>
+                                                        </lightning-button>
+                                                    </template>
+                                                    <lightning-button-icon
+                                                        class="lobby-appt__menu-btn"
+                                                        icon-name="utility:down"
+                                                        variant="border-filled"
+                                                        alternative-text="Appointment actions"
+                                                        title="Appointment actions"
+                                                        onclick={handleApptMenu}>
+                                                    </lightning-button-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
+                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                    <lightning-icon
+                                                        class="lobby-appt__clock-icon slds-m-right_xx-small"
+                                                        icon-name="utility:clock"
+                                                        size="small"
+                                                        alternative-text="">
+                                                    </lightning-icon>
+                                                    <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
+                                                </div>
+                                                <template lwc:if={appt.showWaitAlert}>
+                                                    <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                        <span class="lobby-appt__wait-icon-bubble" aria-hidden="true">
+                                                            <lightning-icon
+                                                                icon-name="utility:live_message"
+                                                                size="xx-small"
+                                                                variant="inverse"
+                                                                alternative-text="">
+                                                            </lightning-icon>
+                                                        </span>
+                                                        <span class="lobby-appt__wait-text slds-truncate">{appt.waitLabel}</span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="slds-m-top_large">
+                                <div class="lobby-section__header slds-m-bottom_medium">
+                                    <div class="lobby-section__label">Upcoming</div>
+                                    <div class="lobby-section__meta slds-m-top_xx-small">{upcomingSectionMetaLine}</div>
+                                </div>
+                                <template for:each={upcomingAppointments} for:item="appt">
+                                    <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
+                                        <div class="lobby-appt__body slds-p-around_small">
+                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                <div class="lobby-appt__identity">
+                                                    <div
+                                                        class="lobby-appt__name slds-truncate"
+                                                        role="button"
+                                                        tabindex="0"
+                                                        title={appt.customerName}>
+                                                        {appt.customerName}
+                                                    </div>
+                                                    <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>
+                                                        {appt.subtitle}
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                    <lightning-button
+                                                        label="Checkin"
+                                                        variant="neutral"
+                                                        data-id={appt.id}
+                                                        onclick={handleCheckin}>
+                                                    </lightning-button>
+                                                    <lightning-button-icon
+                                                        class="lobby-appt__menu-btn"
+                                                        icon-name="utility:down"
+                                                        variant="border-filled"
+                                                        alternative-text="Appointment actions"
+                                                        title="Appointment actions"
+                                                        onclick={handleApptMenu}>
+                                                    </lightning-button-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
+                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                    <lightning-icon
+                                                        class="lobby-appt__clock-icon slds-m-right_xx-small"
+                                                        icon-name="utility:clock"
+                                                        size="small"
+                                                        alternative-text="">
+                                                    </lightning-icon>
+                                                    <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </article>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                    <article class="lobby-card slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
+                                <div class="slds-media__figure">
+                                    <span class="lobby-queue-dot" aria-hidden="true"></span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="lobby-queue-title">General Banking</h2>
+                                    <p class="lobby-card__meta slds-m-top_xx-small">{generalQueueMetaLeft}</p>
+                                    <p class="lobby-card__meta">{generalQueueMetaRight}</p>
+                                </div>
+                            </header>
+                            <div class="slds-no-flex">
+                                <lightning-button-group class="lobby-queue-button-group">
+                                    <lightning-button
+                                        label="Check In"
+                                        variant="neutral"
+                                        title="Check In"
+                                        onclick={handleQueueCheckIn}>
+                                    </lightning-button>
+                                    <lightning-button-icon
+                                        icon-name="utility:info"
+                                        variant="border-filled"
+                                        alternative-text="Queue information"
+                                        title="Queue information"
+                                        onclick={handleQueueInfo}>
+                                    </lightning-button-icon>
+                                    <lightning-button-icon
+                                        icon-name="utility:new_window"
+                                        variant="border-filled"
+                                        alternative-text="Open in new window"
+                                        title="Open in new window"
+                                        onclick={handleQueueOpenExternal}>
+                                    </lightning-button-icon>
+                                </lightning-button-group>
+                            </div>
+                        </div>
+                        <div class="lobby-card__separator-slot" aria-hidden="true">
+                            <div class="lobby-card__separator-line"></div>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
+                            <div class="lobby-queue-toolbar">
+                                <lightning-input
+                                    type="checkbox"
+                                    label="Show all topics"
+                                    checked={showAllTopicsGeneral}
+                                    onchange={handleShowAllTopicsGeneral}>
+                                </lightning-input>
+                            </div>
+                            <lightning-accordion
+                                class="lobby-queue-accordion"
+                                allow-multiple-sections-open
+                                active-section-name={generalBankingOpenSections}
+                                onsectiontoggle={handleGeneralAccordionToggle}>
+                                <template for:each={generalBankingTopics} for:item="topic">
+                                    <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                        <template for:each={topic.participants} for:item="row">
+                                            <div key={row.id} class="lobby-queue-participant slds-m-top_small">
+                                                <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lobby-queue-participant__identity">
+                                                        <div class="lobby-queue-participant__title-row">
+                                                            <span class="lobby-queue-participant__title slds-truncate">
+                                                                <span class="lobby-queue-participant__ordinal">{row.ordinal}</span><span
+                                                                    class="lobby-queue-participant__workid">{row.workItemId}</span><span
+                                                                    class="lobby-queue-participant__mid"> • </span><span
+                                                                    class="lobby-queue-participant__link">{row.linkLabel}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">
+                                                            {row.topic}
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
+                                                        <lightning-button-icon
+                                                            icon-name="utility:down"
+                                                            variant="border-filled"
+                                                            alternative-text="Participant actions"
+                                                            title="Participant actions"
+                                                            onclick={handleQueueParticipantMenu}>
+                                                        </lightning-button-icon>
+                                                    </div>
+                                                </div>
+                                                <div class="lobby-queue-participant__divider" aria-hidden="true"></div>
+                                                <div class="lobby-queue-participant__times">
+                                                    <div class="lobby-queue-participant__times-inner">
+                                                        <div class="lobby-queue-participant__time-cell">
+                                                            <lightning-icon
+                                                                icon-name="utility:success"
+                                                                variant="success"
+                                                                size="x-small"
+                                                                class="lobby-queue-participant__time-icon lobby-queue-participant__time-icon_checkin"
+                                                                alternative-text="Check-in">
+                                                            </lightning-icon>
+                                                            <span class="lobby-queue-participant__time-inline">
+                                                                <span class="lobby-queue-participant__time-lbl">Check-in Time:</span>
+                                                                <span class="lobby-queue-participant__time-val">{row.checkInTime}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="lobby-queue-participant__time-cell">
+                                                            <lightning-icon
+                                                                icon-name="utility:clock"
+                                                                size="x-small"
+                                                                class="lobby-queue-participant__time-icon lobby-queue-participant__time-icon_wait"
+                                                                alternative-text="Wait time">
+                                                            </lightning-icon>
+                                                            <span class="lobby-queue-participant__time-inline">
+                                                                <span class="lobby-queue-participant__time-lbl">Wait Time :</span>
+                                                                <span class="lobby-queue-participant__time-val">{row.waitTime}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </div>
+                    </article>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                    <article class="lobby-card slds-card">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
+                                <div class="slds-media__figure">
+                                    <span class="lobby-queue-dot" aria-hidden="true"></span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="lobby-queue-title">Investment Banking</h2>
+                                    <p class="lobby-card__meta slds-m-top_xx-small">{investmentQueueMetaLeft}</p>
+                                    <p class="lobby-card__meta">{investmentQueueMetaRight}</p>
+                                </div>
+                            </header>
+                            <div class="slds-no-flex">
+                                <lightning-button-group class="lobby-queue-button-group">
+                                    <lightning-button
+                                        label="Check In"
+                                        variant="neutral"
+                                        title="Check In"
+                                        onclick={handleQueueCheckIn}>
+                                    </lightning-button>
+                                    <lightning-button-icon
+                                        icon-name="utility:info"
+                                        variant="border-filled"
+                                        alternative-text="Queue information"
+                                        title="Queue information"
+                                        onclick={handleQueueInfo}>
+                                    </lightning-button-icon>
+                                    <lightning-button-icon
+                                        icon-name="utility:new_window"
+                                        variant="border-filled"
+                                        alternative-text="Open in new window"
+                                        title="Open in new window"
+                                        onclick={handleQueueOpenExternal}>
+                                    </lightning-button-icon>
+                                </lightning-button-group>
+                            </div>
+                        </div>
+                        <div class="lobby-card__separator-slot" aria-hidden="true">
+                            <div class="lobby-card__separator-line"></div>
+                        </div>
+                        <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
+                            <div class="lobby-queue-toolbar">
+                                <lightning-input
+                                    type="checkbox"
+                                    label="Show all topics"
+                                    checked={showAllTopicsInvestment}
+                                    onchange={handleShowAllTopicsInvestment}>
+                                </lightning-input>
+                            </div>
+                            <lightning-accordion
+                                class="lobby-queue-accordion"
+                                active-section-name={investmentBankingOpenSection}
+                                onsectiontoggle={handleInvestmentAccordionToggle}>
+                                <template for:each={investmentBankingTopics} for:item="topic">
+                                    <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                        <template for:each={topic.participants} for:item="row">
+                                            <div key={row.id} class="lobby-queue-participant slds-m-top_small">
+                                                <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lobby-queue-participant__identity">
+                                                        <div class="lobby-queue-participant__title-row">
+                                                            <span class="lobby-queue-participant__title slds-truncate">
+                                                                <span class="lobby-queue-participant__ordinal">{row.ordinal}</span><span
+                                                                    class="lobby-queue-participant__workid">{row.workItemId}</span><span
+                                                                    class="lobby-queue-participant__mid"> • </span><span
+                                                                    class="lobby-queue-participant__link">{row.linkLabel}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">
+                                                            {row.topic}
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
+                                                        <lightning-button-icon
+                                                            icon-name="utility:down"
+                                                            variant="border-filled"
+                                                            alternative-text="Participant actions"
+                                                            title="Participant actions"
+                                                            onclick={handleQueueParticipantMenu}>
+                                                        </lightning-button-icon>
+                                                    </div>
+                                                </div>
+                                                <div class="lobby-queue-participant__divider" aria-hidden="true"></div>
+                                                <div class="lobby-queue-participant__times">
+                                                    <div class="lobby-queue-participant__times-inner">
+                                                        <div class="lobby-queue-participant__time-cell">
+                                                            <lightning-icon
+                                                                icon-name="utility:success"
+                                                                variant="success"
+                                                                size="x-small"
+                                                                class="lobby-queue-participant__time-icon lobby-queue-participant__time-icon_checkin"
+                                                                alternative-text="Check-in">
+                                                            </lightning-icon>
+                                                            <span class="lobby-queue-participant__time-inline">
+                                                                <span class="lobby-queue-participant__time-lbl">Check-in Time:</span>
+                                                                <span class="lobby-queue-participant__time-val">{row.checkInTime}</span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="lobby-queue-participant__time-cell">
+                                                            <lightning-icon
+                                                                icon-name="utility:clock"
+                                                                size="x-small"
+                                                                class="lobby-queue-participant__time-icon lobby-queue-participant__time-icon_wait"
+                                                                alternative-text="Wait time">
+                                                            </lightning-icon>
+                                                            <span class="lobby-queue-participant__time-inline">
+                                                                <span class="lobby-queue-participant__time-lbl">Wait Time :</span>
+                                                                <span class="lobby-queue-participant__time-val">{row.waitTime}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </div>
+                    </article>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+</template>

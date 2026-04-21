@@ -1,0 +1,37 @@
+{
+  "name": "salesforce-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist .vite node_modules",
+    "postinstall": "node scripts/clear-quarantine.mjs",
+    "fix-gatekeeper": "node scripts/clear-quarantine.mjs",
+    "prebuild-icons": "node scripts/prebuild-icons.mjs",
+    "dev": "node scripts/prebuild-icons.mjs && vite",
+    "build": "node scripts/prebuild-icons.mjs && vite build",
+    "preview": "vite preview",
+    "start": "node scripts/heroku-start.mjs",
+    "heroku-postbuild": "npm run build",
+    "dev:native-shadow": "echo 'To use native shadow, set disableSyntheticShadowSupport: true in vite.config.js'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@4.59.0"
+  },
+  "dependencies": {
+    "@lwc/synthetic-shadow": "^9.0.2",
+    "@salesforce-ux/design-system": "^2.29.0",
+    "@salesforce-ux/design-system-2": "^0.0.0-alpha.0",
+    "lightning-base-components": "^1.28.15-alpha",
+    "lwc": "^9.0.2",
+    "vite": "^7.3.1",
+    "vite-plugin-lwc": "^4.1.0"
+  }
+}

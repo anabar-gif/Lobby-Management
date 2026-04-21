@@ -1,0 +1,25 @@
+.theme-switcher {
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.theme-switcher-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+}
+
+.theme-switcher-card-wrapper {
+    --slds-c-card-color-border: var(--slds-g-color-border-1);
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: var(--slds-g-spacing-1, 0.25rem);
+    z-index: 3;
+    min-width: calc(var(--slds-g-sizing-15, 20rem) + var(--slds-g-sizing-11, 4rem));
+}
+
+.theme-switcher-card {
+    box-shadow: var(--slds-g-shadow-4);
+}

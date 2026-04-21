@@ -1,0 +1,75 @@
+<template>
+    <lightning-layout class="slds-global-header global-header" horizontal-align="spread" vertical-align="center">
+        <lightning-layout-item class="slds-global-header__item">
+            <lightning-icon icon-name="utility:salesforce1" alternative-text="Salesforce" size="large"></lightning-icon>
+            <span class="slds-assistive-text">Salesforce</span>
+        </lightning-layout-item>
+        <lightning-layout-item class="slds-global-header__item slds-global-header__item_search" flexibility="auto">
+            <lightning-input type="search" label="Search" placeholder="Search..." variant="label-hidden"
+                class="slds-container_small slds-container_center"></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item class="slds-global-header__item customize-slds-button">
+            <lightning-layout class="global-header__toolbar" vertical-align="center">
+                <lightning-layout-item>
+                    <div class="global-header__toolbar-control global-header__toolbar-control_group">
+                        <lightning-button-group>
+                            <lightning-button-icon-stateful icon-name="utility:favorite" alternative-text="Toggle Favorites"
+                                size="medium">
+                            </lightning-button-icon-stateful>
+                            <lightning-button-menu alternative-text="View Favorites" icon-size="medium">
+                                <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                            </lightning-button-menu>
+                        </lightning-button-group>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <div class="global-header__toolbar-control global-header__icon-ring">
+                        <lightning-button-icon icon-name="utility:agent_astro" aria-haspopup="true" title="Agentforce"
+                            variant="container" size="medium" onclick={handleAgentforceClick}>
+                        </lightning-button-icon>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <div class="global-header__toolbar-control global-header__icon-ring global-header__icon-ring_menu">
+                        <lightning-button-menu icon-name="utility:new" title="Global Actions" variant="container"
+                            icon-size="medium" nubbin="true" menu-alignment="right">
+                            <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                        </lightning-button-menu>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <div class="global-header__toolbar-control global-header__icon-ring">
+                        <lightning-button-icon icon-name="utility:trailhead_alt" aria-haspopup="true"
+                            title="Guidance Center" variant="container" size="medium" onclick={handleTrailheadClick}>
+                        </lightning-button-icon>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <div class="global-header__toolbar-control global-header__icon-ring global-header__icon-ring_menu">
+                        <lightning-button-menu icon-name="utility:help" title="Salesforce Help" variant="container"
+                            icon-size="medium" nubbin="true" menu-alignment="right">
+                            <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                        </lightning-button-menu>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <div class="global-header__toolbar-control global-header__icon-ring">
+                        <lightning-button-icon icon-name="utility:settings" aria-haspopup="true" title="Setup"
+                            variant="container" size="medium" onclick={handleSettingsClick}>
+                        </lightning-button-icon>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <div class="global-header__toolbar-control global-header__icon-ring">
+                        <lightning-button-icon icon-name="utility:notification" aria-haspopup="true" title="Notifications"
+                            variant="container" size="medium" onclick={handleNotificationClick}>
+                        </lightning-button-icon>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-avatar
+                        src="https://v1.lightningdesignsystem.com/assets/images/avatar2.jpg"></lightning-avatar></lightning-layout-item>
+            </lightning-layout>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

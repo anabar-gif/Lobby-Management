@@ -1,0 +1,416 @@
+:host {
+    display: block;
+    min-height: 100%;
+    width: 100%;
+}
+
+.lobby-root {
+    background-color: var(--slds-g-color-surface-2, #f3f3f3);
+    width: 100%;
+}
+
+.lobby-header {
+    background-color: var(--slds-g-color-surface-1, #ffffff);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.lobby-header__inner {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+.lobby-header__icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background-color: var(--slds-g-color-brand-base-50, #107cad);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.lobby-header__icon-img {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.lobby-header__eyebrow {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.lobby-header__title {
+    font-size: var(--slds-g-font-scale-2, 1.125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    line-height: 1.6875rem;
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.lobby-toolbar__label {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.125rem;
+    color: var(--slds-g-color-on-surface-1, #181818);
+    white-space: nowrap;
+}
+
+/* Top-align refresh with combobox row (was vertical-align-end, which sat the icon low). */
+.lobby-toolbar__refresh {
+    align-self: flex-start;
+}
+
+.lobby-main {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+.lobby-layout {
+    width: 100%;
+}
+
+.lobby-card {
+    min-height: 53rem;
+}
+
+.lobby-card__body-scroll {
+    max-height: 52rem;
+}
+
+.lobby-card__separator-slot {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.lobby-card__separator-line {
+    border-top: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
+}
+
+.lobby-card__title {
+    font-size: var(--slds-g-font-scale-2, 1.125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.lobby-card__meta {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    color: var(--slds-g-color-on-surface-2, #444);
+}
+
+.lobby-section__header {
+    display: block;
+}
+
+.lobby-section__label {
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-1, #181818);
+    text-transform: capitalize;
+}
+
+.lobby-section__meta {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-2, #444);
+}
+
+.lobby-appt {
+    border-radius: var(--slds-g-radius-border-2, 0.25rem);
+    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
+    background-color: var(--slds-g-color-surface-1, #ffffff);
+}
+
+.lobby-appt__body {
+    min-width: 0;
+}
+
+/* Must NOT use .slds-col here: .slds-grid_align-spread forces flex-grow:0 on all .slds-col
+   descendants, which collapses this column next to flex-basis:0 truncate text (invisible copy). */
+.lobby-appt__identity {
+    flex: 1 1 0%;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* Native div (not <button>): avoids HTML `name` / SLDS `slds-button_reset` clashes; literals
+   survive bad token values that can zero font-size or wash out color in some themes. */
+.lobby-appt__name {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: start;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: var(--slds-g-font-weight-6, 600);
+    line-height: 1.3;
+    color: rgb(1, 118, 211);
+    -webkit-text-fill-color: rgb(1, 118, 211);
+    opacity: 1;
+    visibility: visible;
+}
+
+.lobby-appt__name:hover,
+.lobby-appt__name:focus {
+    color: rgb(1, 68, 134);
+    -webkit-text-fill-color: rgb(1, 68, 134);
+    text-decoration: underline;
+    outline: none;
+}
+
+.lobby-appt__menu-btn {
+    margin-inline-start: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.lobby-appt__detail {
+    margin: 0;
+    padding: 0;
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+    color: rgb(62, 62, 60);
+    -webkit-text-fill-color: rgb(62, 62, 60);
+    opacity: 1;
+    visibility: visible;
+}
+
+.lobby-appt__slot {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    color: var(--slds-g-color-on-surface-2, #444);
+}
+
+.lobby-appt__clock-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-on-surface-3, #706e6b);
+}
+
+.lobby-appt__footer {
+    border-top: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
+}
+
+.lobby-appt__footer-left {
+    min-width: 0;
+}
+
+.lobby-appt__wait {
+    gap: var(--slds-g-spacing-2, 0.5rem);
+    max-width: 55%;
+}
+
+.lobby-appt__wait-icon-bubble {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background-color: var(--slds-g-color-error-base-50, #ba0517);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.lobby-appt__wait-text {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-error-base-50, #ba0517);
+}
+
+.lobby-queue-title {
+    font-size: var(--slds-g-font-scale-2, 1.125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.lobby-queue-dot {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background-color: var(--slds-g-color-success-base-50, #2e844a);
+    flex-shrink: 0;
+}
+
+.lobby-queue-button-group {
+    flex-shrink: 0;
+}
+
+.lobby-card__body-queue {
+    padding-top: var(--slds-g-spacing-3, 0.75rem);
+    padding-bottom: var(--slds-g-spacing-4, 1rem);
+}
+
+/* Topic headers — navy; set on accordion host so tokens reach section shadow */
+.lobby-card__body-queue .lobby-queue-accordion {
+    --slds-c-accordion-heading-color: rgb(3, 45, 96);
+    --slds-c-accordion-heading-color-hover: rgb(3, 45, 96);
+}
+
+/* Left-align with card body / accordion content (no extra inset) */
+.lobby-queue-toolbar {
+    display: block;
+    padding-inline-start: 0;
+    margin-block-end: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.lobby-queue-accordion {
+    display: block;
+}
+
+.lobby-queue-participant {
+    border-radius: var(--slds-g-radius-border-2, 0.25rem);
+    border: 1px solid var(--slds-g-color-border-1, #dddbda);
+    background-color: var(--slds-g-color-surface-1, #ffffff);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    padding: 0;
+    overflow: hidden;
+}
+
+.lobby-queue-participant__head {
+    padding: var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-3, 0.75rem);
+}
+
+.lobby-queue-participant__divider {
+    display: block;
+    width: 100%;
+    border-block-start: 1px solid var(--slds-g-color-border-1, #c9c9c9);
+    margin: 0;
+}
+
+.lobby-queue-participant__identity {
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+.lobby-queue-participant__actions {
+    align-self: flex-start;
+}
+
+.lobby-queue-participant__title-row {
+    min-width: 0;
+}
+
+.lobby-queue-participant__title {
+    display: inline;
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    line-height: 1.25rem;
+    font-weight: var(--slds-g-font-weight-7, 700);
+}
+
+.lobby-queue-participant__ordinal,
+.lobby-queue-participant__workid {
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-2, #3e3e3c);
+}
+
+.lobby-queue-participant__workid {
+    margin-inline-start: var(--slds-g-spacing-1, 0.25rem);
+}
+
+.lobby-queue-participant__mid {
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-3, #706e6b);
+}
+
+.lobby-queue-participant__link {
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+    cursor: pointer;
+}
+
+.lobby-queue-participant__topic {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    color: var(--slds-g-color-on-surface-3, #706e6b);
+}
+
+.lobby-queue-participant__times {
+    padding: var(--slds-g-spacing-3, 0.75rem) var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-4, 1rem);
+}
+
+.lobby-queue-participant__times-inner {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--slds-g-spacing-4, 1rem);
+    min-width: 0;
+}
+
+.lobby-queue-participant__time-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+    min-width: 0;
+}
+
+.lobby-queue-participant__time-cell:first-child {
+    flex: 1 1 auto;
+    justify-content: flex-start;
+}
+
+.lobby-queue-participant__time-cell:last-child {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.lobby-queue-participant__time-icon {
+    flex-shrink: 0;
+}
+
+.lobby-queue-participant__time-icon_wait {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-on-surface-3, #706e6b);
+}
+
+.lobby-queue-participant__time-inline {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.lobby-queue-participant__time-lbl {
+    font-weight: var(--slds-g-font-weight-4, 400);
+    color: var(--slds-g-color-on-surface-2, #3e3e3c);
+}
+
+.lobby-queue-participant__time-val {
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.lobby-empty {
+    padding-top: var(--slds-g-spacing-8, 2rem);
+    padding-bottom: var(--slds-g-spacing-8, 2rem);
+}
+
+.lobby-empty__illustration {
+    width: 18.75rem;
+    max-width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.lobby-empty__title {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    line-height: 1.25rem;
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.lobby-empty__body {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    line-height: 1.25rem;
+    color: var(--slds-g-color-on-surface-2, #444);
+}

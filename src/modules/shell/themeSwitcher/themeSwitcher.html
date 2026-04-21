@@ -1,0 +1,40 @@
+<template>
+    <div class="theme-switcher slds-is-fixed slds-m-bottom_small slds-m-right_small">
+        <lightning-button-icon
+            icon-name="utility:palette"
+            variant="border-filled"
+            size="large"
+            alternative-text="Theme options"
+            title="Theme options"
+            aria-haspopup="true"
+            aria-expanded={isCardOpen}
+            onclick={handleIconClick}>
+        </lightning-button-icon>
+        <template if:true={isCardOpen}>
+            <div class="theme-switcher-backdrop" onclick={handleBackdropClick} role="presentation"></div>
+            <div class="theme-switcher-card-wrapper">
+                <lightning-card title="Theme" class="theme-switcher-card">
+                    <div class="slds-p-around_small">
+                        <div class="slds-button-group slds-m-bottom_small">
+                            <lightning-button
+                                variant="neutral"
+                                label={sldsToggleLabel}
+                                icon-name="utility:palette"
+                                onclick={handleToggleSLDSClick}>
+                            </lightning-button>
+                            <template if:true={showDarkModeButton}>
+                                <lightning-button
+                                    class="slds-m-left_small"
+                                    variant="neutral"
+                                    label={darkModeLabel}
+                                    icon-name="utility:light_bulb"
+                                    onclick={handleToggleDarkModeClick}>
+                                </lightning-button>
+                            </template>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+        </template>
+    </div>
+</template>

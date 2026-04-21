@@ -1,0 +1,87 @@
+<template>
+    <div class="page">
+
+        <!-- Page header -->
+        <div class="page-header">
+            <div class="page-header__title">
+                <span class="slds-text-heading_large">Icon Test Page</span>
+                <span class="slds-text-body_regular slds-m-left_small page-header__subtitle">
+                    {totalCount} icons &nbsp;&middot;&nbsp; render time: {renderTimeLabel}
+                </span>
+            </div>
+            <p class="slds-m-top_x-small page-header__help">
+                This page shows only a subset of available icons. You can search the full icon set <a href="https://v1.lightningdesignsystem.com/icons/" target="_blank" rel="noopener noreferrer">here</a>.
+            </p>
+        </div>
+
+        <div class="page-body">
+
+            <!-- Standard Icons -->
+            <article class="slds-card slds-m-bottom_medium">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-card__header-title">
+                                <span>Standard</span>
+                                <lightning-badge class="slds-m-left_x-small" label={standardCount}></lightning-badge>
+                            </h2>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner icon-grid">
+                    <template for:each={standardIcons} for:item="icon">
+                        <div key={icon.name} class="icon-item">
+                            <lightning-icon icon-name={icon.name} size="small"></lightning-icon>
+                            <span class="icon-item__label">{icon.label}</span>
+                        </div>
+                    </template>
+                </div>
+            </article>
+
+            <!-- Utility Icons -->
+            <article class="slds-card slds-m-bottom_medium">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-card__header-title">
+                                <span>Utility</span>
+                                <lightning-badge class="slds-m-left_x-small" label={utilityCount}></lightning-badge>
+                            </h2>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner icon-grid">
+                    <template for:each={utilityIcons} for:item="icon">
+                        <div key={icon.name} class="icon-item">
+                            <lightning-icon icon-name={icon.name} size="small"></lightning-icon>
+                            <span class="icon-item__label">{icon.label}</span>
+                        </div>
+                    </template>
+                </div>
+            </article>
+
+            <!-- Doctype Icons -->
+            <article class="slds-card slds-m-bottom_medium">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__body">
+                            <h2 class="slds-card__header-title">
+                                <span>Doctype</span>
+                                <lightning-badge class="slds-m-left_x-small" label={doctypeCount}></lightning-badge>
+                            </h2>
+                        </div>
+                    </header>
+                </div>
+                <div class="slds-card__body slds-card__body_inner icon-grid">
+                    <template for:each={doctypeIcons} for:item="icon">
+                        <div key={icon.name} class="icon-item">
+                            <lightning-icon icon-name={icon.name} size="small"></lightning-icon>
+                            <span class="icon-item__label">{icon.label}</span>
+                        </div>
+                    </template>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</template>

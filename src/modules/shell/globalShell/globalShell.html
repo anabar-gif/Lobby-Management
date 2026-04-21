@@ -1,0 +1,10 @@
+<template>
+    <lightning-layout class="global-shell" multiple-rows>
+        <lightning-layout-item size="12" padding="none">
+            <shell-global-header onpanelselect={handlePanelSelect}></shell-global-header>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" padding="none">
+            <shell-global-navigation current-page={currentPage} nav-items={navItems} onnavigate={handleNavigate}></shell-global-navigation>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>
