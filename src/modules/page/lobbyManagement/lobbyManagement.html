@@ -213,6 +213,21 @@
                                                     </lightning-icon>
                                                     <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
                                                 </div>
+                                                <template lwc:if={appt.checkedIn}>
+                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">Checked in</span>
+                                                </template>
+                                                <template lwc:if={appt.showWaitAlert}>
+                                                    <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                        <lightning-icon
+                                                            class="lobby-appt__wait-clock slds-m-right_xx-small"
+                                                            icon-name="utility:clock"
+                                                            size="small"
+                                                            alternative-text="">
+                                                        </lightning-icon>
+                                                        <span class="lobby-appt__wait-label">{appt.waitLabel}</span>
+                                                        <span class="lobby-appt__wait-time slds-m-left_xx-small">{appt.waitTime}</span>
+                                                    </div>
+                                                </template>
                                             </div>
                                         </div>
                                     </div>

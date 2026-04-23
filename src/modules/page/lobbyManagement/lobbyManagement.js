@@ -271,7 +271,7 @@ export default class LobbyManagement extends LightningElement {
         return `Total Appointment Duration: ${formatDurationFromMinutes(totalMin)}`;
     }
 
-    currentAppointments = [
+    @track currentAppointments = [
         {
             id: 'a1',
             customerName: 'Arna Sumaiyah',
@@ -293,7 +293,7 @@ export default class LobbyManagement extends LightningElement {
         }
     ];
 
-    upcomingAppointments = [
+    @track upcomingAppointments = [
         {
             id: 'b1',
             customerName: 'Smith Kim',
@@ -421,9 +421,29 @@ export default class LobbyManagement extends LightningElement {
 
     handleCheckin(event) {
         const id = event.currentTarget?.dataset?.id;
-        if (id) {
-            // Demo only
-        }
+        if (!id) return;
+
+        const now = new Date();
+        const hh = now.getHours().toString().padStart(2, '0');
+        const mm = now.getMinutes().toString().padStart(2, '0');
+        const waitTime = `00 : ${mm} mins.`;
+
+        const updateList = (list) =>
+            list.map((appt) =>
+                appt.id === id
+                    ? {
+                          ...appt,
+                          checkedIn: true,
+                          showCheckin: false,
+                          showWaitAlert: true,
+                          waitLabel: 'Customer Wait Time:',
+                          waitTime
+                      }
+                    : appt
+            );
+
+        this.currentAppointments = updateList(this.currentAppointments);
+        this.upcomingAppointments = updateList(this.upcomingAppointments);
     }
 
     handleApptMenu() {
