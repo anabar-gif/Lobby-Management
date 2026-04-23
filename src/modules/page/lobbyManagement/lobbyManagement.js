@@ -83,6 +83,7 @@ export default class LobbyManagement extends LightningElement {
 
     @track showAllTopicsGeneral = false;
     @track showAllTopicsInvestment = false;
+    @track showCheckinComposer = false;
 
     /** Empty = all General Banking accordion sections closed on load (requires multi-section mode on `lightning-accordion`). */
     @track generalBankingOpenSections = ['general-banking-queue'];
@@ -335,8 +336,27 @@ export default class LobbyManagement extends LightningElement {
         // Demo: hook for reload
     }
 
+    get checkinTopicOptions() {
+        return [
+            { label: 'Savings Account', value: 'savings-account' },
+            { label: 'Business Checking', value: 'business-checking' },
+        ];
+    }
+
+    get checkinResourceOptions() {
+        return [
+            { label: 'None', value: '' },
+            { label: 'Adam Milne', value: 'adam-milne' },
+            { label: 'Tom Chang', value: 'tom-chang' },
+        ];
+    }
+
     handleQueueCheckIn() {
-        // Demo: hook for queue check-in
+        this.showCheckinComposer = !this.showCheckinComposer;
+    }
+
+    handleCloseCheckinComposer() {
+        this.showCheckinComposer = false;
     }
 
     handleQueueInfo() {

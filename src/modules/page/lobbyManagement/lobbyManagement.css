@@ -419,6 +419,80 @@
     color: var(--slds-g-color-on-surface-1, #181818);
 }
 
+/* ── Check In overlay (docked to bottom of General Banking card) ── */
+.lobby-card {
+    position: relative;
+}
+
+.lobby-checkin-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--slds-g-color-surface-1, #ffffff);
+    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
+    border-radius: var(--slds-g-radius-border-4, 0.5rem);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    max-height: 90%;
+    overflow: hidden;
+}
+
+.lobby-checkin-overlay__header {
+    padding: var(--slds-g-spacing-3, 0.75rem) var(--slds-g-spacing-4, 1rem);
+    border-bottom: 2px solid var(--slds-g-color-brand-base-50, #0176d3);
+    flex-shrink: 0;
+}
+
+.lobby-checkin-overlay__title {
+    font-size: var(--slds-g-font-scale-3, 1.25rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+}
+
+.lobby-checkin-overlay__close {
+    flex-shrink: 0;
+    color: var(--slds-g-color-on-surface-2, #444);
+}
+
+.lobby-checkin-overlay__body {
+    padding: var(--slds-g-spacing-4, 1rem);
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+
+.lobby-checkin-field {
+    margin-bottom: var(--slds-g-spacing-4, 1rem);
+}
+
+.lobby-checkin-field:last-child {
+    margin-bottom: 0;
+}
+
+.lobby-checkin-label {
+    display: block;
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-1, #181818);
+    margin-bottom: var(--slds-g-spacing-1, 0.25rem);
+}
+
+.lobby-checkin-required {
+    color: var(--slds-g-color-error-base-50, #c23934);
+    margin-left: 2px;
+    text-decoration: none;
+}
+
+.lobby-checkin-overlay__footer {
+    padding: var(--slds-g-spacing-3, 0.75rem) var(--slds-g-spacing-4, 1rem);
+    border-top: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
 .lobby-empty {
     padding-top: var(--slds-g-spacing-8, 2rem);
     padding-bottom: var(--slds-g-spacing-8, 2rem);
