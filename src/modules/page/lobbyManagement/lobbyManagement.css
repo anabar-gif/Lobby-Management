@@ -419,24 +419,27 @@
     color: var(--slds-g-color-on-surface-1, #181818);
 }
 
-/* ── Check In overlay (docked to bottom of General Banking card) ── */
+/* ── Check In overlay (fixed to viewport bottom, within General Banking column width) ── */
 .lobby-card {
     position: relative;
 }
 
 .lobby-checkin-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
+    position: fixed;
+    bottom: 1.5rem;
+    /* Horizontally: align to the General Banking column (middle of 3 equal columns).
+       Falls back gracefully on narrow viewports. */
+    left: calc(33.333% + 0.75rem);
+    width: calc(33.333% - 1.5rem);
+    min-width: 20rem;
+    z-index: 9000;
     background: var(--slds-g-color-surface-1, #ffffff);
     border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
     border-radius: var(--slds-g-radius-border-4, 0.5rem);
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.18);
     display: flex;
     flex-direction: column;
-    max-height: 90%;
+    max-height: calc(100vh - 5rem);
     overflow: hidden;
 }
 
