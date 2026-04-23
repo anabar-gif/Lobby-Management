@@ -426,12 +426,12 @@
 
 .lobby-checkin-overlay {
     position: fixed;
-    bottom: 1.5rem;
-    /* Horizontally: align to the General Banking column (middle of 3 equal columns).
-       Falls back gracefully on narrow viewports. */
-    left: calc(33.333% + 0.75rem);
-    width: calc(33.333% - 1.5rem);
-    min-width: 20rem;
+    /* 10px gap above browser bottom edge / footer */
+    bottom: 10px;
+    /* Centre within the General Banking column (middle third), inset 10px each side */
+    left: calc(33.333% + 0.75rem + 10px);
+    width: calc(33.333% - 1.5rem - 20px);
+    min-width: 18rem;
     z-index: 9000;
     background: var(--slds-g-color-surface-1, #ffffff);
     border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
