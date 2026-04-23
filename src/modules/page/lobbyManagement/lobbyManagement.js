@@ -39,6 +39,7 @@ export default class LobbyManagement extends LightningElement {
     queueIconUrl = ASSET_QUEUE_ICON;
 
     @track selectedWaitlistFilter = 'all';
+    @track appointmentsListFilter = 'all';
 
     get waitlistFilterOptions() {
         return [{ label: 'All', value: 'all' }];
@@ -59,8 +60,13 @@ export default class LobbyManagement extends LightningElement {
         return `${this.upcomingSectionTime} · ${n} ${word}`;
     }
 
-    metaLinePrimary = '24 Items ∙ Updated 25 seconds ago';
     metaLineSecondary = 'Filtered by All';
+
+    get metaLinePrimary() {
+        const n = (this.currentAppointments?.length ?? 0) + (this.upcomingAppointments?.length ?? 0);
+        const w = n === 1 ? 'Item' : 'Items';
+        return `${n} ${w} • Updated 8 min ago`;
+    }
 
     investmentQueueMetaLeft = 'Showing 1 of 1 Item • Updated 8 min ago';
     investmentQueueMetaRight = 'Total Appointment Duration: 1 hr 0 min';
@@ -71,6 +77,17 @@ export default class LobbyManagement extends LightningElement {
     /** Empty = all General Banking accordion sections closed on load (requires multi-section mode on `lightning-accordion`). */
     @track generalBankingOpenSections = [];
     @track investmentBankingOpenSection = 'investment-planning';
+
+    /** Debounce General Banking `sectiontoggle`: intermediate events can report partial `openSections` and clobber a full open. */
+    _generalAccToggleT;
+    _lastGeneralAccDetail;
+
+    /**
+     * True from "Show all topics" on until the accordion has reported a full set of open sections, or a timeout.
+     * While true, we ignore debounced events whose openSections are not yet the full set.
+     */
+    _applyingShowAll = false;
+    _applyShowAllClearT;
 
     generalBankingTopics = sortLobbyTopicsByCountDesc([
         {
@@ -251,8 +268,10 @@ export default class LobbyManagement extends LightningElement {
             subtitle: 'Savings Account • Rachel Adams',
             slot: '9:00 am - 9:30 am',
             showWaitAlert: true,
-            waitLabel: 'Customer Wait…',
-            showCheckin: false
+            waitLabel: 'Customer Wait Time:',
+            waitTime: '00 : 10 mins.',
+            showCheckin: false,
+            checkedIn: true
         },
         {
             id: 'a2',
@@ -295,6 +314,13 @@ export default class LobbyManagement extends LightningElement {
         this.selectedWaitlistFilter = event.detail.value;
     }
 
+    handleAppointmentsFilterSelect(event) {
+        const v = event.detail.value;
+        if (v) {
+            this.appointmentsListFilter = v;
+        }
+    }
+
     handleRefresh() {
         // Demo: hook for reload
     }
@@ -307,12 +333,35 @@ export default class LobbyManagement extends LightningElement {
         // Demo: hook for queue details
     }
 
-    handleQueueOpenExternal() {
-        // Demo: open queue in external context
+    handleQueueFilter() {
+        // Demo: hook for queue filter or sort
     }
 
     handleShowAllTopicsGeneral(event) {
-        this.showAllTopicsGeneral = event.target.checked;
+        if (this._generalAccToggleT) {
+            clearTimeout(this._generalAccToggleT);
+            this._generalAccToggleT = null;
+        }
+        if (this._applyShowAllClearT) {
+            clearTimeout(this._applyShowAllClearT);
+            this._applyShowAllClearT = null;
+        }
+        const on = typeof event.detail?.checked === 'boolean' ? event.detail.checked : Boolean(event.target?.checked);
+        this.showAllTopicsGeneral = on;
+        if (on) {
+            this._applyingShowAll = true;
+            this.generalBankingOpenSections = [...this.generalBankingTopics.map((t) => t.id)];
+            this._applyShowAllClearT = setTimeout(() => {
+                this._applyShowAllClearT = null;
+                this._applyingShowAll = false;
+                if (this.showAllTopicsGeneral) {
+                    this.generalBankingOpenSections = [...this.generalBankingTopics.map((t) => t.id)];
+                }
+            }, 500);
+        } else {
+            this._applyingShowAll = false;
+            this.generalBankingOpenSections = [];
+        }
     }
 
     handleShowAllTopicsInvestment(event) {
@@ -320,8 +369,35 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleGeneralAccordionToggle(event) {
-        const open = event.detail.openSections;
-        this.generalBankingOpenSections = Array.isArray(open) ? [...open] : open ? [open] : [];
+        this._lastGeneralAccDetail = event.detail;
+        if (this._generalAccToggleT) {
+            clearTimeout(this._generalAccToggleT);
+        }
+        this._generalAccToggleT = setTimeout(() => {
+            this._generalAccToggleT = null;
+            const d = this._lastGeneralAccDetail;
+            const open = d && d.openSections;
+            const openArr = Array.isArray(open) ? [...open] : open ? [open] : [];
+            const allIds = this.generalBankingTopics.map((t) => t.id);
+            const isFullSet =
+                allIds.length > 0 &&
+                openArr.length === allIds.length &&
+                allIds.every((id) => openArr.includes(id));
+
+            if (this._applyingShowAll && !isFullSet) {
+                return;
+            }
+            if (isFullSet) {
+                this._applyingShowAll = false;
+                if (this._applyShowAllClearT) {
+                    clearTimeout(this._applyShowAllClearT);
+                    this._applyShowAllClearT = null;
+                }
+            }
+
+            this.generalBankingOpenSections = openArr;
+            this.showAllTopicsGeneral = isFullSet;
+        }, 16);
     }
 
     handleInvestmentAccordionToggle(event) {

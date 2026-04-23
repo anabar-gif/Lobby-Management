@@ -10,7 +10,7 @@
                             </div>
                         </div>
                         <div class="slds-media__body">
-                            <p class="lobby-header__eyebrow slds-m-bottom_xxx-small">Lobby Management</p>
+                            <p class="lobby-header__eyebrow slds-m-bottom_xxx-small">Service Territory</p>
                             <div class="slds-grid slds-grid_vertical-align-center">
                                 <h1 class="lobby-header__title slds-m-right_xx-small">Market St Branch</h1>
                                 <lightning-button-icon
@@ -58,21 +58,23 @@
                         <div class="slds-card__header slds-grid">
                             <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
                                 <div class="slds-media__body slds-has-flexi-truncate">
-                                    <h2 class="lobby-card__title slds-truncate" title="Scheduled Appointments">
-                                        Scheduled Appointments
+                                    <h2
+                                        class="lobby-card__title slds-truncate"
+                                        title="Scheduled Service Appointments">
+                                        Scheduled Service Appointments
                                     </h2>
                                     <p class="lobby-card__meta slds-m-top_xx-small">{metaLinePrimary}</p>
                                     <p class="lobby-card__meta">{metaLineSecondary}</p>
                                 </div>
                             </header>
                             <div class="slds-no-flex">
-                                <lightning-button-menu
-                                    alternative-text="Filter appointments"
-                                    icon-name="utility:filterList"
+                                <lightning-button-icon
+                                    icon-name="utility:refresh"
                                     variant="border-filled"
-                                    menu-alignment="right">
-                                    <lightning-menu-item label="All" value="all"></lightning-menu-item>
-                                </lightning-button-menu>
+                                    alternative-text="Refresh"
+                                    title="Refresh"
+                                    onclick={handleRefresh}>
+                                </lightning-button-icon>
                             </div>
                         </div>
                         <div class="lobby-card__separator-slot" aria-hidden="true">
@@ -131,17 +133,19 @@
                                                     </lightning-icon>
                                                     <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
                                                 </div>
+                                                <template lwc:if={appt.checkedIn}>
+                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">Checked in</span>
+                                                </template>
                                                 <template lwc:if={appt.showWaitAlert}>
                                                     <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                        <span class="lobby-appt__wait-icon-bubble" aria-hidden="true">
-                                                            <lightning-icon
-                                                                icon-name="utility:live_message"
-                                                                size="xx-small"
-                                                                variant="inverse"
-                                                                alternative-text="">
-                                                            </lightning-icon>
-                                                        </span>
-                                                        <span class="lobby-appt__wait-text slds-truncate">{appt.waitLabel}</span>
+                                                        <lightning-icon
+                                                            class="lobby-appt__wait-clock slds-m-right_xx-small"
+                                                            icon-name="utility:clock"
+                                                            size="small"
+                                                            alternative-text="">
+                                                        </lightning-icon>
+                                                        <span class="lobby-appt__wait-label">{appt.waitLabel}</span>
+                                                        <span class="lobby-appt__wait-time slds-m-left_xx-small">{appt.waitTime}</span>
                                                     </div>
                                                 </template>
                                             </div>
@@ -238,11 +242,11 @@
                                         onclick={handleQueueInfo}>
                                     </lightning-button-icon>
                                     <lightning-button-icon
-                                        icon-name="utility:new_window"
+                                        icon-name="utility:refresh"
                                         variant="border-filled"
-                                        alternative-text="Open in new window"
-                                        title="Open in new window"
-                                        onclick={handleQueueOpenExternal}>
+                                        alternative-text="Refresh queue"
+                                        title="Refresh"
+                                        onclick={handleRefresh}>
                                     </lightning-button-icon>
                                 </lightning-button-group>
                             </div>
@@ -254,7 +258,7 @@
                             <div class="lobby-queue-toolbar">
                                 <lightning-input
                                     type="checkbox"
-                                    label="Show all topics"
+                                    label="Expand all topics to view the waitlist details"
                                     checked={showAllTopicsGeneral}
                                     onchange={handleShowAllTopicsGeneral}>
                                 </lightning-input>
@@ -360,11 +364,11 @@
                                         onclick={handleQueueInfo}>
                                     </lightning-button-icon>
                                     <lightning-button-icon
-                                        icon-name="utility:new_window"
+                                        icon-name="utility:refresh"
                                         variant="border-filled"
-                                        alternative-text="Open in new window"
-                                        title="Open in new window"
-                                        onclick={handleQueueOpenExternal}>
+                                        alternative-text="Refresh queue"
+                                        title="Refresh"
+                                        onclick={handleRefresh}>
                                     </lightning-button-icon>
                                 </lightning-button-group>
                             </div>
@@ -376,7 +380,7 @@
                             <div class="lobby-queue-toolbar">
                                 <lightning-input
                                     type="checkbox"
-                                    label="Show all topics"
+                                    label="Expand all topics to view the waitlist details"
                                     checked={showAllTopicsInvestment}
                                     onchange={handleShowAllTopicsInvestment}>
                                 </lightning-input>

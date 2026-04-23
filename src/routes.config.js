@@ -17,15 +17,13 @@ export const routes = [
     path: '/',
     component: 'page-home',
     title: 'Home',
-    navPage: 'home',
-    navLabel: 'Home',
   },
   {
     path: '/lobby',
     component: 'page-lobby-management',
-    title: 'Lobby Management',
+    title: 'Service Territory',
     navPage: 'lobby',
-    navLabel: 'Waitlist Management',
+    navLabel: 'Lobby Management',
   },
   {
     path: '/icons',
