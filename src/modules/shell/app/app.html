@@ -29,4 +29,27 @@
             </lightning-layout-item>
         </lightning-layout>
     </main>
+
+    <footer class="app-viewport-footer" role="navigation" aria-label="Workspace">
+        <div class="app-viewport-footer__tabs">
+            <button class="app-viewport-footer__tab" type="button" title="My Appointments">
+                <lightning-icon
+                    class="app-viewport-footer__tab-icon app-viewport-footer__tab-icon_bold"
+                    icon-name="utility:date_input"
+                    size="x-small"
+                    alternative-text="">
+                </lightning-icon>
+                <span class="app-viewport-footer__tab-label">My Appointments</span>
+            </button>
+            <button class="app-viewport-footer__tab" type="button" title="Video Call">
+                <lightning-icon
+                    class="app-viewport-footer__tab-icon app-viewport-footer__tab-icon_muted"
+                    icon-name="utility:video"
+                    size="x-small"
+                    alternative-text="">
+                </lightning-icon>
+                <span class="app-viewport-footer__tab-label">Video Call</span>
+            </button>
+        </div>
+    </footer>
 </template>

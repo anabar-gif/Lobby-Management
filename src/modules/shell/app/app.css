@@ -74,3 +74,92 @@
 lightning-badge {
     display: inline-block;
 }
+
+/* —— Bottom app bar (viewport): 40px, panel shadow up — Figma 1440 / Scheduler —— */
+.app-viewport-footer {
+    position: relative;
+    z-index: 3;
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    background: #ffffff;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.app-viewport-footer__tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 1440px;
+    height: 40px;
+    margin: 0;
+    margin-right: auto;
+    padding: 0 0 0 0.5rem;
+    box-sizing: border-box;
+}
+
+.app-viewport-footer__tab {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    height: 40px;
+    min-height: 40px;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding: 8px 12px;
+    gap: 12px;
+    border: 0;
+    background: #ffffff;
+    color: #181818;
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    flex: none;
+    justify-content: flex-start;
+}
+
+.app-viewport-footer__tab:hover {
+    background: var(--slds-g-color-surface-container-1, #f3f2f2);
+}
+
+.app-viewport-footer__tab:focus {
+    outline: 2px solid var(--slds-g-color-border-brand-2, #1b96ff);
+    outline-offset: -2px;
+}
+
+.app-viewport-footer__tab-label {
+    flex: 0 0 auto;
+    text-align: start;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+/* 16×16 target (utility icons at x-small) */
+.app-viewport-footer__tab-icon {
+    flex: none;
+}
+
+/* Calendar: Icon / Dark */
+.app-viewport-footer__tab-icon_bold {
+    --slds-c-icon-color-foreground-default: #181818;
+}
+
+/* Video: Icon / Default (gray) */
+.app-viewport-footer__tab-icon_muted {
+    --slds-c-icon-color-foreground-default: #747474;
+}
