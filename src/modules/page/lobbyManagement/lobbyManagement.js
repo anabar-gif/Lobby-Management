@@ -38,11 +38,21 @@ const ASSET_QUEUE_ICON =
 export default class LobbyManagement extends LightningElement {
     queueIconUrl = ASSET_QUEUE_ICON;
 
-    @track selectedWaitlistFilter = 'all';
+    @track selectedBranch = 'Market St Branch';
+
+    handleBranchSelect(event) {
+        this.selectedBranch = event.detail.value;
+    }
+
+    @track selectedWaitlistFilter = 'all'; // matches 'All waitlists'
     @track appointmentsListFilter = 'all';
 
     get waitlistFilterOptions() {
-        return [{ label: 'All', value: 'all' }];
+        return [
+            { label: 'All waitlists', value: 'all' },
+            { label: 'All active waitlists', value: 'active' },
+            { label: 'All inactive waitlists', value: 'inactive' },
+        ];
     }
 
     currentSectionTime = '9:10 AM';

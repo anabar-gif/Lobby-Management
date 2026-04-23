@@ -12,14 +12,23 @@
                         <div class="slds-media__body">
                             <p class="lobby-header__eyebrow slds-m-bottom_xxx-small">Service Territory</p>
                             <div class="slds-grid slds-grid_vertical-align-center">
-                                <h1 class="lobby-header__title slds-m-right_xx-small">Market St Branch</h1>
-                                <lightning-button-icon
-                                    icon-name="utility:down"
+                                <lightning-button-menu
+                                    class="lobby-header__branch-menu"
+                                    label={selectedBranch}
                                     variant="bare"
-                                    size="small"
+                                    menu-alignment="left"
                                     alternative-text="Change branch"
-                                    title="Change branch">
-                                </lightning-button-icon>
+                                    onselect={handleBranchSelect}>
+                                    <lightning-menu-item label="Business District 2"         value="Business District 2"></lightning-menu-item>
+                                    <lightning-menu-item label="High Street 1"               value="High Street 1"></lightning-menu-item>
+                                    <lightning-menu-item label="Market St Branch"            value="Market St Branch"></lightning-menu-item>
+                                    <lightning-menu-item label="Mission St branch"           value="Mission St branch"></lightning-menu-item>
+                                    <lightning-menu-item label="Scheduler DF Moscone South"  value="Scheduler DF Moscone South"></lightning-menu-item>
+                                    <lightning-menu-item label="Scheduler DF Tower"          value="Scheduler DF Tower"></lightning-menu-item>
+                                    <lightning-menu-item label="Virtual Retail Banking"      value="Virtual Retail Banking"></lightning-menu-item>
+                                    <lightning-menu-item label="Virtual Territory"           value="Virtual Territory"></lightning-menu-item>
+                                    <lightning-menu-item label="Virtual_Test"                value="Virtual_Test"></lightning-menu-item>
+                                </lightning-button-menu>
                             </div>
                         </div>
                     </div>
@@ -27,13 +36,13 @@
                 <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-text-align_right slds-m-top_small">
                     <div class="lobby-toolbar__row slds-grid slds-grid_vertical-align-start slds-grid_align-end slds-wrap">
                         <div class="slds-grid slds-grid_vertical-align-center slds-m-right_x-small slds-m-bottom_xx-small slds-medium-m-bottom_none">
-                            <span class="lobby-toolbar__label slds-p-right_x-small">View Waitlist</span>
+                            <span class="lobby-toolbar__label slds-p-right_x-small">Show Waitlists</span>
                             <lightning-combobox
                                 name="waitlistFilter"
                                 label="Waitlist filter"
                                 variant="label-hidden"
                                 value={selectedWaitlistFilter}
-                                placeholder="All"
+                                placeholder="All waitlists"
                                 options={waitlistFilterOptions}
                                 onchange={handleWaitlistFilterChange}>
                             </lightning-combobox>
@@ -235,13 +244,6 @@
                                         onclick={handleQueueCheckIn}>
                                     </lightning-button>
                                     <lightning-button-icon
-                                        icon-name="utility:info"
-                                        variant="border-filled"
-                                        alternative-text="Queue information"
-                                        title="Queue information"
-                                        onclick={handleQueueInfo}>
-                                    </lightning-button-icon>
-                                    <lightning-button-icon
                                         icon-name="utility:refresh"
                                         variant="border-filled"
                                         alternative-text="Refresh queue"
@@ -356,13 +358,6 @@
                                         title="Check In"
                                         onclick={handleQueueCheckIn}>
                                     </lightning-button>
-                                    <lightning-button-icon
-                                        icon-name="utility:info"
-                                        variant="border-filled"
-                                        alternative-text="Queue information"
-                                        title="Queue information"
-                                        onclick={handleQueueInfo}>
-                                    </lightning-button-icon>
                                     <lightning-button-icon
                                         icon-name="utility:refresh"
                                         variant="border-filled"
