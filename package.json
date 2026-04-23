@@ -29,6 +29,8 @@
     "@lwc/synthetic-shadow": "^9.0.2",
     "@salesforce-ux/design-system": "^2.29.0",
     "@salesforce-ux/design-system-2": "^0.0.0-alpha.0",
+    "express": "^5.2.1",
+    "express-basic-auth": "^1.2.1",
     "lightning-base-components": "^1.28.15-alpha",
     "lwc": "^9.0.2",
     "vite": "^7.3.1",
