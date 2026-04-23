@@ -85,7 +85,7 @@ export default class LobbyManagement extends LightningElement {
     @track showAllTopicsInvestment = false;
 
     /** Empty = all General Banking accordion sections closed on load (requires multi-section mode on `lightning-accordion`). */
-    @track generalBankingOpenSections = [];
+    @track generalBankingOpenSections = ['general-banking-queue'];
     @track investmentBankingOpenSection = 'investment-planning';
 
     /** Debounce General Banking `sectiontoggle`: intermediate events can report partial `openSections` and clobber a full open. */
