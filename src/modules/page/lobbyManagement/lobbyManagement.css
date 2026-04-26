@@ -25,8 +25,6 @@
 .lobby-header__icon {
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: 50%;
-    background-color: var(--slds-g-color-brand-base-50, #107cad);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,6 +34,8 @@
 .lobby-header__icon-img {
     width: 1.25rem;
     height: 1.25rem;
+    /* Recolor grey PNG to #00A1E0 */
+    filter: brightness(0) saturate(100%) invert(47%) sepia(98%) saturate(500%) hue-rotate(165deg) brightness(100%) contrast(101%);
 }
 
 .lobby-header__eyebrow {
