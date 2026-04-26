@@ -440,12 +440,22 @@ export default class LobbyManagement extends LightningElement {
 
     get checkinTopicOptions() {
         return [
+            { label: 'General Banking',   value: 'general-banking' },
             { label: 'Savings Account',   value: 'savings-account' },
             { label: 'Business Checking', value: 'business-checking' },
             { label: 'Personal Banking',  value: 'personal-banking' },
             { label: 'Wealth Management', value: 'wealth-management' },
             { label: 'Insurance',         value: 'insurance' },
             { label: 'Notary',            value: 'notary' },
+        ];
+    }
+
+    get ibCheckinTopicOptions() {
+        return [
+            { label: 'Investment Banking',  value: 'investment-banking' },
+            { label: 'Investment Planning', value: 'investment-planning' },
+            { label: 'Savings Account',     value: 'savings-account' },
+            { label: 'Business Checking',   value: 'business-checking' },
         ];
     }
 
@@ -459,7 +469,7 @@ export default class LobbyManagement extends LightningElement {
 
     // ── General Banking composer form state ──
     @track ciGuestType  = 'existing';
-    @track ciTopic      = 'savings-account';
+    @track ciTopic      = 'general-banking';
     @track ciResource   = 'adam-milne';
     @track ciDesc       = '';
     @track ciFirstName  = '';
@@ -483,7 +493,7 @@ export default class LobbyManagement extends LightningElement {
 
     // ── Investment Banking composer form state ──
     @track ibCiGuestType  = 'existing';
-    @track ibCiTopic      = 'savings-account';
+    @track ibCiTopic      = 'investment-banking';
     @track ibCiResource   = 'adam-milne';
     @track ibCiDesc       = '';
     @track ibCiFirstName  = '';
@@ -521,6 +531,7 @@ export default class LobbyManagement extends LightningElement {
     /** Map a topic value from the combobox to the accordion section id it belongs to (General Banking card). */
     _topicValueToSectionId(topicValue) {
         const map = {
+            'general-banking':   'general-banking-queue',
             'savings-account':   'general-banking-queue',
             'business-checking': 'general-banking-queue',
             'personal-banking':  'personal-banking',
@@ -591,7 +602,7 @@ export default class LobbyManagement extends LightningElement {
         this.ciGuestType = 'existing';
         this.ciFirstName = ''; this.ciLastName = ''; this.ciContact = '';
         this.ciCompany = ''; this.ciEmail = '';
-        this.ciTopic    = 'savings-account';
+        this.ciTopic    = 'general-banking';
         this.ciResource = 'adam-milne';
         this.ciDesc     = '';
         this.showCheckinComposer = false;
@@ -642,7 +653,7 @@ export default class LobbyManagement extends LightningElement {
         this.ibCiGuestType = 'existing';
         this.ibCiFirstName = ''; this.ibCiLastName = ''; this.ibCiContact = '';
         this.ibCiCompany = ''; this.ibCiEmail = '';
-        this.ibCiTopic    = 'savings-account';
+        this.ibCiTopic    = 'investment-banking';
         this.ibCiResource = 'adam-milne';
         this.ibCiDesc     = '';
         this.showCheckinComposerInvestment = false;
