@@ -430,18 +430,19 @@
 
 /* Scrim covers the General Banking card only */
 .lobby-checkin-overlay-scrim {
-    position: fixed;
+    position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
     z-index: 8999;
+    border-radius: inherit;
 }
 
 .lobby-checkin-overlay {
-    position: fixed;
+    position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 28rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    transform: translateY(-50%);
     z-index: 9000;
     background: var(--slds-g-color-surface-1, #ffffff);
     border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #dddbda);
@@ -449,7 +450,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
     display: flex;
     flex-direction: column;
-    max-height: 90vh;
+    max-height: 90%;
     overflow: hidden;
 }
 
