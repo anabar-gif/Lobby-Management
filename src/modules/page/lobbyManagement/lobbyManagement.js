@@ -84,6 +84,7 @@ export default class LobbyManagement extends LightningElement {
     @track showAllTopicsGeneral = false;
     @track showAllTopicsInvestment = false;
     @track showCheckinComposer = false;
+    @track showCheckinComposerInvestment = false;
 
     /** Empty = all General Banking accordion sections closed on load (requires multi-section mode on `lightning-accordion`). */
     @track generalBankingOpenSections = ['general-banking-queue'];
@@ -357,6 +358,14 @@ export default class LobbyManagement extends LightningElement {
 
     handleCloseCheckinComposer() {
         this.showCheckinComposer = false;
+    }
+
+    handleInvestmentQueueCheckIn() {
+        this.showCheckinComposerInvestment = !this.showCheckinComposerInvestment;
+    }
+
+    handleCloseInvestmentCheckinComposer() {
+        this.showCheckinComposerInvestment = false;
     }
 
     handleQueueInfo() {

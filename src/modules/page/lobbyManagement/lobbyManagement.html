@@ -477,7 +477,7 @@
                                         label="Check In"
                                         variant="neutral"
                                         title="Check In"
-                                        onclick={handleQueueCheckIn}>
+                                        onclick={handleInvestmentQueueCheckIn}>
                                     </lightning-button>
                                     <lightning-button-icon
                                         icon-name="utility:refresh"
@@ -569,6 +569,103 @@
                                 </template>
                             </lightning-accordion>
                         </div>
+
+                        <template lwc:if={showCheckinComposerInvestment}>
+                            <div class="lobby-checkin-overlay-scrim" onclick={handleCloseInvestmentCheckinComposer}></div>
+                            <div class="lobby-checkin-overlay">
+                                <div class="lobby-checkin-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                    <span class="lobby-checkin-overlay__title">Checkin Customer</span>
+                                    <button
+                                        class="slds-button slds-button_icon lobby-checkin-overlay__close"
+                                        title="Close"
+                                        onclick={handleCloseInvestmentCheckinComposer}>
+                                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                                    </button>
+                                </div>
+                                <div class="lobby-checkin-overlay__body">
+                                    <div class="lobby-checkin-field">
+                                        <fieldset class="slds-form-element">
+                                            <legend class="lobby-checkin-label">
+                                                Account Status<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                            </legend>
+                                            <div class="slds-form-element__control slds-m-top_xx-small">
+                                                <div class="slds-grid slds-gutters_small">
+                                                    <div class="slds-col">
+                                                        <span class="slds-radio">
+                                                            <input type="radio" id="ib-ci-existing" name="ib-ci-guest-type" value="existing" checked />
+                                                            <label class="slds-radio__label" for="ib-ci-existing">
+                                                                <span class="slds-radio_faux"></span>
+                                                                <span class="slds-form-element__label">Existing Participant</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                    <div class="slds-col">
+                                                        <span class="slds-radio">
+                                                            <input type="radio" id="ib-ci-new" name="ib-ci-guest-type" value="new" />
+                                                            <label class="slds-radio__label" for="ib-ci-new">
+                                                                <span class="slds-radio_faux"></span>
+                                                                <span class="slds-form-element__label">New Participant</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="lobby-checkin-field">
+                                        <label class="lobby-checkin-label" for="ib-ci-participant">
+                                            Participant<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                        </label>
+                                        <lightning-input
+                                            id="ib-ci-participant"
+                                            type="search"
+                                            label="Participant"
+                                            variant="label-hidden"
+                                            placeholder="Search...">
+                                        </lightning-input>
+                                    </div>
+                                    <div class="lobby-checkin-field">
+                                        <label class="lobby-checkin-label" for="ib-ci-topic">
+                                            Work Topic<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                        </label>
+                                        <lightning-combobox
+                                            id="ib-ci-topic"
+                                            label="Work Topic"
+                                            variant="label-hidden"
+                                            value="business-checking"
+                                            options={checkinTopicOptions}>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="lobby-checkin-field">
+                                        <label class="lobby-checkin-label" for="ib-ci-desc">Description</label>
+                                        <lightning-textarea
+                                            id="ib-ci-desc"
+                                            label="Description"
+                                            variant="label-hidden"
+                                            placeholder="Enter a description for participant's visit..."
+                                            max-length="500">
+                                        </lightning-textarea>
+                                    </div>
+                                    <div class="lobby-checkin-field">
+                                        <label class="lobby-checkin-label" for="ib-ci-resource">Service Resource</label>
+                                        <lightning-combobox
+                                            id="ib-ci-resource"
+                                            label="Service Resource"
+                                            variant="label-hidden"
+                                            value="adam-milne"
+                                            options={checkinResourceOptions}>
+                                        </lightning-combobox>
+                                    </div>
+                                </div>
+                                <div class="lobby-checkin-overlay__footer">
+                                    <lightning-button
+                                        label="Check In"
+                                        variant="brand"
+                                        onclick={handleCloseInvestmentCheckinComposer}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
                     </article>
                 </lightning-layout-item>
             </lightning-layout>
