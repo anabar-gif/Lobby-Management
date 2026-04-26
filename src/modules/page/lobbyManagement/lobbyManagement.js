@@ -455,17 +455,79 @@ export default class LobbyManagement extends LightningElement {
 
     get checkinTopicOptions() {
         return [
-            { label: 'Savings Account', value: 'savings-account' },
+            { label: 'Savings Account',   value: 'savings-account' },
             { label: 'Business Checking', value: 'business-checking' },
+            { label: 'Personal Banking',  value: 'personal-banking' },
+            { label: 'Wealth Management', value: 'wealth-management' },
+            { label: 'Insurance',         value: 'insurance' },
+            { label: 'Investment Banking', value: 'investment-banking' },
+            { label: 'Notary',            value: 'notary' },
         ];
     }
 
     get checkinResourceOptions() {
         return [
-            { label: 'None', value: '' },
+            { label: 'None',       value: '' },
             { label: 'Adam Milne', value: 'adam-milne' },
-            { label: 'Tom Chang', value: 'tom-chang' },
+            { label: 'Tom Chang',  value: 'tom-chang' },
         ];
+    }
+
+    // ── General Banking composer form state ──
+    @track ciTopic    = 'savings-account';
+    @track ciResource = 'adam-milne';
+    @track ciDesc     = '';
+
+    handleCiTopicChange(event)    { this.ciTopic    = event.detail.value; }
+    handleCiResourceChange(event) { this.ciResource = event.detail.value; }
+    handleCiDescChange(event)     { this.ciDesc     = event.target.value; }
+
+    // ── Investment Banking composer form state ──
+    @track ibCiTopic    = 'savings-account';
+    @track ibCiResource = 'adam-milne';
+    @track ibCiDesc     = '';
+
+    handleIbCiTopicChange(event)    { this.ibCiTopic    = event.detail.value; }
+    handleIbCiResourceChange(event) { this.ibCiResource = event.detail.value; }
+    handleIbCiDescChange(event)     { this.ibCiDesc     = event.target.value; }
+
+    // ── Shared work-item counter ──
+    _wpCounter = 500;
+    _nextWpId() { return `WP-${++this._wpCounter}`; }
+
+    _nowTime() {
+        const now = new Date();
+        const hh = now.getHours();
+        const mm = now.getMinutes().toString().padStart(2, '0');
+        const ampm = hh >= 12 ? 'PM' : 'AM';
+        const h12 = ((hh % 12) || 12).toString().padStart(2, '0');
+        return `${h12}:${mm} ${ampm}`;
+    }
+
+    /** Map a topic value from the combobox to the accordion section id it belongs to (General Banking card). */
+    _topicValueToSectionId(topicValue) {
+        const map = {
+            'savings-account':   'general-banking-queue',
+            'business-checking': 'general-banking-queue',
+            'personal-banking':  'personal-banking',
+            'wealth-management': 'wealth-management',
+            'insurance':         'insurance',
+            'investment-banking':'gb-topic-investment',
+            'notary':            'notary',
+        };
+        return map[topicValue] || 'general-banking-queue';
+    }
+
+    /** Map a topic value to its human-readable topic string for the participant row. */
+    _topicValueToLabel(topicValue) {
+        const opt = this.checkinTopicOptions.find(o => o.value === topicValue);
+        return opt ? opt.label : topicValue;
+    }
+
+    /** Map a resource value to its display name. */
+    _resourceValueToLabel(resourceValue) {
+        const opt = this.checkinResourceOptions.find(o => o.value === resourceValue);
+        return opt ? opt.label : '';
     }
 
     handleQueueCheckIn() {
@@ -476,11 +538,90 @@ export default class LobbyManagement extends LightningElement {
         this.showCheckinComposer = false;
     }
 
+    handleSubmitCheckinComposer() {
+        const participantName = this.participantSearch.trim() || 'New Participant';
+        const resourceLabel   = this._resourceValueToLabel(this.ciResource);
+        const topicLabel      = this._topicValueToLabel(this.ciTopic);
+        const sectionId       = this._topicValueToSectionId(this.ciTopic);
+        const checkInTime     = this._nowTime();
+
+        const newRow = {
+            id:          `gb-new-${Date.now()}`,
+            ordinal:     '1.',
+            workItemId:  this._nextWpId(),
+            linkLabel:   participantName,
+            topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
+            checkInTime,
+            waitTime:    '0 min',
+        };
+
+        // Deep-copy topics, prepend new row into the matching section, re-number ordinals
+        const updated = this.generalBankingTopics.map(t => {
+            if (t.id !== sectionId) return t;
+            const rows = [newRow, ...t.participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+            const count = rows.length;
+            const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
+            return { ...t, participants: rows, label: `${labelBase} (${count})` };
+        });
+
+        this.generalBankingTopics = sortLobbyTopicsByCountDesc(updated);
+
+        // Ensure the section is open so the new card is visible
+        if (!this.generalBankingOpenSections.includes(sectionId)) {
+            this.generalBankingOpenSections = [...this.generalBankingOpenSections, sectionId];
+        }
+
+        // Reset form
+        this.participantSearch = '';
+        this.ciTopic    = 'savings-account';
+        this.ciResource = 'adam-milne';
+        this.ciDesc     = '';
+        this.showCheckinComposer = false;
+    }
+
     handleInvestmentQueueCheckIn() {
         this.showCheckinComposerInvestment = !this.showCheckinComposerInvestment;
     }
 
     handleCloseInvestmentCheckinComposer() {
+        this.showCheckinComposerInvestment = false;
+    }
+
+    handleSubmitCheckinComposerInvestment() {
+        const participantName = this.participantSearchInvestment.trim() || 'New Participant';
+        const resourceLabel   = this._resourceValueToLabel(this.ibCiResource);
+        const topicLabel      = this._topicValueToLabel(this.ibCiTopic);
+        const checkInTime     = this._nowTime();
+
+        const newRow = {
+            id:          `ib-new-${Date.now()}`,
+            ordinal:     '1.',
+            workItemId:  this._nextWpId(),
+            linkLabel:   participantName,
+            topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
+            checkInTime,
+            waitTime:    '0 min',
+        };
+
+        const updated = this.investmentBankingTopics.map(t => {
+            if (t.id !== 'investment-planning') return t;
+            const rows = [newRow, ...t.participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+            const count = rows.length;
+            const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
+            return { ...t, participants: rows, label: `${labelBase} (${count})` };
+        });
+
+        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(updated);
+
+        if (!this.investmentBankingOpenSection.includes('investment-planning')) {
+            this.investmentBankingOpenSection = 'investment-planning';
+        }
+
+        // Reset form
+        this.participantSearchInvestment = '';
+        this.ibCiTopic    = 'savings-account';
+        this.ibCiResource = 'adam-milne';
+        this.ibCiDesc     = '';
         this.showCheckinComposerInvestment = false;
     }
 

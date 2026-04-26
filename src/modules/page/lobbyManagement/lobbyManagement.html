@@ -475,8 +475,9 @@
                                             id="ci-topic"
                                             label="Work Topic"
                                             variant="label-hidden"
-                                            value="business-checking"
-                                            options={checkinTopicOptions}>
+                                            value={ciTopic}
+                                            options={checkinTopicOptions}
+                                            onchange={handleCiTopicChange}>
                                         </lightning-combobox>
                                     </div>
                                     <!-- Description -->
@@ -486,8 +487,10 @@
                                             id="ci-desc"
                                             label="Description"
                                             variant="label-hidden"
+                                            value={ciDesc}
                                             placeholder="Enter a description for participant's visit..."
-                                            max-length="500">
+                                            max-length="500"
+                                            onchange={handleCiDescChange}>
                                         </lightning-textarea>
                                     </div>
                                     <!-- Service Resource -->
@@ -497,8 +500,9 @@
                                             id="ci-resource"
                                             label="Service Resource"
                                             variant="label-hidden"
-                                            value="adam-milne"
-                                            options={checkinResourceOptions}>
+                                            value={ciResource}
+                                            options={checkinResourceOptions}
+                                            onchange={handleCiResourceChange}>
                                         </lightning-combobox>
                                     </div>
                                 </div>
@@ -507,7 +511,7 @@
                                     <lightning-button
                                         label="Check In"
                                         variant="brand"
-                                        onclick={handleCloseCheckinComposer}>
+                                        onclick={handleSubmitCheckinComposer}>
                                     </lightning-button>
                                 </div>
                             </div>
@@ -746,8 +750,9 @@
                                             id="ib-ci-topic"
                                             label="Work Topic"
                                             variant="label-hidden"
-                                            value="business-checking"
-                                            options={checkinTopicOptions}>
+                                            value={ibCiTopic}
+                                            options={checkinTopicOptions}
+                                            onchange={handleIbCiTopicChange}>
                                         </lightning-combobox>
                                     </div>
                                     <div class="lobby-checkin-field">
@@ -756,8 +761,10 @@
                                             id="ib-ci-desc"
                                             label="Description"
                                             variant="label-hidden"
+                                            value={ibCiDesc}
                                             placeholder="Enter a description for participant's visit..."
-                                            max-length="500">
+                                            max-length="500"
+                                            onchange={handleIbCiDescChange}>
                                         </lightning-textarea>
                                     </div>
                                     <div class="lobby-checkin-field">
@@ -766,8 +773,9 @@
                                             id="ib-ci-resource"
                                             label="Service Resource"
                                             variant="label-hidden"
-                                            value="adam-milne"
-                                            options={checkinResourceOptions}>
+                                            value={ibCiResource}
+                                            options={checkinResourceOptions}
+                                            onchange={handleIbCiResourceChange}>
                                         </lightning-combobox>
                                     </div>
                                 </div>
@@ -775,7 +783,7 @@
                                     <lightning-button
                                         label="Check In"
                                         variant="brand"
-                                        onclick={handleCloseInvestmentCheckinComposer}>
+                                        onclick={handleSubmitCheckinComposerInvestment}>
                                     </lightning-button>
                                 </div>
                             </div>
