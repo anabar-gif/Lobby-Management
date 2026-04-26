@@ -166,21 +166,6 @@ export default class LobbyManagement extends LightningElement {
             ]
         },
         {
-            id: 'gb-topic-investment',
-            label: 'Investment Banking (1)',
-            participants: [
-                {
-                    id: 'gb-ib1',
-                    ordinal: '1.',
-                    workItemId: 'WP-0401',
-                    linkLabel: 'Morgan Ellis',
-                    topic: 'Business Loan • Drew Park',
-                    checkInTime: '10:40 AM',
-                    waitTime: '1 hr 05 min'
-                }
-            ]
-        },
-        {
             id: 'wt',
             label: 'WT (0)',
             participants: []
@@ -460,7 +445,6 @@ export default class LobbyManagement extends LightningElement {
             { label: 'Personal Banking',  value: 'personal-banking' },
             { label: 'Wealth Management', value: 'wealth-management' },
             { label: 'Insurance',         value: 'insurance' },
-            { label: 'Investment Banking', value: 'investment-banking' },
             { label: 'Notary',            value: 'notary' },
         ];
     }
@@ -512,7 +496,6 @@ export default class LobbyManagement extends LightningElement {
             'personal-banking':  'personal-banking',
             'wealth-management': 'wealth-management',
             'insurance':         'insurance',
-            'investment-banking':'gb-topic-investment',
             'notary':            'notary',
         };
         return map[topicValue] || 'general-banking-queue';
