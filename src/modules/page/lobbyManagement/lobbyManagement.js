@@ -458,22 +458,52 @@ export default class LobbyManagement extends LightningElement {
     }
 
     // ── General Banking composer form state ──
-    @track ciTopic    = 'savings-account';
-    @track ciResource = 'adam-milne';
-    @track ciDesc     = '';
+    @track ciGuestType  = 'existing';
+    @track ciTopic      = 'savings-account';
+    @track ciResource   = 'adam-milne';
+    @track ciDesc       = '';
+    @track ciFirstName  = '';
+    @track ciLastName   = '';
+    @track ciContact    = '';
+    @track ciCompany    = '';
+    @track ciEmail      = '';
 
-    handleCiTopicChange(event)    { this.ciTopic    = event.detail.value; }
-    handleCiResourceChange(event) { this.ciResource = event.detail.value; }
-    handleCiDescChange(event)     { this.ciDesc     = event.target.value; }
+    get ciIsNewParticipant() { return this.ciGuestType === 'new'; }
+    get ciIsExisting()       { return this.ciGuestType === 'existing'; }
+
+    handleCiGuestTypeChange(event) { this.ciGuestType = event.target.value; }
+    handleCiTopicChange(event)     { this.ciTopic     = event.detail.value; }
+    handleCiResourceChange(event)  { this.ciResource  = event.detail.value; }
+    handleCiDescChange(event)      { this.ciDesc      = event.target.value; }
+    handleCiFirstNameChange(event) { this.ciFirstName = event.target.value; }
+    handleCiLastNameChange(event)  { this.ciLastName  = event.target.value; }
+    handleCiContactChange(event)   { this.ciContact   = event.target.value; }
+    handleCiCompanyChange(event)   { this.ciCompany   = event.target.value; }
+    handleCiEmailChange(event)     { this.ciEmail     = event.target.value; }
 
     // ── Investment Banking composer form state ──
-    @track ibCiTopic    = 'savings-account';
-    @track ibCiResource = 'adam-milne';
-    @track ibCiDesc     = '';
+    @track ibCiGuestType  = 'existing';
+    @track ibCiTopic      = 'savings-account';
+    @track ibCiResource   = 'adam-milne';
+    @track ibCiDesc       = '';
+    @track ibCiFirstName  = '';
+    @track ibCiLastName   = '';
+    @track ibCiContact    = '';
+    @track ibCiCompany    = '';
+    @track ibCiEmail      = '';
 
-    handleIbCiTopicChange(event)    { this.ibCiTopic    = event.detail.value; }
-    handleIbCiResourceChange(event) { this.ibCiResource = event.detail.value; }
-    handleIbCiDescChange(event)     { this.ibCiDesc     = event.target.value; }
+    get ibCiIsNewParticipant() { return this.ibCiGuestType === 'new'; }
+    get ibCiIsExisting()       { return this.ibCiGuestType === 'existing'; }
+
+    handleIbCiGuestTypeChange(event) { this.ibCiGuestType = event.target.value; }
+    handleIbCiTopicChange(event)     { this.ibCiTopic     = event.detail.value; }
+    handleIbCiResourceChange(event)  { this.ibCiResource  = event.detail.value; }
+    handleIbCiDescChange(event)      { this.ibCiDesc      = event.target.value; }
+    handleIbCiFirstNameChange(event) { this.ibCiFirstName = event.target.value; }
+    handleIbCiLastNameChange(event)  { this.ibCiLastName  = event.target.value; }
+    handleIbCiContactChange(event)   { this.ibCiContact   = event.target.value; }
+    handleIbCiCompanyChange(event)   { this.ibCiCompany   = event.target.value; }
+    handleIbCiEmailChange(event)     { this.ibCiEmail     = event.target.value; }
 
     // ── Shared work-item counter ──
     _wpCounter = 500;
@@ -522,7 +552,9 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleSubmitCheckinComposer() {
-        const participantName = this.participantSearch.trim() || 'New Participant';
+        const participantName = this.ciIsNewParticipant
+            ? `${this.ciFirstName.trim()} ${this.ciLastName.trim()}`.trim() || 'New Participant'
+            : this.participantSearch.trim() || 'New Participant';
         const resourceLabel   = this._resourceValueToLabel(this.ciResource);
         const topicLabel      = this._topicValueToLabel(this.ciTopic);
         const sectionId       = this._topicValueToSectionId(this.ciTopic);
@@ -556,6 +588,9 @@ export default class LobbyManagement extends LightningElement {
 
         // Reset form
         this.participantSearch = '';
+        this.ciGuestType = 'existing';
+        this.ciFirstName = ''; this.ciLastName = ''; this.ciContact = '';
+        this.ciCompany = ''; this.ciEmail = '';
         this.ciTopic    = 'savings-account';
         this.ciResource = 'adam-milne';
         this.ciDesc     = '';
@@ -571,7 +606,9 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleSubmitCheckinComposerInvestment() {
-        const participantName = this.participantSearchInvestment.trim() || 'New Participant';
+        const participantName = this.ibCiIsNewParticipant
+            ? `${this.ibCiFirstName.trim()} ${this.ibCiLastName.trim()}`.trim() || 'New Participant'
+            : this.participantSearchInvestment.trim() || 'New Participant';
         const resourceLabel   = this._resourceValueToLabel(this.ibCiResource);
         const topicLabel      = this._topicValueToLabel(this.ibCiTopic);
         const checkInTime     = this._nowTime();
@@ -602,6 +639,9 @@ export default class LobbyManagement extends LightningElement {
 
         // Reset form
         this.participantSearchInvestment = '';
+        this.ibCiGuestType = 'existing';
+        this.ibCiFirstName = ''; this.ibCiLastName = ''; this.ibCiContact = '';
+        this.ibCiCompany = ''; this.ibCiEmail = '';
         this.ibCiTopic    = 'savings-account';
         this.ibCiResource = 'adam-milne';
         this.ibCiDesc     = '';

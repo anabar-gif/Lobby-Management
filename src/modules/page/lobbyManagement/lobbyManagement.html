@@ -390,7 +390,7 @@
                                                 <div class="slds-grid slds-gutters_small">
                                                     <div class="slds-col">
                                                         <span class="slds-radio">
-                                                            <input type="radio" id="ci-existing" name="ci-guest-type" value="existing" checked />
+                                                            <input type="radio" id="ci-existing" name="ci-guest-type" value="existing" checked={ciIsExisting} onchange={handleCiGuestTypeChange} />
                                                             <label class="slds-radio__label" for="ci-existing">
                                                                 <span class="slds-radio_faux"></span>
                                                                 <span class="slds-form-element__label">Existing Participant</span>
@@ -399,7 +399,7 @@
                                                     </div>
                                                     <div class="slds-col">
                                                         <span class="slds-radio">
-                                                            <input type="radio" id="ci-new" name="ci-guest-type" value="new" />
+                                                            <input type="radio" id="ci-new" name="ci-guest-type" value="new" onchange={handleCiGuestTypeChange} />
                                                             <label class="slds-radio__label" for="ci-new">
                                                                 <span class="slds-radio_faux"></span>
                                                                 <span class="slds-form-element__label">New Participant</span>
@@ -410,7 +410,33 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <!-- Participant grouped combobox -->
+                                    <!-- New Participant form -->
+                                    <template lwc:if={ciIsNewParticipant}>
+                                        <div class="lobby-checkin-field lobby-newp-grid">
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ci-fname">First Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <input id="ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={ciFirstName} oninput={handleCiFirstNameChange} />
+                                            </div>
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ci-lname">Last Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <input id="ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={ciLastName} oninput={handleCiLastNameChange} />
+                                            </div>
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ci-contact">Contact Number<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <input id="ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={ciContact} oninput={handleCiContactChange} />
+                                            </div>
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ci-company">Company</label>
+                                                <input id="ci-company" type="text" class="lobby-newp-input" placeholder="Enter participant's company" value={ciCompany} oninput={handleCiCompanyChange} />
+                                            </div>
+                                        </div>
+                                        <div class="lobby-checkin-field">
+                                            <label class="lobby-checkin-label" for="ci-email">Email<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                            <input id="ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={ciEmail} oninput={handleCiEmailChange} />
+                                        </div>
+                                    </template>
+                                    <!-- Participant grouped combobox (existing) -->
+                                    <template lwc:else>
                                     <div class="lobby-checkin-field lobby-participant-field">
                                         <label class="lobby-checkin-label">
                                             Participant<abbr class="lobby-checkin-required" title="required">*</abbr>
@@ -480,6 +506,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </template>
                                     <!-- Work Topic -->
                                     <div class="lobby-checkin-field">
                                         <label class="lobby-checkin-label" for="ci-topic">
@@ -681,7 +708,7 @@
                                                 <div class="slds-grid slds-gutters_small">
                                                     <div class="slds-col">
                                                         <span class="slds-radio">
-                                                            <input type="radio" id="ib-ci-existing" name="ib-ci-guest-type" value="existing" checked />
+                                                            <input type="radio" id="ib-ci-existing" name="ib-ci-guest-type" value="existing" checked={ibCiIsExisting} onchange={handleIbCiGuestTypeChange} />
                                                             <label class="slds-radio__label" for="ib-ci-existing">
                                                                 <span class="slds-radio_faux"></span>
                                                                 <span class="slds-form-element__label">Existing Participant</span>
@@ -690,7 +717,7 @@
                                                     </div>
                                                     <div class="slds-col">
                                                         <span class="slds-radio">
-                                                            <input type="radio" id="ib-ci-new" name="ib-ci-guest-type" value="new" />
+                                                            <input type="radio" id="ib-ci-new" name="ib-ci-guest-type" value="new" onchange={handleIbCiGuestTypeChange} />
                                                             <label class="slds-radio__label" for="ib-ci-new">
                                                                 <span class="slds-radio_faux"></span>
                                                                 <span class="slds-form-element__label">New Participant</span>
@@ -701,6 +728,33 @@
                                             </div>
                                         </fieldset>
                                     </div>
+                                    <!-- New Participant form -->
+                                    <template lwc:if={ibCiIsNewParticipant}>
+                                        <div class="lobby-checkin-field lobby-newp-grid">
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ib-ci-fname">First Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <input id="ib-ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={ibCiFirstName} oninput={handleIbCiFirstNameChange} />
+                                            </div>
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ib-ci-lname">Last Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <input id="ib-ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={ibCiLastName} oninput={handleIbCiLastNameChange} />
+                                            </div>
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ib-ci-contact">Contact Number<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <input id="ib-ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={ibCiContact} oninput={handleIbCiContactChange} />
+                                            </div>
+                                            <div class="lobby-newp-col">
+                                                <label class="lobby-checkin-label" for="ib-ci-company">Company</label>
+                                                <input id="ib-ci-company" type="text" class="lobby-newp-input" placeholder="Enter participant's company" value={ibCiCompany} oninput={handleIbCiCompanyChange} />
+                                            </div>
+                                        </div>
+                                        <div class="lobby-checkin-field">
+                                            <label class="lobby-checkin-label" for="ib-ci-email">Email<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                            <input id="ib-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={ibCiEmail} oninput={handleIbCiEmailChange} />
+                                        </div>
+                                    </template>
+                                    <!-- Participant grouped combobox (existing) -->
+                                    <template lwc:else>
                                     <div class="lobby-checkin-field lobby-participant-field">
                                         <label class="lobby-checkin-label">
                                             Participant<abbr class="lobby-checkin-required" title="required">*</abbr>
@@ -770,6 +824,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </template>
                                     <div class="lobby-checkin-field">
                                         <label class="lobby-checkin-label" for="ib-ci-topic">
                                             Work Topic<abbr class="lobby-checkin-required" title="required">*</abbr>

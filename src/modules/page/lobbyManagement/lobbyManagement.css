@@ -518,6 +518,45 @@
     position: relative;
 }
 
+/* ── New Participant 2-column form ── */
+.lobby-newp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.lobby-newp-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.lobby-newp-input {
+    height: 2rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--slds-g-color-border-1, #dddbda);
+    border-radius: var(--slds-g-radius-border-2, 0.25rem);
+    background: var(--slds-g-color-surface-1, #fff);
+    font-size: 0.875rem;
+    color: var(--slds-g-color-on-surface-1, #181818);
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.lobby-newp-input--full {
+    width: 100%;
+}
+
+.lobby-newp-input::placeholder {
+    color: var(--slds-g-color-on-surface-3, #706e6b);
+}
+
+.lobby-newp-input:focus {
+    border-color: var(--slds-g-color-brand-base-50, #0176d3);
+    box-shadow: 0 0 0 1px var(--slds-g-color-brand-base-50, #0176d3);
+}
+
 /* ── Grouped combobox (type selector + search) ── */
 .lobby-grouped-combobox {
     display: flex;
