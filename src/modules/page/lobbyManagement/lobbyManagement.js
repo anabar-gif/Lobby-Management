@@ -684,8 +684,84 @@ export default class LobbyManagement extends LightningElement {
         this.investmentBankingOpenSection = Array.isArray(open) ? open[0] ?? '' : open ?? '';
     }
 
-    handleQueueParticipantMenu() {
-        // Demo: participant row actions
+    // ── Participant row action dropdown ──
+
+    /** Close all open row menus across both topic lists. */
+    _closeAllMenus() {
+        const close = topics => topics.map(t => ({
+            ...t,
+            participants: t.participants.map(p => p.menuOpen ? { ...p, menuOpen: false } : p)
+        }));
+        this.generalBankingTopics    = close(this.generalBankingTopics);
+        this.investmentBankingTopics = close(this.investmentBankingTopics);
+    }
+
+    handleQueueParticipantMenu(event) {
+        const id = event.currentTarget.dataset.id;
+        // Find current state before closing everything
+        const allRows = [
+            ...this.generalBankingTopics.flatMap(t => t.participants),
+            ...this.investmentBankingTopics.flatMap(t => t.participants),
+        ];
+        const target = allRows.find(p => p.id === id);
+        const wasOpen = target?.menuOpen;
+        this._closeAllMenus();
+        if (!wasOpen) {
+            const toggle = topics => topics.map(t => ({
+                ...t,
+                participants: t.participants.map(p => p.id === id ? { ...p, menuOpen: true } : p)
+            }));
+            this.generalBankingTopics    = toggle(this.generalBankingTopics);
+            this.investmentBankingTopics = toggle(this.investmentBankingTopics);
+        }
+    }
+
+    handleParticipantMenuClose() {
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => { this._closeAllMenus(); }, 150);
+    }
+
+    _updateTopics(topics, rowId, updaterFn) {
+        return topics.map(t => {
+            const idx = t.participants.findIndex(p => p.id === rowId);
+            if (idx === -1) return t;
+            const rows = updaterFn([...t.participants], idx);
+            const reNumbered = rows.map((r, i) => ({ ...r, ordinal: `${i + 1}.`, menuOpen: false }));
+            const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
+            return { ...t, participants: reNumbered, label: `${labelBase} (${reNumbered.length})` };
+        });
+    }
+
+    handleParticipantMoveFirst(event) {
+        const id = event.currentTarget.dataset.id;
+        const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [row, ...rows]; };
+        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
+        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
+    }
+
+    handleParticipantMoveLast(event) {
+        const id = event.currentTarget.dataset.id;
+        const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [...rows, row]; };
+        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
+        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
+    }
+
+    handleParticipantNoShow(event) {
+        const id = event.currentTarget.dataset.id;
+        const marker = (rows, idx) => rows.map((r, i) => i === idx ? { ...r, noShow: true, menuOpen: false } : r);
+        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, marker));
+        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, marker));
+    }
+
+    handleParticipantRemoveResource(event) {
+        const id = event.currentTarget.dataset.id;
+        const remover = (rows, idx) => rows.map((r, i) => {
+            if (i !== idx) return r;
+            const topic = r.topic.replace(/\s*•\s*[^•]+$/, '');
+            return { ...r, topic, menuOpen: false };
+        });
+        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, remover));
+        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, remover));
     }
 
     handleCheckin(event) {

@@ -304,13 +304,27 @@
                                                         </div>
                                                     </div>
                                                     <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
-                                                        <lightning-button-icon
-                                                            icon-name="utility:down"
-                                                            variant="border-filled"
-                                                            alternative-text="Participant actions"
-                                                            title="Participant actions"
-                                                            onclick={handleQueueParticipantMenu}>
-                                                        </lightning-button-icon>
+                                                        <div class="lobby-row-menu-wrap">
+                                                            <lightning-button-icon
+                                                                icon-name="utility:down"
+                                                                variant="border-filled"
+                                                                alternative-text="Participant actions"
+                                                                title="Participant actions"
+                                                                data-id={row.id}
+                                                                onblur={handleParticipantMenuClose}
+                                                                onclick={handleQueueParticipantMenu}>
+                                                            </lightning-button-icon>
+                                                            <template lwc:if={row.menuOpen}>
+                                                                <div class="lobby-row-menu__dropdown">
+                                                                    <ul role="menu">
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveFirst}>Move to first in the waitlist</li>
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveLast}>Move to last in the waitlist</li>
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantNoShow}>Mark as No-Show</li>
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantRemoveResource}>Remove Selected Service Resource</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </template>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="lobby-queue-participant__divider" aria-hidden="true"></div>
@@ -585,13 +599,27 @@
                                                         </div>
                                                     </div>
                                                     <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
-                                                        <lightning-button-icon
-                                                            icon-name="utility:down"
-                                                            variant="border-filled"
-                                                            alternative-text="Participant actions"
-                                                            title="Participant actions"
-                                                            onclick={handleQueueParticipantMenu}>
-                                                        </lightning-button-icon>
+                                                        <div class="lobby-row-menu-wrap">
+                                                            <lightning-button-icon
+                                                                icon-name="utility:down"
+                                                                variant="border-filled"
+                                                                alternative-text="Participant actions"
+                                                                title="Participant actions"
+                                                                data-id={row.id}
+                                                                onblur={handleParticipantMenuClose}
+                                                                onclick={handleQueueParticipantMenu}>
+                                                            </lightning-button-icon>
+                                                            <template lwc:if={row.menuOpen}>
+                                                                <div class="lobby-row-menu__dropdown">
+                                                                    <ul role="menu">
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveFirst}>Move to first in the waitlist</li>
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveLast}>Move to last in the waitlist</li>
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantNoShow}>Mark as No-Show</li>
+                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantRemoveResource}>Remove Selected Service Resource</li>
+                                                                    </ul>
+                                                                </div>
+                                                            </template>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="lobby-queue-participant__divider" aria-hidden="true"></div>
