@@ -87,6 +87,7 @@
 
 .lobby-card {
     min-height: 53rem;
+    overflow: visible !important;
 }
 
 .lobby-card__body-scroll {
@@ -278,12 +279,14 @@
 .lobby-card__body-queue {
     padding-top: var(--slds-g-spacing-3, 0.75rem);
     padding-bottom: var(--slds-g-spacing-4, 1rem);
+    overflow: visible !important;
 }
 
 /* Topic headers — navy; set on accordion host so tokens reach section shadow */
 .lobby-card__body-queue .lobby-queue-accordion {
     --slds-c-accordion-heading-color: rgb(3, 45, 96);
     --slds-c-accordion-heading-color-hover: rgb(3, 45, 96);
+    overflow: visible;
 }
 
 /* Left-align with card body / accordion content (no extra inset) */
@@ -303,7 +306,8 @@
     background-color: var(--slds-g-color-surface-1, #ffffff);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
 }
 
 .lobby-queue-participant__head {
