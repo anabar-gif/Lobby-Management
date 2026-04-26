@@ -337,6 +337,80 @@ export default class LobbyManagement extends LightningElement {
         // Demo: hook for reload
     }
 
+    @track showParticipantDropdown = false;
+    @track showParticipantDropdownInvestment = false;
+    @track participantSearch = '';
+    @track participantSearchInvestment = '';
+
+    participantRecentItems = [
+        { id: 'p1', label: 'Ben Richards', meta: '', icon: 'standard:account' },
+        { id: 'p2', label: 'Global Media', meta: '(905) 555-1212', icon: 'standard:account' },
+        { id: 'p3', label: 'Julie Morris', meta: '(212) 555-5555', icon: 'standard:account' },
+        { id: 'p4', label: 'Julia Green', meta: '6528872581', icon: 'standard:account' },
+        { id: 'p5', label: 'Acme', meta: '', icon: 'standard:account' },
+    ];
+
+    get filteredParticipants() {
+        const q = this.participantSearch.toLowerCase();
+        return q
+            ? this.participantRecentItems.filter(p => p.label.toLowerCase().includes(q) || p.meta.includes(q))
+            : this.participantRecentItems;
+    }
+
+    get filteredParticipantsInvestment() {
+        const q = this.participantSearchInvestment.toLowerCase();
+        return q
+            ? this.participantRecentItems.filter(p => p.label.toLowerCase().includes(q) || p.meta.includes(q))
+            : this.participantRecentItems;
+    }
+
+    handleParticipantFocus() {
+        this.showParticipantDropdown = true;
+    }
+
+    handleParticipantInput(event) {
+        this.participantSearch = event.target.value;
+        this.showParticipantDropdown = true;
+    }
+
+    handleParticipantSelect(event) {
+        const id = event.currentTarget.dataset.id;
+        const item = this.participantRecentItems.find(p => p.id === id);
+        if (item) {
+            this.participantSearch = item.label;
+        }
+        this.showParticipantDropdown = false;
+    }
+
+    handleParticipantBlur() {
+        // Delay so click on dropdown item fires first
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => { this.showParticipantDropdown = false; }, 200);
+    }
+
+    handleParticipantFocusInvestment() {
+        this.showParticipantDropdownInvestment = true;
+    }
+
+    handleParticipantInputInvestment(event) {
+        this.participantSearchInvestment = event.target.value;
+        this.showParticipantDropdownInvestment = true;
+    }
+
+    handleParticipantSelectInvestment(event) {
+        const id = event.currentTarget.dataset.id;
+        const item = this.participantRecentItems.find(p => p.id === id);
+        if (item) {
+            this.participantSearchInvestment = item.label;
+        }
+        this.showParticipantDropdownInvestment = false;
+    }
+
+    handleParticipantBlurInvestment() {
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => { this.showParticipantDropdownInvestment = false; }, 200);
+    }
+
     get checkinTopicOptions() {
         return [
             { label: 'Savings Account', value: 'savings-account' },
