@@ -185,12 +185,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
-                                                    <lightning-button
-                                                        label="Checkin"
-                                                        variant="neutral"
-                                                        data-id={appt.id}
-                                                        onclick={handleCheckin}>
-                                                    </lightning-button>
+                                                    <template lwc:if={appt.showCheckin}>
+                                                        <lightning-button
+                                                            label="Checkin"
+                                                            variant="neutral"
+                                                            data-id={appt.id}
+                                                            onclick={handleCheckin}>
+                                                        </lightning-button>
+                                                    </template>
                                                     <lightning-button-icon
                                                         class="lobby-appt__menu-btn"
                                                         icon-name="utility:down"
