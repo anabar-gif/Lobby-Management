@@ -194,7 +194,7 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '1.',
                     workItemId: 'WP-132',
                     linkLabel: 'Julia Green',
-                    topic: 'Savings Account • Auto Assigned',
+                    topic: 'General Banking • Auto Assigned',
                     checkInTime: '09:15 AM',
                     waitTime: '22 min'
                 },
@@ -203,7 +203,7 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '2.',
                     workItemId: 'WP-134',
                     linkLabel: 'James Won',
-                    topic: 'Savings Account • Rachel Adams',
+                    topic: 'General Banking • Rachel Adams',
                     checkInTime: '09:20 AM',
                     waitTime: '01 : 25 mins.'
                 },
@@ -212,7 +212,7 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '3.',
                     workItemId: 'WP-134',
                     linkLabel: 'James Won',
-                    topic: 'Savings Account • Rachel Adams',
+                    topic: 'General Banking • Rachel Adams',
                     checkInTime: '09:20 AM',
                     waitTime: '01 : 25 mins.'
                 }
