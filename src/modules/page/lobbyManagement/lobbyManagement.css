@@ -439,9 +439,7 @@
 
 .lobby-checkin-overlay {
     position: absolute;
-    /* Vertically: start ~15% down from the card top, minus 20px */
     top: calc(15% - 20px);
-    /* Horizontally: centred with 1.5rem inset each side */
     left: 1.5rem;
     right: 1.5rem;
     z-index: 9000;
@@ -451,7 +449,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
     display: flex;
     flex-direction: column;
-    max-height: 83%;
+    height: 83%;
     overflow: hidden;
 }
 
