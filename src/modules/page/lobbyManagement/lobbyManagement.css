@@ -443,7 +443,7 @@
     z-index: 9000;
     background: var(--slds-g-color-surface-1, #ffffff);
     border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #dddbda);
-    border-radius: 0.5rem;
+    border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
     display: flex;
     flex-direction: column;
@@ -456,7 +456,7 @@
     border-bottom: 2px solid var(--slds-g-color-brand-base-50, #0176d3);
     flex-shrink: 0;
     background: var(--slds-g-color-surface-1, #ffffff);
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-radius: 20px 20px 0 0;
 }
 
 .lobby-checkin-overlay__title {
@@ -506,7 +506,7 @@
     justify-content: flex-end;
     flex-shrink: 0;
     background: var(--slds-g-color-surface-1, #ffffff);
-    border-radius: 0 0 0.5rem 0.5rem;
+    border-radius: 0 0 20px 20px;
 }
 
 /* ── Participant combobox dropdown ── */
