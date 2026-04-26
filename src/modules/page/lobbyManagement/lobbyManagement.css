@@ -435,8 +435,8 @@
 
 .lobby-checkin-overlay {
     position: absolute;
-    /* Vertically: start ~15% down from the card top */
-    top: 15%;
+    /* Vertically: start ~15% down from the card top, minus 20px */
+    top: calc(15% - 20px);
     /* Horizontally: centred with 1.5rem inset each side */
     left: 1.5rem;
     right: 1.5rem;
