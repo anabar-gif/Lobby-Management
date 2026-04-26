@@ -419,40 +419,51 @@
     color: var(--slds-g-color-on-surface-1, #181818);
 }
 
-/* ── Check In overlay (fixed to viewport bottom, within General Banking column width) ── */
+/* ── Check In overlay — modal centered over the General Banking card ── */
 .lobby-card {
     position: relative;
 }
 
+/* Scrim covers the General Banking card only */
+.lobby-checkin-overlay-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 8999;
+    border-radius: inherit;
+}
+
 .lobby-checkin-overlay {
-    position: fixed;
-    /* 10px gap above browser bottom edge / footer */
-    bottom: 10px;
-    /* Centre within the General Banking column (middle third), inset 10px each side */
-    left: calc(33.333% + 0.75rem + 10px);
-    width: calc(33.333% - 1.5rem - 20px);
-    min-width: 18rem;
+    position: absolute;
+    /* Vertically: start ~15% down from the card top */
+    top: 15%;
+    /* Horizontally: centred with 1.5rem inset each side */
+    left: 1.5rem;
+    right: 1.5rem;
     z-index: 9000;
     background: var(--slds-g-color-surface-1, #ffffff);
-    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
-    border-radius: var(--slds-g-radius-border-4, 0.5rem);
-    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.18);
+    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #dddbda);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 5rem);
+    max-height: 72%;
     overflow: hidden;
 }
 
 .lobby-checkin-overlay__header {
-    padding: var(--slds-g-spacing-3, 0.75rem) var(--slds-g-spacing-4, 1rem);
+    padding: 0.875rem 1rem;
     border-bottom: 2px solid var(--slds-g-color-brand-base-50, #0176d3);
     flex-shrink: 0;
+    background: var(--slds-g-color-surface-1, #ffffff);
+    border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .lobby-checkin-overlay__title {
-    font-size: var(--slds-g-font-scale-3, 1.25rem);
+    font-size: 1.125rem;
     font-weight: var(--slds-g-font-weight-7, 700);
     color: var(--slds-g-color-brand-base-50, #0176d3);
+    line-height: 1.4;
 }
 
 .lobby-checkin-overlay__close {
@@ -461,13 +472,13 @@
 }
 
 .lobby-checkin-overlay__body {
-    padding: var(--slds-g-spacing-4, 1rem);
+    padding: 1rem;
     overflow-y: auto;
     flex: 1 1 auto;
 }
 
 .lobby-checkin-field {
-    margin-bottom: var(--slds-g-spacing-4, 1rem);
+    margin-bottom: 0.875rem;
 }
 
 .lobby-checkin-field:last-child {
@@ -476,10 +487,10 @@
 
 .lobby-checkin-label {
     display: block;
-    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    font-size: 0.8125rem;
     font-weight: var(--slds-g-font-weight-7, 700);
     color: var(--slds-g-color-on-surface-1, #181818);
-    margin-bottom: var(--slds-g-spacing-1, 0.25rem);
+    margin-bottom: 0.25rem;
 }
 
 .lobby-checkin-required {
@@ -489,11 +500,13 @@
 }
 
 .lobby-checkin-overlay__footer {
-    padding: var(--slds-g-spacing-3, 0.75rem) var(--slds-g-spacing-4, 1rem);
-    border-top: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--slds-g-color-border-1, #e5e5e5);
     display: flex;
     justify-content: flex-end;
     flex-shrink: 0;
+    background: var(--slds-g-color-surface-1, #ffffff);
+    border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .lobby-empty {
