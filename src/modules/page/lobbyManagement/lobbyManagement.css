@@ -439,8 +439,8 @@
 
 .lobby-checkin-overlay {
     position: sticky;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 5vh;
+    transform: none;
     margin: 0 1rem;
     z-index: 9000;
     background: var(--slds-g-color-surface-1, #ffffff);
