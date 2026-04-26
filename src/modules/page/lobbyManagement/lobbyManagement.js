@@ -337,35 +337,62 @@ export default class LobbyManagement extends LightningElement {
         // Demo: hook for reload
     }
 
-    @track showParticipantDropdown = false;
-    @track showParticipantDropdownInvestment = false;
+    // ── Participant grouped combobox ──
     @track participantSearch = '';
     @track participantSearchInvestment = '';
+    @track showParticipantDropdown = false;
+    @track showParticipantDropdownInvestment = false;
+    @track showParticipantTypeDropdown = false;
+    @track showParticipantTypeDropdownInvestment = false;
+    @track selectedParticipantType = 'Account';
+    @track selectedParticipantTypeInvestment = 'Account';
+
+    participantTypeOptions = [
+        { id: 'pt-account', label: 'Account', icon: 'standard:account' },
+        { id: 'pt-contact', label: 'Contact', icon: 'standard:contact' },
+        { id: 'pt-lead',    label: 'Lead',    icon: 'standard:lead' },
+    ];
 
     participantRecentItems = [
-        { id: 'p1', label: 'Ben Richards', meta: '', icon: 'standard:account' },
-        { id: 'p2', label: 'Global Media', meta: '(905) 555-1212', icon: 'standard:account' },
-        { id: 'p3', label: 'Julie Morris', meta: '(212) 555-5555', icon: 'standard:account' },
-        { id: 'p4', label: 'Julia Green', meta: '6528872581', icon: 'standard:account' },
-        { id: 'p5', label: 'Acme', meta: '', icon: 'standard:account' },
+        { id: 'p1', label: 'Ben Richards',  meta: '',              icon: 'standard:account' },
+        { id: 'p2', label: 'Global Media',  meta: '(905) 555-1212', icon: 'standard:account' },
+        { id: 'p3', label: 'Julie Morris',  meta: '(212) 555-5555', icon: 'standard:account' },
+        { id: 'p4', label: 'Julia Green',   meta: '6528872581',     icon: 'standard:account' },
+        { id: 'p5', label: 'Acme',          meta: '',              icon: 'standard:account' },
     ];
 
     get filteredParticipants() {
         const q = this.participantSearch.toLowerCase();
-        return q
-            ? this.participantRecentItems.filter(p => p.label.toLowerCase().includes(q) || p.meta.includes(q))
-            : this.participantRecentItems;
+        return q ? this.participantRecentItems.filter(p => p.label.toLowerCase().includes(q) || p.meta.includes(q)) : this.participantRecentItems;
     }
 
     get filteredParticipantsInvestment() {
         const q = this.participantSearchInvestment.toLowerCase();
-        return q
-            ? this.participantRecentItems.filter(p => p.label.toLowerCase().includes(q) || p.meta.includes(q))
-            : this.participantRecentItems;
+        return q ? this.participantRecentItems.filter(p => p.label.toLowerCase().includes(q) || p.meta.includes(q)) : this.participantRecentItems;
     }
 
+    // Type dropdown — General Banking
+    handleParticipantTypeToggle() {
+        this.showParticipantTypeDropdown = !this.showParticipantTypeDropdown;
+        this.showParticipantDropdown = false;
+    }
+
+    handleParticipantTypeSelect(event) {
+        const id = event.currentTarget.dataset.id;
+        const opt = this.participantTypeOptions.find(o => o.id === id);
+        if (opt) this.selectedParticipantType = opt.label;
+        this.showParticipantTypeDropdown = false;
+    }
+
+    handleParticipantTypeBlur() {
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => { this.showParticipantTypeDropdown = false; }, 200);
+    }
+
+    // Search dropdown — General Banking
     handleParticipantFocus() {
         this.showParticipantDropdown = true;
+        this.showParticipantTypeDropdown = false;
     }
 
     handleParticipantInput(event) {
@@ -376,20 +403,37 @@ export default class LobbyManagement extends LightningElement {
     handleParticipantSelect(event) {
         const id = event.currentTarget.dataset.id;
         const item = this.participantRecentItems.find(p => p.id === id);
-        if (item) {
-            this.participantSearch = item.label;
-        }
+        if (item) this.participantSearch = item.label;
         this.showParticipantDropdown = false;
     }
 
     handleParticipantBlur() {
-        // Delay so click on dropdown item fires first
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         setTimeout(() => { this.showParticipantDropdown = false; }, 200);
     }
 
+    // Type dropdown — Investment Banking
+    handleParticipantTypeToggleInvestment() {
+        this.showParticipantTypeDropdownInvestment = !this.showParticipantTypeDropdownInvestment;
+        this.showParticipantDropdownInvestment = false;
+    }
+
+    handleParticipantTypeSelectInvestment(event) {
+        const id = event.currentTarget.dataset.id;
+        const opt = this.participantTypeOptions.find(o => o.id === id);
+        if (opt) this.selectedParticipantTypeInvestment = opt.label;
+        this.showParticipantTypeDropdownInvestment = false;
+    }
+
+    handleParticipantTypeBlurInvestment() {
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => { this.showParticipantTypeDropdownInvestment = false; }, 200);
+    }
+
+    // Search dropdown — Investment Banking
     handleParticipantFocusInvestment() {
         this.showParticipantDropdownInvestment = true;
+        this.showParticipantTypeDropdownInvestment = false;
     }
 
     handleParticipantInputInvestment(event) {
@@ -400,9 +444,7 @@ export default class LobbyManagement extends LightningElement {
     handleParticipantSelectInvestment(event) {
         const id = event.currentTarget.dataset.id;
         const item = this.participantRecentItems.find(p => p.id === id);
-        if (item) {
-            this.participantSearchInvestment = item.label;
-        }
+        if (item) this.participantSearchInvestment = item.label;
         this.showParticipantDropdownInvestment = false;
     }
 
