@@ -113,7 +113,7 @@ export default class LobbyManagement extends LightningElement {
                     linkLabel: 'Alex Rivera',
                     topic: 'Checking Account • Jamie Lee',
                     checkInTime: '08:45 AM',
-                    waitTime: '12 min'
+                    waitTime: '00 : 12 mins.'
                 },
                 {
                     id: 'gb-pb2',
@@ -122,7 +122,7 @@ export default class LobbyManagement extends LightningElement {
                     linkLabel: 'Sam Patel',
                     topic: 'Savings Account • Jamie Lee',
                     checkInTime: '09:02 AM',
-                    waitTime: '22 min'
+                    waitTime: '00 : 22 mins.'
                 }
             ]
         },
@@ -137,7 +137,7 @@ export default class LobbyManagement extends LightningElement {
                     linkLabel: 'Jordan Chen',
                     topic: 'Portfolio Review • Morgan Blake',
                     checkInTime: '09:15 AM',
-                    waitTime: '35 min'
+                    waitTime: '00 : 35 mins.'
                 },
                 {
                     id: 'gb-wm2',
@@ -146,7 +146,7 @@ export default class LobbyManagement extends LightningElement {
                     linkLabel: 'Taylor Brooks',
                     topic: 'Trust Services • Morgan Blake',
                     checkInTime: '09:28 AM',
-                    waitTime: '48 min'
+                    waitTime: '00 : 48 mins.'
                 }
             ]
         },
@@ -161,7 +161,7 @@ export default class LobbyManagement extends LightningElement {
                     linkLabel: 'Julia Green',
                     topic: 'General Banking • Auto Assigned',
                     checkInTime: '09:15 AM',
-                    waitTime: '22 min'
+                    waitTime: '00 : 22 mins.'
                 },
                 {
                     id: 'gb-gb2',
@@ -197,7 +197,7 @@ export default class LobbyManagement extends LightningElement {
                     linkLabel: 'Lead Participant',
                     topic: 'Investment Planning',
                     checkInTime: '11:13 AM',
-                    waitTime: '4 hr 14 min'
+                    waitTime: '04 : 14 mins.'
                 }
             ]
         }
@@ -532,7 +532,7 @@ export default class LobbyManagement extends LightningElement {
             linkLabel:   participantName,
             topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
             checkInTime,
-            waitTime:    '0 min',
+            waitTime:    '00 : 00 mins.',
         };
 
         // Deep-copy topics, prepend new row into the matching section, re-number ordinals
@@ -585,7 +585,7 @@ export default class LobbyManagement extends LightningElement {
             linkLabel:   participantName,
             topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
             checkInTime,
-            waitTime:    '0 min',
+            waitTime:    '00 : 00 mins.',
         };
 
         const updated = this.investmentBankingTopics.map(t => {
