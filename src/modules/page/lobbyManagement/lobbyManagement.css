@@ -11,26 +11,22 @@
 
 /* ── SLDS 2 Success Toast ── */
 .lobby-toast-region {
-    position: fixed;
-    top: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
-    width: max-content;
-    max-width: calc(100vw - 2rem);
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    animation: lobby-toast-in 0.2s ease-out;
 }
 
 .lobby-toast {
     display: flex;
     align-items: center;
     gap: 0.625rem;
-    padding: 0.75rem 1rem 0.75rem 0.875rem;
+    padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     background-color: #1b7e36;
     color: #ffffff;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
-    animation: lobby-toast-in 0.2s ease-out;
-    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin: 0.5rem 0;
 }
 
 @keyframes lobby-toast-in {
@@ -57,7 +53,7 @@
     border: none;
     cursor: pointer;
     padding: 0;
-    margin-left: 0.5rem;
+    margin-left: auto;
     display: inline-flex;
     align-items: center;
     opacity: 0.85;

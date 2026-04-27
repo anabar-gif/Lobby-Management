@@ -1,28 +1,6 @@
 <template>
     <div class="lobby-root">
 
-        <!-- SLDS 2 success toast -->
-        <template lwc:if={showToast}>
-            <div class="lobby-toast-region" role="status" aria-live="assertive">
-                <div class="lobby-toast" role="alert">
-                    <lightning-icon
-                        class="lobby-toast__icon"
-                        icon-name="utility:success"
-                        variant="inverse"
-                        size="x-small"
-                        alternative-text="success">
-                    </lightning-icon>
-                    <p class="lobby-toast__message">{toastMessage}</p>
-                    <button
-                        class="lobby-toast__close"
-                        title="Close"
-                        onclick={handleToastClose}>
-                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
-                    </button>
-                </div>
-            </div>
-        </template>
-
         <header class="lobby-header slds-p-vertical_small slds-p-horizontal_medium">
             <div class="lobby-header__inner slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-wrap slds-gutters_small">
                 <div class="slds-col slds-size_1-of-1 slds-medium-size_7-of-12">
@@ -82,6 +60,28 @@
                 </div>
             </div>
         </header>
+
+        <!-- Success toast — inline below header -->
+        <template lwc:if={showToast}>
+            <div class="lobby-toast-region" role="status" aria-live="assertive">
+                <div class="lobby-toast" role="alert">
+                    <lightning-icon
+                        class="lobby-toast__icon"
+                        icon-name="utility:success"
+                        variant="inverse"
+                        size="x-small"
+                        alternative-text="success">
+                    </lightning-icon>
+                    <p class="lobby-toast__message">{toastMessage}</p>
+                    <button
+                        class="lobby-toast__close"
+                        title="Close"
+                        onclick={handleToastClose}>
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                    </button>
+                </div>
+            </div>
+        </template>
 
         <div class="lobby-main slds-p-top_medium slds-p-bottom_large slds-p-horizontal_medium">
             <lightning-layout multiple-rows="true" pull-to-boundary="small" class="lobby-layout">
