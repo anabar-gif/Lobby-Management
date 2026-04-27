@@ -377,7 +377,7 @@
                                     <div class="lobby-checkin-field">
                                         <fieldset class="slds-form-element">
                                             <legend class="lobby-checkin-label">
-                                                Account Status<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                                <abbr class="lobby-checkin-required" title="required">*</abbr> Account Status
                                             </legend>
                                             <div class="slds-form-element__control slds-m-top_xx-small">
                                                 <div class="slds-grid slds-gutters_small">
@@ -407,15 +407,15 @@
                                     <template lwc:if={ciIsNewParticipant}>
                                         <div class="lobby-checkin-field lobby-newp-grid">
                                             <div class="lobby-newp-col">
-                                                <label class="lobby-checkin-label" for="ci-fname">First Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <label class="lobby-checkin-label" for="ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
                                                 <input id="ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={ciFirstName} oninput={handleCiFirstNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
-                                                <label class="lobby-checkin-label" for="ci-lname">Last Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <label class="lobby-checkin-label" for="ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
                                                 <input id="ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={ciLastName} oninput={handleCiLastNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
-                                                <label class="lobby-checkin-label" for="ci-contact">Contact Number<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <label class="lobby-checkin-label" for="ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
                                                 <input id="ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={ciContact} oninput={handleCiContactChange} />
                                             </div>
                                             <div class="lobby-newp-col">
@@ -424,7 +424,7 @@
                                             </div>
                                         </div>
                                         <div class="lobby-checkin-field">
-                                            <label class="lobby-checkin-label" for="ci-email">Email<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                            <label class="lobby-checkin-label" for="ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
                                             <input id="ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={ciEmail} oninput={handleCiEmailChange} />
                                         </div>
                                     </template>
@@ -432,7 +432,7 @@
                                     <template lwc:else>
                                     <div class="lobby-checkin-field lobby-participant-field">
                                         <label class="lobby-checkin-label">
-                                            Participant<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Participant
                                         </label>
                                         <div class="lobby-grouped-combobox">
                                             <!-- Type selector -->
@@ -503,7 +503,7 @@
                                     <!-- Work Topic -->
                                     <div class="lobby-checkin-field">
                                         <label class="lobby-checkin-label" for="ci-topic">
-                                            Work Topic<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Work Topic
                                         </label>
                                         <lightning-combobox
                                             id="ci-topic"
@@ -686,7 +686,7 @@
                                     <div class="lobby-checkin-field">
                                         <fieldset class="slds-form-element">
                                             <legend class="lobby-checkin-label">
-                                                Account Status<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                                <abbr class="lobby-checkin-required" title="required">*</abbr> Account Status
                                             </legend>
                                             <div class="slds-form-element__control slds-m-top_xx-small">
                                                 <div class="slds-grid slds-gutters_small">
@@ -716,15 +716,15 @@
                                     <template lwc:if={ibCiIsNewParticipant}>
                                         <div class="lobby-checkin-field lobby-newp-grid">
                                             <div class="lobby-newp-col">
-                                                <label class="lobby-checkin-label" for="ib-ci-fname">First Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <label class="lobby-checkin-label" for="ib-ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
                                                 <input id="ib-ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={ibCiFirstName} oninput={handleIbCiFirstNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
-                                                <label class="lobby-checkin-label" for="ib-ci-lname">Last Name<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <label class="lobby-checkin-label" for="ib-ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
                                                 <input id="ib-ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={ibCiLastName} oninput={handleIbCiLastNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
-                                                <label class="lobby-checkin-label" for="ib-ci-contact">Contact Number<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                                <label class="lobby-checkin-label" for="ib-ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
                                                 <input id="ib-ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={ibCiContact} oninput={handleIbCiContactChange} />
                                             </div>
                                             <div class="lobby-newp-col">
@@ -733,7 +733,7 @@
                                             </div>
                                         </div>
                                         <div class="lobby-checkin-field">
-                                            <label class="lobby-checkin-label" for="ib-ci-email">Email<abbr class="lobby-checkin-required" title="required">*</abbr></label>
+                                            <label class="lobby-checkin-label" for="ib-ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
                                             <input id="ib-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={ibCiEmail} oninput={handleIbCiEmailChange} />
                                         </div>
                                     </template>
@@ -741,7 +741,7 @@
                                     <template lwc:else>
                                     <div class="lobby-checkin-field lobby-participant-field">
                                         <label class="lobby-checkin-label">
-                                            Participant<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Participant
                                         </label>
                                         <div class="lobby-grouped-combobox">
                                             <!-- Type selector -->
@@ -811,7 +811,7 @@
                                     </template>
                                     <div class="lobby-checkin-field">
                                         <label class="lobby-checkin-label" for="ib-ci-topic">
-                                            Work Topic<abbr class="lobby-checkin-required" title="required">*</abbr>
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Work Topic
                                         </label>
                                         <lightning-combobox
                                             id="ib-ci-topic"

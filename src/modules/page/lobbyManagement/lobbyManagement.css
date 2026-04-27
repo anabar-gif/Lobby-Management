@@ -519,7 +519,8 @@
 
 .lobby-checkin-required {
     color: var(--slds-g-color-error-base-50, #c23934);
-    margin-left: 2px;
+    margin-left: 0;
+    margin-right: 2px;
     text-decoration: none;
 }
 
