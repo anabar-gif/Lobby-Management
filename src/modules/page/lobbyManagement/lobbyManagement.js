@@ -768,20 +768,62 @@ export default class LobbyManagement extends LightningElement {
         });
     }
 
-    handleParticipantMoveFirst(event) {
-        const id = event.currentTarget.dataset.id;
-        this._closeActiveMenu();
-        const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [row, ...rows]; };
-        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
-        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
+    // ── Waitlist repositioning confirmation ──
+
+    @track showRepoConfirm   = false;
+    @track repoConfirmMessage = '';
+    _repoPendingId     = null;
+    _repoPendingAction = null; // 'first' | 'last'
+
+    /** Finds which section (General Banking / Investment Banking) a participant belongs to. */
+    _findParticipantSection(id) {
+        if (this.generalBankingTopics.some(t => t.participants.some(p => p.id === id))) {
+            return 'General Banking';
+        }
+        if (this.investmentBankingTopics.some(t => t.participants.some(p => p.id === id))) {
+            return 'Investment Banking';
+        }
+        return 'the';
     }
 
-    handleParticipantMoveLast(event) {
-        const id = event.currentTarget.dataset.id;
+    handleParticipantActionRequest(event) {
+        const id     = event.currentTarget.dataset.id;
+        const action = event.currentTarget.dataset.action; // 'first' | 'last'
         this._closeActiveMenu();
-        const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [...rows, row]; };
-        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
-        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
+        const section = this._findParticipantSection(id);
+        const position = action === 'first' ? 'first' : 'last';
+        this._repoPendingId     = id;
+        this._repoPendingAction = action;
+        this.repoConfirmMessage = `Are you sure you want to move this Participant to ${position} in the ${section} waitlist?`;
+        this.showRepoConfirm    = true;
+    }
+
+    handleRepoConfirmNo() {
+        this.showRepoConfirm    = false;
+        this._repoPendingId     = null;
+        this._repoPendingAction = null;
+    }
+
+    handleRepoConfirmYes() {
+        const id      = this._repoPendingId;
+        const action  = this._repoPendingAction;
+        const section = this._findParticipantSection(id);
+        this.showRepoConfirm    = false;
+        this._repoPendingId     = null;
+        this._repoPendingAction = null;
+
+        if (action === 'first') {
+            const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [row, ...rows]; };
+            this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
+            this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
+        } else {
+            const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [...rows, row]; };
+            this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
+            this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
+        }
+
+        const position = action === 'first' ? 'first' : 'last';
+        this._showToast(`Participant successfully moved to ${position} in the ${section} waitlist.`);
     }
 
     handleParticipantNoShow(event) {
