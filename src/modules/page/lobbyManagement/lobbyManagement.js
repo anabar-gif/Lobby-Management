@@ -265,7 +265,7 @@ export default class LobbyManagement extends LightningElement {
             subtitle: 'Savings Account • Rachel Adams',
             slot: '9:00 am - 9:30 am',
             showWaitAlert: true,
-            waitLabel: 'Customer Wait Time:',
+            waitLabel: 'Wait Time:',
             waitTime: '00 : 10 mins.',
             showCheckin: false,
             checkedIn: true
@@ -832,7 +832,7 @@ export default class LobbyManagement extends LightningElement {
                           checkedIn: true,
                           showCheckin: false,
                           showWaitAlert: true,
-                          waitLabel: 'Customer Wait Time:',
+                          waitLabel: 'Wait Time:',
                           waitTime
                       }
                     : appt
