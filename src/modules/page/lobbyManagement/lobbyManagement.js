@@ -806,10 +806,14 @@ export default class LobbyManagement extends LightningElement {
         if (!id || !action) return;
         const section  = this._findParticipantSection(id);
         const position = action === 'first' ? 'first' : 'last';
-        // Close menu AFTER reading data
+        const allParticipants = [
+            ...this.generalBankingTopics.flatMap(t => t.participants),
+            ...this.investmentBankingTopics.flatMap(t => t.participants),
+        ];
+        const name = allParticipants.find(p => p.id === id)?.linkLabel || 'this Participant';
         this._repoPendingId     = id;
         this._repoPendingAction = action;
-        this.repoConfirmMessage = `Are you sure you want to move this Participant to ${position} in the ${section} waitlist?`;
+        this.repoConfirmMessage = `Are you sure you want to move ${name} to ${position} in the ${section} waitlist?`;
         this.activeMenuRowId    = null; // close menu
         this.showRepoConfirm    = true;
     }
@@ -823,9 +827,14 @@ export default class LobbyManagement extends LightningElement {
     handleRepoConfirmYes() {
         const id       = this._repoPendingId;
         const action   = this._repoPendingAction;
-        // Capture section before the move mutates the topics arrays
+        // Capture section and name before the move mutates the topics arrays
         const section  = this._findParticipantSection(id);
         const position = action === 'first' ? 'first' : 'last';
+        const allParticipants = [
+            ...this.generalBankingTopics.flatMap(t => t.participants),
+            ...this.investmentBankingTopics.flatMap(t => t.participants),
+        ];
+        const participantName = allParticipants.find(p => p.id === id)?.linkLabel || 'Participant';
 
         this.showRepoConfirm    = false;
         this._repoPendingId     = null;
@@ -841,7 +850,7 @@ export default class LobbyManagement extends LightningElement {
             this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
         }
 
-        this._showToast(`Participant successfully moved to ${position} in the ${section} waitlist.`);
+        this._showToast(`${participantName} successfully moved to ${position} in the ${section} waitlist.`);
     }
 
     handleParticipantNoShow(event) {
