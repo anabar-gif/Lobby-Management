@@ -259,6 +259,10 @@
     white-space: nowrap;
 }
 
+.lobby-queue-card__header {
+    padding-left: 0.25rem; /* 16px default - 12px = 4px */
+}
+
 .lobby-queue-title {
     font-size: var(--slds-g-font-scale-2, 1.125rem);
     font-weight: var(--slds-g-font-weight-7, 700);
