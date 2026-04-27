@@ -85,9 +85,6 @@ export default class LobbyManagement extends LightningElement {
     @track showAllTopicsInvestment = false;
     @track showCheckinComposer = false;
     @track showCheckinComposerInvestment = false;
-    @track showToast = false;
-    @track toastMessage = '';
-    _toastTimer = null;
 
     /** Empty = all General Banking accordion sections closed on load (requires multi-section mode on `lightning-accordion`). */
     @track generalBankingOpenSections = ['general-banking-queue'];
@@ -487,18 +484,11 @@ export default class LobbyManagement extends LightningElement {
     _nextWpId() { return `WP-${++this._wpCounter}`; }
 
     _showToast(message) {
-        if (this._toastTimer) clearTimeout(this._toastTimer);
-        this.toastMessage = message;
-        this.showToast = true;
-        this._toastTimer = setTimeout(() => {
-            this.showToast = false;
-            this._toastTimer = null;
-        }, 4000);
-    }
-
-    handleToastClose() {
-        if (this._toastTimer) clearTimeout(this._toastTimer);
-        this.showToast = false;
+        this.dispatchEvent(new CustomEvent('showtoast', {
+            bubbles: true,
+            composed: true,
+            detail: { message }
+        }));
     }
 
     _nowTime() {

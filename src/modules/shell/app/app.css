@@ -7,6 +7,55 @@
     background-color: var(--slds-g-color-surface-2, #f3f3f3);
 }
 
+/* ── Success Toast ── */
+.app-toast {
+    position: fixed;
+    top: 3.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 1rem 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    background-color: #1b7e36;
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    animation: app-toast-in 0.2s ease-out;
+}
+
+@keyframes app-toast-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.app-toast__icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.app-toast__message {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.app-toast__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    opacity: 0.8;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.app-toast__close:hover { opacity: 1; }
+
 /* Global shell stays fixed at top and stacks above the body/panel */
 :host > shell-global-shell {
     flex-shrink: 0;

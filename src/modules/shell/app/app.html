@@ -1,10 +1,21 @@
 <template>
+    <!-- Success toast -->
+    <template lwc:if={showToast}>
+        <div class="app-toast" role="alert" aria-live="assertive">
+            <lightning-icon class="app-toast__icon" icon-name="utility:success" variant="inverse" size="x-small" alternative-text="success"></lightning-icon>
+            <span class="app-toast__message">{toastMessage}</span>
+            <button class="app-toast__close" title="Close" onclick={handleToastClose}>
+                <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+            </button>
+        </div>
+    </template>
+
     <!-- Global shell: top, edge to edge, height by content -->
-    <shell-global-shell current-page={currentNavPage} nav-items={navItems} onnavigate={handleNavNavigate} onpanelselect={handlePanelSelect}>
+    <shell-global-shell current-page={currentNavPage} nav-items={navItems} onnavigate={handleNavNavigate} onpanelselect={handlePanelSelect} onshowtoast={handleShowToast}>
     </shell-global-shell>
 
     <!-- Main content and docked panel -->
-    <main class="app-body">
+    <main class="app-body" onshowtoast={handleShowToast}>
         <lightning-layout vertical-align="stretch" class="utility-full-height">
             <lightning-layout-item flexibility="auto" class="app-body__content-cell">
                 <div class="app-body__scroll-wrapper">

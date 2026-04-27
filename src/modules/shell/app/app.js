@@ -47,6 +47,9 @@ export default class App extends LightningElement {
     @track _darkMode = false;
     @track selectedPanel = 'agentforce_panel';
     @track isPanelOpen = false;
+    @track showToast = false;
+    @track toastMessage = '';
+    _toastTimer = null;
 
     get componentCtor() {
         const name = this.route?.component;
@@ -125,5 +128,21 @@ export default class App extends LightningElement {
 
     handleNavigateBack() {
         history.back();
+    }
+
+    handleShowToast(event) {
+        const message = event.detail?.message;
+        if (!message) return;
+        if (this._toastTimer) clearTimeout(this._toastTimer);
+        this.toastMessage = message;
+        this.showToast = true;
+        this._toastTimer = setTimeout(() => {
+            this.showToast = false;
+        }, 4000);
+    }
+
+    handleToastClose() {
+        if (this._toastTimer) clearTimeout(this._toastTimer);
+        this.showToast = false;
     }
 }
