@@ -212,6 +212,7 @@
 
 .lobby-appt__footer {
     border-top: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
+    border-radius: 0 0 20px 20px;
 }
 
 .lobby-appt__footer-left {
@@ -327,12 +328,14 @@
     border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
     background-color: var(--slds-g-color-surface-1, #ffffff);
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
 }
 
 .lobby-queue-participant__head {
     padding: var(--slds-g-spacing-3, 0.75rem);
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
 }
 
 .lobby-queue-participant__divider {
