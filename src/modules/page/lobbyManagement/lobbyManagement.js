@@ -38,6 +38,19 @@ const ASSET_QUEUE_ICON =
 export default class LobbyManagement extends LightningElement {
     queueIconUrl = ASSET_QUEUE_ICON;
 
+    connectedCallback() {
+        this._handleDocClick = (e) => {
+            if (this.activeMenuRowId && !e.target.closest?.('.lobby-row-menu-wrap') && !e.target.closest?.('.lobby-row-menu__dropdown')) {
+                this.activeMenuRowId = null;
+            }
+        };
+        document.addEventListener('click', this._handleDocClick, true);
+    }
+
+    disconnectedCallback() {
+        document.removeEventListener('click', this._handleDocClick, true);
+    }
+
     @track selectedBranch = 'Market St Branch';
 
     handleBranchSelect(event) {
