@@ -263,14 +263,6 @@ export default class LobbyManagement extends LightningElement {
             showWaitAlert: false,
             showCheckin: true
         },
-        {
-            id: 'b3',
-            customerName: 'Ken Adams',
-            subtitle: 'Savings Account • Rachel Adams',
-            slot: '10:00 am - 10:30 am',
-            showWaitAlert: false,
-            showCheckin: true
-        }
     ];
 
     handleWaitlistFilterChange(event) {
