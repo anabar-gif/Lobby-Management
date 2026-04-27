@@ -745,9 +745,10 @@ export default class LobbyManagement extends LightningElement {
         this.investmentBankingTopics = close(this.investmentBankingTopics);
     }
 
+    @track menuDropdownStyle = '';
+
     handleQueueParticipantMenu(event) {
         const id = event.currentTarget.dataset.id;
-        // Find current state before closing everything
         const allRows = [
             ...this.generalBankingTopics.flatMap(t => t.participants),
             ...this.investmentBankingTopics.flatMap(t => t.participants),
@@ -756,6 +757,10 @@ export default class LobbyManagement extends LightningElement {
         const wasOpen = target?.menuOpen;
         this._closeAllMenus();
         if (!wasOpen) {
+            // Compute fixed position from button rect
+            const btn = event.currentTarget;
+            const rect = btn.getBoundingClientRect();
+            this.menuDropdownStyle = `top:${rect.bottom + 4}px;right:${window.innerWidth - rect.right}px;`;
             const toggle = topics => topics.map(t => ({
                 ...t,
                 participants: t.participants.map(p => p.id === id ? { ...p, menuOpen: true } : p)

@@ -315,7 +315,7 @@
                                                                 onclick={handleQueueParticipantMenu}>
                                                             </lightning-button-icon>
                                                             <template lwc:if={row.menuOpen}>
-                                                                <div class="lobby-row-menu__dropdown">
+                                                                <div class="lobby-row-menu__dropdown" style={menuDropdownStyle}>
                                                                     <ul role="menu">
                                                                         <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveFirst}>Move to first in the waitlist</li>
                                                                         <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveLast}>Move to last in the waitlist</li>
@@ -628,7 +628,7 @@
                                                                 onclick={handleQueueParticipantMenu}>
                                                             </lightning-button-icon>
                                                             <template lwc:if={row.menuOpen}>
-                                                                <div class="lobby-row-menu__dropdown">
+                                                                <div class="lobby-row-menu__dropdown" style={menuDropdownStyle}>
                                                                     <ul role="menu">
                                                                         <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveFirst}>Move to first in the waitlist</li>
                                                                         <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveLast}>Move to last in the waitlist</li>
