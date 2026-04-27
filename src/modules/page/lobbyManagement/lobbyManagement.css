@@ -436,34 +436,34 @@
     color: var(--slds-g-color-on-surface-1, #181818);
 }
 
-/* ── Check In overlay — modal centered over the General Banking card ── */
+/* ── Check In composer — pinned panel above the footer, bottom-right ── */
 .lobby-card {
     position: relative;
 }
 
-/* Scrim covers the General Banking card only */
+/* Scrim: light, non-blocking — only dims page slightly */
 .lobby-checkin-overlay-scrim {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.08);
     z-index: 8999;
+    pointer-events: none;
 }
 
 .lobby-checkin-overlay {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30rem;
+    bottom: 48px; /* sits just above the 40px footer */
+    right: 1.5rem;
+    width: 26rem;
     max-width: calc(100vw - 3rem);
     z-index: 9000;
     background: var(--slds-g-color-surface-1, #ffffff);
-    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #dddbda);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
+    border: 1px solid var(--slds-g-color-border-1, #dddbda);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.18);
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 4rem);
+    max-height: calc(100vh - 48px - 3rem);
     overflow: hidden;
 }
 
@@ -472,7 +472,7 @@
     border-bottom: 2px solid var(--slds-g-color-brand-base-50, #0176d3);
     flex-shrink: 0;
     background: var(--slds-g-color-surface-1, #ffffff);
-    border-radius: 20px 20px 0 0;
+    border-radius: 16px 16px 0 0;
 }
 
 .lobby-checkin-overlay__title {
@@ -522,7 +522,7 @@
     justify-content: flex-end;
     flex-shrink: 0;
     background: var(--slds-g-color-surface-1, #ffffff);
-    border-radius: 0 0 20px 20px;
+    border-radius: 0;
 }
 
 /* ── Participant combobox dropdown ── */
