@@ -268,7 +268,8 @@ export default class LobbyManagement extends LightningElement {
             waitLabel: 'Wait Time:',
             waitTime: '00 : 10 mins.',
             showCheckin: false,
-            checkedIn: true
+            checkedIn: true,
+            checkedInLabel: 'Checked In at 9:00 am'
         },
         {
             id: 'a2',
@@ -825,18 +826,20 @@ export default class LobbyManagement extends LightningElement {
         const waitTime = `00 : ${mm} mins.`;
 
         const updateList = (list) =>
-            list.map((appt) =>
-                appt.id === id
-                    ? {
-                          ...appt,
-                          checkedIn: true,
-                          showCheckin: false,
-                          showWaitAlert: true,
-                          waitLabel: 'Wait Time:',
-                          waitTime
-                      }
-                    : appt
-            );
+            list.map((appt) => {
+                if (appt.id !== id) return appt;
+                // Extract start time from slot string e.g. "9:30 am - 10:00 am" → "9:30 am"
+                const startTime = appt.slot ? appt.slot.split(' - ')[0].trim() : '';
+                return {
+                    ...appt,
+                    checkedIn: true,
+                    checkedInLabel: `Checked In at ${startTime}`,
+                    showCheckin: false,
+                    showWaitAlert: true,
+                    waitLabel: 'Wait Time:',
+                    waitTime
+                };
+            });
 
         this.currentAppointments = updateList(this.currentAppointments);
         this.upcomingAppointments = updateList(this.upcomingAppointments);

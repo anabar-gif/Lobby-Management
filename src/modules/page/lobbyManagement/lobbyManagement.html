@@ -143,7 +143,7 @@
                                                     <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
                                                 </div>
                                                 <template lwc:if={appt.checkedIn}>
-                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">Checked in</span>
+                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">{appt.checkedInLabel}</span>
                                                 </template>
                                                 <template lwc:if={appt.showWaitAlert}>
                                                     <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
@@ -216,7 +216,7 @@
                                                     <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
                                                 </div>
                                                 <template lwc:if={appt.checkedIn}>
-                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">Checked in</span>
+                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">{appt.checkedInLabel}</span>
                                                 </template>
                                                 <template lwc:if={appt.showWaitAlert}>
                                                     <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
