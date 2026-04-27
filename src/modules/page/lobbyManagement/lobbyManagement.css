@@ -206,6 +206,8 @@
 
 .lobby-appt__clock-icon {
     --slds-c-icon-color-foreground-default: var(--slds-g-color-on-surface-3, #706e6b);
+    width: 16px !important;
+    height: 16px !important;
 }
 
 .lobby-appt__footer {
@@ -240,6 +242,8 @@
 .lobby-appt__wait-clock {
     --slds-c-icon-color-foreground-default: var(--slds-g-color-on-surface-3, #706e6b);
     flex-shrink: 0;
+    width: 16px !important;
+    height: 16px !important;
 }
 
 .lobby-appt__wait-label {
