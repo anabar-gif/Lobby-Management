@@ -85,7 +85,8 @@ export default class LobbyManagement extends LightningElement {
     @track showAllTopicsInvestment = false;
     @track showCheckinComposer = false;
     @track showCheckinComposerInvestment = false;
-    @track toast = null;
+    @track showToast = false;
+    @track toastMessage = '';
     _toastTimer = null;
 
     /** Empty = all General Banking accordion sections closed on load (requires multi-section mode on `lightning-accordion`). */
@@ -487,16 +488,17 @@ export default class LobbyManagement extends LightningElement {
 
     _showToast(message) {
         if (this._toastTimer) clearTimeout(this._toastTimer);
-        this.toast = { message };
+        this.toastMessage = message;
+        this.showToast = true;
         this._toastTimer = setTimeout(() => {
-            this.toast = null;
+            this.showToast = false;
             this._toastTimer = null;
         }, 4000);
     }
 
     handleToastClose() {
         if (this._toastTimer) clearTimeout(this._toastTimer);
-        this.toast = null;
+        this.showToast = false;
     }
 
     _nowTime() {

@@ -2,22 +2,19 @@
     <div class="lobby-root">
 
         <!-- SLDS 2 success toast -->
-        <template lwc:if={toast}>
-            <div class="lobby-toast-region" role="status">
-                <div class="slds-notify slds-notify_toast slds-theme_success lobby-toast" role="alert">
-                    <span class="slds-assistive-text">success</span>
+        <template lwc:if={showToast}>
+            <div class="lobby-toast-region" role="status" aria-live="assertive">
+                <div class="lobby-toast" role="alert">
                     <lightning-icon
-                        class="lobby-toast__icon slds-m-right_small"
+                        class="lobby-toast__icon"
                         icon-name="utility:success"
                         variant="inverse"
-                        size="small"
+                        size="x-small"
                         alternative-text="success">
                     </lightning-icon>
-                    <div class="slds-notify__content">
-                        <p class="slds-text-heading_small">{toast.message}</p>
-                    </div>
+                    <p class="lobby-toast__message">{toastMessage}</p>
                     <button
-                        class="slds-button slds-button_icon slds-button_icon-inverse slds-notify__close lobby-toast__close"
+                        class="lobby-toast__close"
                         title="Close"
                         onclick={handleToastClose}>
                         <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
