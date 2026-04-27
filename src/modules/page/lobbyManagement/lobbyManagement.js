@@ -151,41 +151,6 @@ export default class LobbyManagement extends LightningElement {
             ]
         },
         {
-            id: 'insurance',
-            label: 'Insurance (1)',
-            participants: [
-                {
-                    id: 'gb-in1',
-                    ordinal: '1.',
-                    workItemId: 'WP-0301',
-                    linkLabel: 'Riley Nguyen',
-                    topic: 'Life Policy • Casey Frost',
-                    checkInTime: '10:05 AM',
-                    waitTime: '15 min'
-                }
-            ]
-        },
-        {
-            id: 'wt',
-            label: 'WT (0)',
-            participants: []
-        },
-        {
-            id: 'notary',
-            label: 'Notary (1)',
-            participants: [
-                {
-                    id: 'gb-p1',
-                    ordinal: '1.',
-                    workItemId: 'WP-0216',
-                    linkLabel: 'Acme',
-                    topic: 'Notary',
-                    checkInTime: '11:34 AM',
-                    waitTime: '3 hr 54 min'
-                }
-            ]
-        },
-        {
             id: 'general-banking-queue',
             label: 'General Banking (3)',
             participants: [
@@ -446,8 +411,6 @@ export default class LobbyManagement extends LightningElement {
             { label: 'Business Checking', value: 'business-checking' },
             { label: 'Personal Banking',  value: 'personal-banking' },
             { label: 'Wealth Management', value: 'wealth-management' },
-            { label: 'Insurance',         value: 'insurance' },
-            { label: 'Notary',            value: 'notary' },
         ];
     }
 
@@ -537,8 +500,6 @@ export default class LobbyManagement extends LightningElement {
             'business-checking': 'general-banking-queue',
             'personal-banking':  'personal-banking',
             'wealth-management': 'wealth-management',
-            'insurance':         'insurance',
-            'notary':            'notary',
         };
         return map[topicValue] || 'general-banking-queue';
     }
