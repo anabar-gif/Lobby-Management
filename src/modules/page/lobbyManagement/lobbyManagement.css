@@ -329,13 +329,12 @@
     background-color: var(--slds-g-color-surface-1, #ffffff);
     padding: 0;
     overflow: visible;
-    position: relative;
 }
 
 .lobby-queue-participant__head {
     padding: var(--slds-g-spacing-3, 0.75rem);
     border-radius: 20px 20px 0 0;
-    overflow: hidden;
+    background-color: var(--slds-g-color-surface-1, #ffffff);
 }
 
 .lobby-queue-participant__divider {
@@ -763,6 +762,7 @@
 /* ── Participant row action dropdown ── */
 .lobby-row-menu-wrap {
     position: relative;
+    z-index: 100;
 }
 
 .lobby-row-menu__dropdown {
