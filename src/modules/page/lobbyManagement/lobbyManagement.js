@@ -112,6 +112,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-0101',
                     linkLabel: 'Alex Rivera',
                     topic: 'Checking Account • Jamie Lee',
+                    slot: '8:30 am - 9:00 am',
                     checkInTime: '08:45 AM',
                     waitTime: '00 : 12 mins.'
                 },
@@ -121,6 +122,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-0102',
                     linkLabel: 'Sam Patel',
                     topic: 'Savings Account • Jamie Lee',
+                    slot: '9:00 am - 9:30 am',
                     checkInTime: '09:02 AM',
                     waitTime: '00 : 22 mins.'
                 }
@@ -136,6 +138,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-0201',
                     linkLabel: 'Jordan Chen',
                     topic: 'Portfolio Review • Morgan Blake',
+                    slot: '9:00 am - 9:30 am',
                     checkInTime: '09:15 AM',
                     waitTime: '00 : 35 mins.'
                 },
@@ -145,6 +148,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-0202',
                     linkLabel: 'Taylor Brooks',
                     topic: 'Trust Services • Morgan Blake',
+                    slot: '9:00 am - 9:30 am',
                     checkInTime: '09:28 AM',
                     waitTime: '00 : 48 mins.'
                 }
@@ -160,6 +164,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-132',
                     linkLabel: 'Julia Green',
                     topic: 'General Banking • Auto Assigned',
+                    slot: '9:00 am - 9:30 am',
                     checkInTime: '09:15 AM',
                     waitTime: '00 : 22 mins.'
                 },
@@ -169,6 +174,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-134',
                     linkLabel: 'James Won',
                     topic: 'General Banking • Rachel Adams',
+                    slot: '9:00 am - 9:30 am',
                     checkInTime: '09:20 AM',
                     waitTime: '01 : 25 mins.'
                 },
@@ -178,6 +184,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-134',
                     linkLabel: 'James Won',
                     topic: 'General Banking • Rachel Adams',
+                    slot: '9:00 am - 9:30 am',
                     checkInTime: '09:20 AM',
                     waitTime: '01 : 25 mins.'
                 }
@@ -196,6 +203,7 @@ export default class LobbyManagement extends LightningElement {
                     workItemId: 'WP-0215',
                     linkLabel: 'Lead Participant',
                     topic: 'Investment Planning',
+                    slot: '11:00 am - 11:30 am',
                     checkInTime: '11:13 AM',
                     waitTime: '04 : 14 mins.'
                 }
@@ -484,6 +492,20 @@ export default class LobbyManagement extends LightningElement {
         return `${h12}:${mm} ${ampm}`;
     }
 
+    _nowSlot() {
+        const now = new Date();
+        const startMin = now.getMinutes() < 30 ? 0 : 30;
+        const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), startMin);
+        const end = new Date(start.getTime() + 30 * 60 * 1000);
+        const fmt = (d) => {
+            const h = d.getHours();
+            const m = d.getMinutes().toString().padStart(2, '0');
+            const ampm = h >= 12 ? 'pm' : 'am';
+            return `${(h % 12) || 12}:${m} ${ampm}`;
+        };
+        return `${fmt(start)} - ${fmt(end)}`;
+    }
+
     /** Map a topic value from the combobox to the accordion section id it belongs to (General Banking card). */
     _topicValueToSectionId(topicValue) {
         const map = {
@@ -531,6 +553,7 @@ export default class LobbyManagement extends LightningElement {
             workItemId:  this._nextWpId(),
             linkLabel:   participantName,
             topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
+            slot:        this._nowSlot(),
             checkInTime,
             waitTime:    '00 : 00 mins.',
         };
@@ -584,6 +607,7 @@ export default class LobbyManagement extends LightningElement {
             workItemId:  this._nextWpId(),
             linkLabel:   participantName,
             topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
+            slot:        this._nowSlot(),
             checkInTime,
             waitTime:    '00 : 00 mins.',
         };
