@@ -85,6 +85,8 @@ export default class LobbyManagement extends LightningElement {
     @track showAllTopicsInvestment = false;
     @track showCheckinComposer = false;
     @track showCheckinComposerInvestment = false;
+    @track toast = null;
+    _toastTimer = null;
 
     /** Empty = all General Banking accordion sections closed on load (requires multi-section mode on `lightning-accordion`). */
     @track generalBankingOpenSections = ['general-banking-queue'];
@@ -483,6 +485,20 @@ export default class LobbyManagement extends LightningElement {
     _wpCounter = 500;
     _nextWpId() { return `WP-${++this._wpCounter}`; }
 
+    _showToast(message) {
+        if (this._toastTimer) clearTimeout(this._toastTimer);
+        this.toast = { message };
+        this._toastTimer = setTimeout(() => {
+            this.toast = null;
+            this._toastTimer = null;
+        }, 4000);
+    }
+
+    handleToastClose() {
+        if (this._toastTimer) clearTimeout(this._toastTimer);
+        this.toast = null;
+    }
+
     _nowTime() {
         const now = new Date();
         const hh = now.getHours();
@@ -583,6 +599,7 @@ export default class LobbyManagement extends LightningElement {
         this.ciResource = 'adam-milne';
         this.ciDesc     = '';
         this.showCheckinComposer = false;
+        this._showToast(`${participantName} was added to the waitlist General Banking.`);
     }
 
     handleInvestmentQueueCheckIn() {
@@ -635,6 +652,7 @@ export default class LobbyManagement extends LightningElement {
         this.ibCiResource = 'adam-milne';
         this.ibCiDesc     = '';
         this.showCheckinComposerInvestment = false;
+        this._showToast(`${participantName} was added to the waitlist Investment Banking.`);
     }
 
     handleQueueInfo() {

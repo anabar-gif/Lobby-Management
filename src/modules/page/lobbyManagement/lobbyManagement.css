@@ -9,6 +9,61 @@
     width: 100%;
 }
 
+/* ── SLDS 2 Success Toast ── */
+.lobby-toast-region {
+    position: fixed;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    width: auto;
+    max-width: calc(100vw - 3rem);
+    pointer-events: none;
+}
+
+.lobby-toast {
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    min-width: 24rem;
+    max-width: 40rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #2e7d32;
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.24);
+    animation: lobby-toast-in 0.2s ease-out;
+}
+
+@keyframes lobby-toast-in {
+    from { opacity: 0; transform: translateY(-0.5rem); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.lobby-toast__icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.lobby-toast .slds-notify__content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.lobby-toast .slds-text-heading_small {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #ffffff;
+    margin: 0;
+}
+
+.lobby-toast__close {
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+    color: #ffffff;
+    opacity: 0.8;
+}
+
 .lobby-header {
     background-color: var(--slds-g-color-surface-1, #ffffff);
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
