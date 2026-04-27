@@ -787,14 +787,17 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleParticipantActionRequest(event) {
+        // Read dataset values synchronously before any state mutation destroys the element
         const id     = event.currentTarget.dataset.id;
         const action = event.currentTarget.dataset.action; // 'first' | 'last'
-        this._closeActiveMenu();
-        const section = this._findParticipantSection(id);
+        if (!id || !action) return;
+        const section  = this._findParticipantSection(id);
         const position = action === 'first' ? 'first' : 'last';
+        // Close menu AFTER reading data
         this._repoPendingId     = id;
         this._repoPendingAction = action;
         this.repoConfirmMessage = `Are you sure you want to move this Participant to ${position} in the ${section} waitlist?`;
+        this.activeMenuRowId    = null; // close menu
         this.showRepoConfirm    = true;
     }
 
@@ -805,9 +808,12 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleRepoConfirmYes() {
-        const id      = this._repoPendingId;
-        const action  = this._repoPendingAction;
-        const section = this._findParticipantSection(id);
+        const id       = this._repoPendingId;
+        const action   = this._repoPendingAction;
+        // Capture section before the move mutates the topics arrays
+        const section  = this._findParticipantSection(id);
+        const position = action === 'first' ? 'first' : 'last';
+
         this.showRepoConfirm    = false;
         this._repoPendingId     = null;
         this._repoPendingAction = null;
@@ -822,7 +828,6 @@ export default class LobbyManagement extends LightningElement {
             this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
         }
 
-        const position = action === 'first' ? 'first' : 'last';
         this._showToast(`Participant successfully moved to ${position} in the ${section} waitlist.`);
     }
 
