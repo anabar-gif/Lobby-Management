@@ -21,7 +21,7 @@ export const routes = [
   {
     path: '/lobby',
     component: 'page-lobby-management',
-    title: 'Service Territory',
+    title: 'Lobby Management',
     navPage: 'lobby',
     navLabel: 'Lobby Management',
   },
