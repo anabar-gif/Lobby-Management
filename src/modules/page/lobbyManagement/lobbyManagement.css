@@ -296,6 +296,19 @@
     margin-block-end: var(--slds-g-spacing-2, 0.5rem);
 }
 
+.lobby-expand-link {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #0176d3;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lobby-expand-link:hover {
+    text-decoration: underline;
+    color: #014486;
+}
+
 .lobby-queue-accordion {
     display: block;
 }

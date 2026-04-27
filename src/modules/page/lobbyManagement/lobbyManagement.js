@@ -621,7 +621,16 @@ export default class LobbyManagement extends LightningElement {
         // Demo: hook for queue filter or sort
     }
 
+    get expandLabelGeneral() {
+        return this.showAllTopicsGeneral ? 'Collapse all Waitlist' : 'Expand all Waitlist';
+    }
+
+    get expandLabelInvestment() {
+        return this.showAllTopicsInvestment ? 'Collapse all Waitlist' : 'Expand all Waitlist';
+    }
+
     handleShowAllTopicsGeneral(event) {
+        event.preventDefault();
         if (this._generalAccToggleT) {
             clearTimeout(this._generalAccToggleT);
             this._generalAccToggleT = null;
@@ -630,7 +639,7 @@ export default class LobbyManagement extends LightningElement {
             clearTimeout(this._applyShowAllClearT);
             this._applyShowAllClearT = null;
         }
-        const on = typeof event.detail?.checked === 'boolean' ? event.detail.checked : Boolean(event.target?.checked);
+        const on = !this.showAllTopicsGeneral;
         this.showAllTopicsGeneral = on;
         if (on) {
             this._applyingShowAll = true;
@@ -649,7 +658,8 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleShowAllTopicsInvestment(event) {
-        this.showAllTopicsInvestment = event.target.checked;
+        event.preventDefault();
+        this.showAllTopicsInvestment = !this.showAllTopicsInvestment;
     }
 
     handleGeneralAccordionToggle(event) {

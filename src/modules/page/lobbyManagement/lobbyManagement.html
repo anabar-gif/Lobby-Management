@@ -275,12 +275,9 @@
                         </div>
                         <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
                             <div class="lobby-queue-toolbar">
-                                <lightning-input
-                                    type="checkbox"
-                                    label="Expand all topics to view the waitlist details"
-                                    checked={showAllTopicsGeneral}
-                                    onchange={handleShowAllTopicsGeneral}>
-                                </lightning-input>
+                                <a href="javascript:void(0);" class="lobby-expand-link" onclick={handleShowAllTopicsGeneral}>
+                                    {expandLabelGeneral}
+                                </a>
                             </div>
                             <lightning-accordion
                                 class="lobby-queue-accordion"
@@ -598,12 +595,9 @@
                         </div>
                         <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
                             <div class="lobby-queue-toolbar">
-                                <lightning-input
-                                    type="checkbox"
-                                    label="Expand all topics to view the waitlist details"
-                                    checked={showAllTopicsInvestment}
-                                    onchange={handleShowAllTopicsInvestment}>
-                                </lightning-input>
+                                <a href="javascript:void(0);" class="lobby-expand-link" onclick={handleShowAllTopicsInvestment}>
+                                    {expandLabelInvestment}
+                                </a>
                             </div>
                             <lightning-accordion
                                 class="lobby-queue-accordion"
