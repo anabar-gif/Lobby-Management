@@ -305,6 +305,7 @@
     color: #0176d3;
     text-decoration: none;
     cursor: pointer;
+    padding-left: 12px;
 }
 
 .lobby-expand-link:hover {
