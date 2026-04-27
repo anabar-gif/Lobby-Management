@@ -314,16 +314,6 @@
                                                                 onblur={handleParticipantMenuClose}
                                                                 onclick={handleQueueParticipantMenu}>
                                                             </lightning-button-icon>
-                                                            <template lwc:if={row.menuOpen}>
-                                                                <div class="lobby-row-menu__dropdown" style={menuDropdownStyle}>
-                                                                    <ul role="menu">
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveFirst}>Move to first in the waitlist</li>
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveLast}>Move to last in the waitlist</li>
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantNoShow}>Mark as No-Show</li>
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantRemoveResource}>Remove Selected Service Resource</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </template>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -627,16 +617,6 @@
                                                                 onblur={handleParticipantMenuClose}
                                                                 onclick={handleQueueParticipantMenu}>
                                                             </lightning-button-icon>
-                                                            <template lwc:if={row.menuOpen}>
-                                                                <div class="lobby-row-menu__dropdown" style={menuDropdownStyle}>
-                                                                    <ul role="menu">
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveFirst}>Move to first in the waitlist</li>
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantMoveLast}>Move to last in the waitlist</li>
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantNoShow}>Mark as No-Show</li>
-                                                                        <li role="menuitem" class="lobby-row-menu__item" data-id={row.id} onclick={handleParticipantRemoveResource}>Remove Selected Service Resource</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </template>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -860,5 +840,17 @@
                 </lightning-layout-item>
             </lightning-layout>
         </div>
+
+        <!-- Global participant action dropdown portal — rendered last so it always paints on top -->
+        <template lwc:if={activeMenuRowId}>
+            <div class="lobby-row-menu__dropdown" style={menuDropdownStyle}>
+                <ul role="menu">
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantMoveFirst}>Move to first in the waitlist</li>
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantMoveLast}>Move to last in the waitlist</li>
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantNoShow}>Mark as No-Show</li>
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantRemoveResource}>Remove Selected Service Resource</li>
+                </ul>
+            </div>
+        </template>
     </div>
 </template>

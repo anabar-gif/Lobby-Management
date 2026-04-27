@@ -735,44 +735,26 @@ export default class LobbyManagement extends LightningElement {
 
     // ── Participant row action dropdown ──
 
-    /** Close all open row menus across both topic lists. */
-    _closeAllMenus() {
-        const close = topics => topics.map(t => ({
-            ...t,
-            participants: t.participants.map(p => p.menuOpen ? { ...p, menuOpen: false } : p)
-        }));
-        this.generalBankingTopics    = close(this.generalBankingTopics);
-        this.investmentBankingTopics = close(this.investmentBankingTopics);
+    _closeActiveMenu() {
+        this.activeMenuRowId = null;
     }
 
+    @track activeMenuRowId = null;
     @track menuDropdownStyle = '';
 
     handleQueueParticipantMenu(event) {
         const id = event.currentTarget.dataset.id;
-        const allRows = [
-            ...this.generalBankingTopics.flatMap(t => t.participants),
-            ...this.investmentBankingTopics.flatMap(t => t.participants),
-        ];
-        const target = allRows.find(p => p.id === id);
-        const wasOpen = target?.menuOpen;
-        this._closeAllMenus();
-        if (!wasOpen) {
-            // Compute fixed position from button rect
-            const btn = event.currentTarget;
-            const rect = btn.getBoundingClientRect();
-            this.menuDropdownStyle = `top:${rect.bottom + 4}px;right:${window.innerWidth - rect.right}px;`;
-            const toggle = topics => topics.map(t => ({
-                ...t,
-                participants: t.participants.map(p => p.id === id ? { ...p, menuOpen: true } : p)
-            }));
-            this.generalBankingTopics    = toggle(this.generalBankingTopics);
-            this.investmentBankingTopics = toggle(this.investmentBankingTopics);
+        if (this.activeMenuRowId === id) {
+            this.activeMenuRowId = null;
+            return;
         }
+        const rect = event.currentTarget.getBoundingClientRect();
+        this.menuDropdownStyle = `top:${rect.bottom + 4}px;right:${window.innerWidth - rect.right}px;`;
+        this.activeMenuRowId = id;
     }
 
     handleParticipantMenuClose() {
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
-        setTimeout(() => { this._closeAllMenus(); }, 150);
+        this._closeActiveMenu();
     }
 
     _updateTopics(topics, rowId, updaterFn) {
@@ -780,7 +762,7 @@ export default class LobbyManagement extends LightningElement {
             const idx = t.participants.findIndex(p => p.id === rowId);
             if (idx === -1) return t;
             const rows = updaterFn([...t.participants], idx);
-            const reNumbered = rows.map((r, i) => ({ ...r, ordinal: `${i + 1}.`, menuOpen: false }));
+            const reNumbered = rows.map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
             const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
             return { ...t, participants: reNumbered, label: `${labelBase} (${reNumbered.length})` };
         });
@@ -788,6 +770,7 @@ export default class LobbyManagement extends LightningElement {
 
     handleParticipantMoveFirst(event) {
         const id = event.currentTarget.dataset.id;
+        this._closeActiveMenu();
         const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [row, ...rows]; };
         this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
         this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
@@ -795,6 +778,7 @@ export default class LobbyManagement extends LightningElement {
 
     handleParticipantMoveLast(event) {
         const id = event.currentTarget.dataset.id;
+        this._closeActiveMenu();
         const mover = (rows, idx) => { const [row] = rows.splice(idx, 1); return [...rows, row]; };
         this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, mover));
         this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, mover));
@@ -802,17 +786,19 @@ export default class LobbyManagement extends LightningElement {
 
     handleParticipantNoShow(event) {
         const id = event.currentTarget.dataset.id;
-        const marker = (rows, idx) => rows.map((r, i) => i === idx ? { ...r, noShow: true, menuOpen: false } : r);
+        this._closeActiveMenu();
+        const marker = (rows, idx) => rows.map((r, i) => i === idx ? { ...r, noShow: true } : r);
         this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, marker));
         this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, marker));
     }
 
     handleParticipantRemoveResource(event) {
         const id = event.currentTarget.dataset.id;
+        this._closeActiveMenu();
         const remover = (rows, idx) => rows.map((r, i) => {
             if (i !== idx) return r;
             const topic = r.topic.replace(/\s*•\s*[^•]+$/, '');
-            return { ...r, topic, menuOpen: false };
+            return { ...r, topic };
         });
         this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, remover));
         this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, remover));
