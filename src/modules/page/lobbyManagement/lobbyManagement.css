@@ -826,12 +826,12 @@
     color: var(--slds-g-color-on-surface-2, #444);
 }
 
-/* ── Waitlist Repositioning confirmation modal ── */
+/* ── Waitlist Repositioning confirmation modal (SLDS 2) ── */
 
 .lobby-modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.40);
+    background: rgba(0, 0, 0, 0.32);
     z-index: 8000;
 }
 
@@ -842,86 +842,68 @@
     transform: translate(-50%, -50%);
     z-index: 8001;
     background: var(--slds-g-color-surface-1, #fff);
-    border-radius: 0.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
-    width: min(600px, calc(100vw - 2rem));
+    border-radius: var(--slds-g-radius-border-4, 0.75rem);
+    box-shadow: var(--slds-g-shadow-6, 0 8px 32px rgba(0,0,0,0.22));
+    width: min(32rem, calc(100vw - 2rem));
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
 .lobby-modal__header {
-    padding: 1.25rem 1.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-6, 1.5rem);
     border-bottom: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+    background: var(--slds-g-color-surface-1, #fff);
 }
 
 .lobby-modal__title {
-    font-size: 1.0625rem;
+    font-size: var(--slds-g-font-scale-2, 1.125rem);
     font-weight: var(--slds-g-font-weight-7, 700);
     color: var(--slds-g-color-on-surface-1, #181818);
-    text-align: center;
     margin: 0;
-    border: 2px solid var(--slds-g-color-brand-base-50, #0176d3);
-    border-radius: 0.25rem;
-    padding: 0.5rem 1rem;
+    flex: 1;
+    text-align: center;
+}
+
+.lobby-modal__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--slds-g-color-on-surface-2, #444);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border-radius: var(--slds-g-radius-border-2, 0.25rem);
+    flex-shrink: 0;
+}
+
+.lobby-modal__close:hover {
+    background: var(--slds-g-color-surface-2, #f3f3f3);
 }
 
 .lobby-modal__body {
-    padding: 1.75rem 2rem;
-    font-size: 0.9375rem;
+    padding: var(--slds-g-spacing-8, 2rem) var(--slds-g-spacing-6, 1.5rem);
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
     color: var(--slds-g-color-on-surface-1, #181818);
     text-align: center;
     line-height: 1.6;
 }
 
+.lobby-modal__body p {
+    margin: 0;
+}
+
 .lobby-modal__footer {
     display: flex;
     justify-content: flex-end;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
+    align-items: center;
+    gap: var(--slds-g-spacing-3, 0.75rem);
+    padding: var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-6, 1.5rem);
     border-top: 1px solid var(--slds-g-color-border-1, #e5e5e5);
     background: var(--slds-g-color-surface-2, #f3f3f3);
-}
-
-.lobby-modal__btn {
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
-    font-weight: var(--slds-g-font-weight-6, 600);
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: background 0.15s, color 0.15s;
-}
-
-.lobby-modal__btn--secondary {
-    background: var(--slds-g-color-surface-1, #fff);
-    color: var(--slds-g-color-on-surface-1, #181818);
-    border-color: var(--slds-g-color-border-1, #c9c9c9);
-}
-
-.lobby-modal__btn--secondary:hover {
-    background: var(--slds-g-color-surface-2, #f3f3f3);
-}
-
-.lobby-modal__btn--primary {
-    background: var(--slds-g-color-brand-base-50, #0176d3);
-    color: #fff;
-    border-color: var(--slds-g-color-brand-base-50, #0176d3);
-}
-
-.lobby-modal__btn--primary:hover {
-    background: var(--slds-g-color-brand-base-40, #014486);
-}
-
-.lobby-modal__close {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    background: none;
-    border: none;
-    font-size: 1rem;
-    color: var(--slds-g-color-on-surface-2, #444);
-    cursor: pointer;
-    line-height: 1;
-    padding: 0.25rem;
+    border-radius: 0 0 var(--slds-g-radius-border-4, 0.75rem) var(--slds-g-radius-border-4, 0.75rem);
 }

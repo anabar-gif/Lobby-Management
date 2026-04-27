@@ -853,19 +853,21 @@
 
         <!-- Waitlist Repositioning confirmation modal -->
         <template lwc:if={showRepoConfirm}>
-            <div class="lobby-modal-backdrop" onclick={handleRepoConfirmNo}></div>
+            <div class="lobby-modal-backdrop"></div>
             <div class="lobby-modal" role="dialog" aria-modal="true" aria-labelledby="repoModalTitle">
                 <div class="lobby-modal__header">
                     <h2 id="repoModalTitle" class="lobby-modal__title">Waitlist Repositioning</h2>
+                    <button class="lobby-modal__close" onclick={handleRepoConfirmNo} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
                 </div>
                 <div class="lobby-modal__body">
                     <p>{repoConfirmMessage}</p>
                 </div>
                 <div class="lobby-modal__footer">
-                    <button class="lobby-modal__btn lobby-modal__btn--secondary" onclick={handleRepoConfirmNo}>No</button>
-                    <button class="lobby-modal__btn lobby-modal__btn--primary"   onclick={handleRepoConfirmYes}>Yes</button>
+                    <lightning-button label="No"  onclick={handleRepoConfirmNo}></lightning-button>
+                    <lightning-button label="Yes" variant="brand" onclick={handleRepoConfirmYes}></lightning-button>
                 </div>
-                <button class="lobby-modal__close" onclick={handleRepoConfirmNo} aria-label="Close">&#x2715;</button>
             </div>
         </template>
     </div>
