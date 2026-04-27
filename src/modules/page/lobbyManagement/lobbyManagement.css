@@ -490,7 +490,8 @@
 .lobby-checkin-overlay__body {
     padding: 1rem;
     overflow-y: auto;
-    flex: 1 1 auto;
+    flex: none;
+    height: 18rem;
 }
 
 .lobby-checkin-field {
