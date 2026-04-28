@@ -40,9 +40,10 @@ export default class LobbyManagement extends LightningElement {
 
     connectedCallback() {
         this._handleDocClick = (e) => {
-            if (this.activeMenuRowId && !e.target.closest?.('.lobby-row-menu-wrap') && !e.target.closest?.('.lobby-row-menu__dropdown')) {
-                this.activeMenuRowId = null;
-            }
+            const insideRowMenu  = e.target.closest?.('.lobby-row-menu-wrap') || e.target.closest?.('.lobby-row-menu__dropdown');
+            const insideApptMenu = e.target.closest?.('.lobby-appt__menu-btn') || e.target.closest?.('.lobby-row-menu__dropdown');
+            if (this.activeMenuRowId  && !insideRowMenu)  this.activeMenuRowId  = null;
+            if (this.activeApptMenuId && !insideApptMenu) this.activeApptMenuId = null;
         };
         document.addEventListener('click', this._handleDocClick, true);
     }
@@ -921,7 +922,51 @@ export default class LobbyManagement extends LightningElement {
         this.upcomingAppointments = updateList(this.upcomingAppointments);
     }
 
-    handleApptMenu() {
-        // Demo: row actions menu
+    // ── Scheduled Service Appointment row menu ──
+
+    @track activeApptMenuId      = null;
+    @track apptMenuDropdownStyle = '';
+
+    handleApptMenu(event) {
+        const id = event.currentTarget.dataset.id;
+        if (this.activeApptMenuId === id) {
+            this.activeApptMenuId = null;
+            return;
+        }
+        const rect = event.currentTarget.getBoundingClientRect();
+        this.apptMenuDropdownStyle = `top:${rect.bottom + 4}px;right:${window.innerWidth - rect.right}px;`;
+        this.activeApptMenuId = id;
+    }
+
+    _findAppt(id) {
+        return [
+            ...this.currentAppointments,
+            ...this.upcomingAppointments,
+        ].find(a => a.id === id);
+    }
+
+    handleApptReschedule(event) {
+        const id   = event.currentTarget.dataset.id;
+        const appt = this._findAppt(id);
+        this.activeApptMenuId = null;
+        this._showToast(`Service Appointment for ${appt?.customerName || 'customer'} has been rescheduled.`);
+    }
+
+    handleApptReassign(event) {
+        const id   = event.currentTarget.dataset.id;
+        const appt = this._findAppt(id);
+        this.activeApptMenuId = null;
+        this._showToast(`Service Resource for ${appt?.customerName || 'customer'} has been reassigned.`);
+    }
+
+    handleApptNoShow(event) {
+        const id   = event.currentTarget.dataset.id;
+        const appt = this._findAppt(id);
+        const name = appt?.customerName || 'customer';
+        this.activeApptMenuId = null;
+        // Remove from both appointment lists
+        this.currentAppointments  = this.currentAppointments.filter(a => a.id !== id);
+        this.upcomingAppointments = this.upcomingAppointments.filter(a => a.id !== id);
+        this._showToast(`${name}'s Service Appointment was marked as No Show.`);
     }
 }
