@@ -953,7 +953,7 @@
                                 <template for:each={calTimeSlots} for:item="slot">
                                     <li key={slot.id} class={slot.cls} data-id={slot.id} onclick={handleSlotSelect}>
                                         <div class="rsched-slot__icon-cell">
-                                            <lightning-icon icon-name="utility:event" size="small"></lightning-icon>
+                                            <lightning-icon icon-name="utility:event" size="x-small"></lightning-icon>
                                         </div>
                                         <span class="rsched-slot__time">{slot.time}</span>
                                         <span class={slot.badgeCls}>{slot.capacity}</span>

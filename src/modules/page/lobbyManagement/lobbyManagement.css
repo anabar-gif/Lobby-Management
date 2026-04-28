@@ -1254,13 +1254,19 @@
     flex-shrink: 0;
     border-right: 1px solid var(--slds-g-color-border-1, #e5e5e5);
     align-self: stretch;
-    --slds-c-icon-color-foreground: var(--slds-g-color-brand-base-50, #0176d3);
+    --slds-c-icon-color-foreground: var(--slds-g-color-on-surface-2, #6d6d6d);
+}
+
+.rsched-slot__icon-cell lightning-icon {
+    width: 1rem;
+    height: 1rem;
+    --slds-c-icon-sizing-small: 1rem;
 }
 
 .rsched-slot__time {
     flex: 1;
     padding: 0 1rem;
-    font-size: 1.125rem;
+    font-size: 0.8125rem;
     font-weight: var(--slds-g-font-weight-4, 400);
     color: var(--slds-g-color-on-surface-1, #181818);
 }

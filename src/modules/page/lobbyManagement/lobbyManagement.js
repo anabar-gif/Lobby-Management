@@ -999,10 +999,10 @@ export default class LobbyManagement extends LightningElement {
             const dateObj = new Date(year, month, d);
             const dateStr = `${year}-${String(month + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
             const isToday = dateObj.toDateString() === today.toDateString();
-            const isSel   = dateObj.toDateString() === sel.toDateString();
+            const isSel   = sel && dateObj.toDateString() === sel.toDateString() && !isToday;
             const isBlue  = [3, 9, 12, 17, 19, 22, 24, 26, 28].includes(d); // highlighted dates
             let cls = 'rsched-cal__day';
-            if (isSel)   cls += ' rsched-cal__day--selected';
+            if (isSel)        cls += ' rsched-cal__day--selected';
             else if (isToday) cls += ' rsched-cal__day--today';
             else if (isBlue)  cls += ' rsched-cal__day--blue';
             cells.push({ label: d, dateStr, cls, key: `d${d}` });
@@ -1049,7 +1049,7 @@ export default class LobbyManagement extends LightningElement {
         const t = new Date();
         this._calYear  = t.getFullYear();
         this._calMonth = t.getMonth();
-        this._calSelectedDate = t;
+        this._calSelectedDate = null; // just navigate to today, don't select it
     }
     handleCalYearChange(event) {
         this._calYear = parseInt(event.target.value, 10);
