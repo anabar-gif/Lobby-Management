@@ -1034,7 +1034,7 @@
     flex-direction: column;
     gap: 0.875rem;
     overflow-y: auto;
-    background: var(--slds-g-color-surface-2, #f3f3f3);
+    background: var(--slds-g-color-surface-1, #fff);
 }
 
 /* White card wrapping nav + grid + today */
