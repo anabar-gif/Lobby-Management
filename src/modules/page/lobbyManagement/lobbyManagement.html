@@ -854,20 +854,22 @@
         <!-- Waitlist Repositioning confirmation modal -->
         <template lwc:if={showRepoConfirm}>
             <div class="lobby-modal-backdrop"></div>
-            <div class="lobby-modal" role="dialog" aria-modal="true" aria-labelledby="repoModalTitle">
-                <div class="lobby-modal__header">
-                    <h2 id="repoModalTitle" class="lobby-modal__title">Waitlist Repositioning</h2>
-                    <button class="lobby-modal__close" onclick={handleRepoConfirmNo} aria-label="Close">
-                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
-                    </button>
+            <div class="lobby-modal-container">
+                <div class="lobby-modal" role="dialog" aria-modal="true" aria-labelledby="repoModalTitle">
+                    <div class="lobby-modal__header">
+                        <h2 id="repoModalTitle" class="lobby-modal__title">Waitlist Repositioning</h2>
+                    </div>
+                    <div class="lobby-modal__body">
+                        <p>{repoConfirmMessage}</p>
+                    </div>
+                    <div class="lobby-modal__footer">
+                        <lightning-button label="No"  onclick={handleRepoConfirmNo}></lightning-button>
+                        <lightning-button label="Yes" variant="brand" onclick={handleRepoConfirmYes}></lightning-button>
+                    </div>
                 </div>
-                <div class="lobby-modal__body">
-                    <p>{repoConfirmMessage}</p>
-                </div>
-                <div class="lobby-modal__footer">
-                    <lightning-button label="No"  onclick={handleRepoConfirmNo}></lightning-button>
-                    <lightning-button label="Yes" variant="brand" onclick={handleRepoConfirmYes}></lightning-button>
-                </div>
+                <button class="lobby-modal__close" onclick={handleRepoConfirmNo} aria-label="Close">
+                    <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                </button>
             </div>
         </template>
     </div>
