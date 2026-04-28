@@ -1146,11 +1146,11 @@
     font-weight: var(--slds-g-font-weight-6, 600);
 }
 
-/* Today */
+/* Today — no background, electric blue 40 text only */
 .rsched-cal__day--today > span {
-    background: var(--slds-g-color-brand-base-90, #cfe9fe);
+    background: none;
     font-weight: var(--slds-g-font-weight-7, 700);
-    color: var(--slds-g-color-on-surface-1, #181818);
+    color: var(--slds-g-color-brand-base-40, #0b5cab);
 }
 
 /* Selected — solid dark blue, white text */
