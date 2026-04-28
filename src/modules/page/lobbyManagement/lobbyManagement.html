@@ -159,6 +159,9 @@
                                                         <span class="lobby-appt__wait-time slds-m-left_xx-small">{appt.waitTime}</span>
                                                     </div>
                                                 </template>
+                                                <template lwc:if={appt.showCheckin}>
+                                                    <span class="lobby-appt__pending-label slds-m-left_x-small">Check In is pending.</span>
+                                                </template>
                                             </div>
                                         </div>
                                     </div>
@@ -232,6 +235,9 @@
                                                         <span class="lobby-appt__wait-label">{appt.waitLabel}</span>
                                                         <span class="lobby-appt__wait-time slds-m-left_xx-small">{appt.waitTime}</span>
                                                     </div>
+                                                </template>
+                                                <template lwc:if={appt.showCheckin}>
+                                                    <span class="lobby-appt__pending-label slds-m-left_x-small">Check In is pending.</span>
                                                 </template>
                                             </div>
                                         </div>
