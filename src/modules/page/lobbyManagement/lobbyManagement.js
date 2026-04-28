@@ -855,10 +855,18 @@ export default class LobbyManagement extends LightningElement {
 
     handleParticipantNoShow(event) {
         const id = event.currentTarget.dataset.id;
-        this._closeActiveMenu();
-        const marker = (rows, idx) => rows.map((r, i) => i === idx ? { ...r, noShow: true } : r);
-        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, marker));
-        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, marker));
+        // Capture name before any state mutation
+        const allParticipants = [
+            ...this.generalBankingTopics.flatMap(t => t.participants),
+            ...this.investmentBankingTopics.flatMap(t => t.participants),
+        ];
+        const participantName = allParticipants.find(p => p.id === id)?.linkLabel || 'Participant';
+        this.activeMenuRowId = null; // close menu
+        // Remove the card entirely
+        const remover = (rows, idx) => rows.filter((_, i) => i !== idx);
+        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, remover));
+        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, remover));
+        this._showToast(`${participantName}'s Service Appointment was marked as No Show.`);
     }
 
     handleParticipantRemoveResource(event) {
