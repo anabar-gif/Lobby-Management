@@ -871,7 +871,15 @@ export default class LobbyManagement extends LightningElement {
 
     handleParticipantRemoveResource(event) {
         const id = event.currentTarget.dataset.id;
-        this._closeActiveMenu();
+        // Capture resource name before any state mutation
+        const allParticipants = [
+            ...this.generalBankingTopics.flatMap(t => t.participants),
+            ...this.investmentBankingTopics.flatMap(t => t.participants),
+        ];
+        const participant = allParticipants.find(p => p.id === id);
+        const resourceMatch = participant?.topic?.match(/•\s*(.+)$/);
+        const resourceName  = resourceMatch ? resourceMatch[1].trim() : null;
+        this.activeMenuRowId = null; // close menu
         const remover = (rows, idx) => rows.map((r, i) => {
             if (i !== idx) return r;
             const topic = r.topic.replace(/\s*•\s*[^•]+$/, '');
@@ -879,6 +887,9 @@ export default class LobbyManagement extends LightningElement {
         });
         this.generalBankingTopics    = sortLobbyTopicsByCountDesc(this._updateTopics(this.generalBankingTopics, id, remover));
         this.investmentBankingTopics = sortLobbyTopicsByCountDesc(this._updateTopics(this.investmentBankingTopics, id, remover));
+        if (resourceName) {
+            this._showToast(`Preferred service resource ${resourceName} is removed.`);
+        }
     }
 
     handleCheckin(event) {
