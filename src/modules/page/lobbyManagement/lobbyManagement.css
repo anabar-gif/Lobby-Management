@@ -1130,13 +1130,24 @@
     border-radius: 50%;
 }
 
-.rsched-cal__day:hover:not(.rsched-cal__day--other):not(.rsched-cal__day--selected) > span {
+.rsched-cal__day:hover:not(.rsched-cal__day--other):not(.rsched-cal__day--selected):not(.rsched-cal__day--past) > span {
     background: var(--slds-g-color-brand-base-90, #cfe9fe);
 }
 
 .rsched-cal__day--other {
     color: var(--slds-g-color-on-surface-3, #c9c9c9);
     cursor: default;
+}
+
+/* Past dates — very light gray, no circle, not clickable */
+.rsched-cal__day--past {
+    cursor: default;
+}
+
+.rsched-cal__day--past > span {
+    color: #d0d0d0;
+    background: none !important;
+    font-weight: var(--slds-g-font-weight-4, 400);
 }
 
 /* Highlighted dates — light blue circle */
@@ -1146,11 +1157,12 @@
     font-weight: var(--slds-g-font-weight-6, 600);
 }
 
-/* Today — no background, electric blue 40 text only */
+/* Today — outlined blue circle (like image) */
 .rsched-cal__day--today > span {
     background: none;
+    border: 2px solid var(--slds-g-color-brand-base-50, #0176d3);
     font-weight: var(--slds-g-font-weight-7, 700);
-    color: var(--slds-g-color-brand-base-40, #0b5cab);
+    color: var(--slds-g-color-brand-base-50, #0176d3);
 }
 
 /* Selected — solid dark blue, white text */

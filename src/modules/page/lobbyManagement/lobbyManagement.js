@@ -1022,14 +1022,17 @@ export default class LobbyManagement extends LightningElement {
             const d = prevDays - first + 1 + i;
             cells.push({ label: d, dateStr: '', cls: 'rsched-cal__day rsched-cal__day--other', key: `p${i}` });
         }
+        const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
         for (let d = 1; d <= days; d++) {
-            const dateObj = new Date(year, month, d);
-            const dateStr = `${year}-${String(month + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            const isToday = dateObj.toDateString() === today.toDateString();
-            const isSel   = sel && dateObj.toDateString() === sel.toDateString() && !isToday;
-            const isBlue  = [3, 9, 12, 17, 19, 22, 24, 26, 28].includes(d); // highlighted dates
+            const dateObj    = new Date(year, month, d);
+            const isPast     = dateObj < todayMidnight;
+            const isToday    = dateObj.toDateString() === today.toDateString();
+            const isSel      = sel && dateObj.toDateString() === sel.toDateString() && !isToday;
+            const isBlue     = !isPast && !isToday && [3, 9, 12, 17, 19, 22, 24, 26, 28].includes(d);
+            const dateStr    = isPast ? '' : `${year}-${String(month + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
             let cls = 'rsched-cal__day';
-            if (isSel)        cls += ' rsched-cal__day--selected';
+            if (isPast)       cls += ' rsched-cal__day--past';
+            else if (isSel)   cls += ' rsched-cal__day--selected';
             else if (isToday) cls += ' rsched-cal__day--today';
             else if (isBlue)  cls += ' rsched-cal__day--blue';
             cells.push({ label: d, dateStr, cls, key: `d${d}` });
