@@ -945,11 +945,148 @@ export default class LobbyManagement extends LightningElement {
         ].find(a => a.id === id);
     }
 
-    handleApptReschedule(event) {
-        const id   = event.currentTarget.dataset.id;
-        const appt = this._findAppt(id);
-        this.activeApptMenuId = null;
+    // ── Reschedule Appointment modal ──
+
+    @track showRescheduleModal  = false;
+    @track rschedApptId         = null;
+    @track rschedActiveTab      = 'available'; // 'available' | 'resource'
+    @track _calYear             = new Date().getFullYear();
+    @track _calMonth            = new Date().getMonth(); // 0-based
+    @track _calSelectedDate     = new Date(); // today
+    @track _calSelectedSlotId   = null;
+
+    get rschedTabAvailableClass() {
+        return `rsched-sidebar__item${this.rschedActiveTab === 'available' ? ' rsched-sidebar__item--active' : ''}`;
+    }
+    get rschedTabResourceClass() {
+        return `rsched-sidebar__item${this.rschedActiveTab === 'resource' ? ' rsched-sidebar__item--active' : ''}`;
+    }
+
+    get calMonthLabel() {
+        return new Date(this._calYear, this._calMonth, 1)
+            .toLocaleString('en-US', { month: 'long' });
+    }
+
+    get calYearOptions() {
+        const current = new Date().getFullYear();
+        return [current - 1, current, current + 1, current + 2].map(y => ({
+            value: y, label: String(y), selected: y === this._calYear
+        }));
+    }
+
+    get calSelectedDateLabel() {
+        return this._calSelectedDate.toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+    }
+
+    get calWeeks() {
+        const year  = this._calYear;
+        const month = this._calMonth;
+        const first = new Date(year, month, 1).getDay();
+        const days  = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+        const sel   = this._calSelectedDate;
+
+        const cells = [];
+        // Leading blanks from prev month
+        const prevDays = new Date(year, month, 0).getDate();
+        for (let i = 0; i < first; i++) {
+            const d = prevDays - first + 1 + i;
+            cells.push({ label: d, dateStr: '', cls: 'rsched-cal__day rsched-cal__day--other', key: `p${i}` });
+        }
+        for (let d = 1; d <= days; d++) {
+            const dateObj = new Date(year, month, d);
+            const dateStr = `${year}-${String(month + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const isToday = dateObj.toDateString() === today.toDateString();
+            const isSel   = dateObj.toDateString() === sel.toDateString();
+            const isBlue  = [3, 9, 12, 17, 19, 22, 24, 26, 28].includes(d); // highlighted dates
+            let cls = 'rsched-cal__day';
+            if (isSel)   cls += ' rsched-cal__day--selected';
+            else if (isToday) cls += ' rsched-cal__day--today';
+            else if (isBlue)  cls += ' rsched-cal__day--blue';
+            cells.push({ label: d, dateStr, cls, key: `d${d}` });
+        }
+        // Trailing blanks
+        let trail = 1;
+        while (cells.length % 7 !== 0) {
+            cells.push({ label: trail++, dateStr: '', cls: 'rsched-cal__day rsched-cal__day--other', key: `t${trail}` });
+        }
+        const weeks = [];
+        for (let i = 0; i < cells.length; i += 7) {
+            weeks.push({ key: `w${i}`, days: cells.slice(i, i + 7) });
+        }
+        return weeks;
+    }
+
+    get calTimeSlots() {
+        const slots = [
+            { id: 's1', time: '08:00', capacity: '98/100', level: 'green' },
+            { id: 's2', time: '09:00', capacity: '96/100', level: 'green' },
+            { id: 's3', time: '10:00', capacity: '97/100', level: 'orange' },
+            { id: 's4', time: '10:30', capacity: '81/100', level: 'orange' },
+            { id: 's5', time: '11:00', capacity: '50/100', level: 'orange' },
+        ];
+        return slots.map(s => ({
+            ...s,
+            cls: `rsched-slot${this._calSelectedSlotId === s.id ? ' rsched-slot--selected' : ''}`,
+            badgeCls: `rsched-slot__badge rsched-slot__badge--${s.level}`
+        }));
+    }
+
+    handleRschedTabAvailable()    { this.rschedActiveTab = 'available'; }
+    handleRschedTabResource()     { this.rschedActiveTab = 'resource'; }
+
+    handleCalPrev() {
+        if (this._calMonth === 0) { this._calMonth = 11; this._calYear--; }
+        else this._calMonth--;
+    }
+    handleCalNext() {
+        if (this._calMonth === 11) { this._calMonth = 0; this._calYear++; }
+        else this._calMonth++;
+    }
+    handleCalToday() {
+        const t = new Date();
+        this._calYear  = t.getFullYear();
+        this._calMonth = t.getMonth();
+        this._calSelectedDate = t;
+    }
+    handleCalYearChange(event) {
+        this._calYear = parseInt(event.target.value, 10);
+    }
+    handleCalDayClick(event) {
+        const dateStr = event.currentTarget.dataset.date;
+        if (!dateStr) return;
+        const [y, m, d] = dateStr.split('-').map(Number);
+        this._calSelectedDate  = new Date(y, m - 1, d);
+        this._calSelectedSlotId = null;
+    }
+    handleSlotSelect(event) {
+        this._calSelectedSlotId = event.currentTarget.dataset.id;
+    }
+
+    handleRescheduleClose() {
+        this.showRescheduleModal = false;
+        this.rschedApptId       = null;
+        this._calSelectedSlotId = null;
+    }
+
+    handleRescheduleConfirm() {
+        const appt = this._findAppt(this.rschedApptId);
+        this.showRescheduleModal = false;
         this._showToast(`Service Appointment for ${appt?.customerName || 'customer'} has been rescheduled.`);
+    }
+
+    handleApptReschedule(event) {
+        const id = event.currentTarget.dataset.id;
+        this.activeApptMenuId = null;
+        this.rschedApptId     = id;
+        const t = new Date();
+        this._calYear         = t.getFullYear();
+        this._calMonth        = t.getMonth();
+        this._calSelectedDate = t;
+        this._calSelectedSlotId = null;
+        this.showRescheduleModal = true;
     }
 
     handleApptReassign(event) {

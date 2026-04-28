@@ -922,3 +922,324 @@
 .lobby-modal__close:hover {
     background: var(--slds-g-color-surface-2, #f3f3f3);
 }
+
+/* ── Reschedule Appointment modal ── */
+
+.rsched-modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 8001;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    width: min(860px, calc(100vw - 2rem));
+}
+
+.rsched-close {
+    order: -1;
+    align-self: flex-end;
+}
+
+.rsched-modal {
+    width: 100%;
+    background: var(--slds-g-color-surface-1, #fff);
+    border-radius: var(--slds-g-radius-border-4, 0.75rem);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: calc(100vh - 6rem);
+}
+
+.rsched-modal__header {
+    padding: 1.25rem 1.75rem;
+    border-bottom: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+    text-align: center;
+}
+
+.rsched-modal__title {
+    font-size: var(--slds-g-font-scale-1, 1rem);
+    font-weight: var(--slds-g-font-weight-4, 400);
+    color: var(--slds-g-color-on-surface-1, #181818);
+    margin: 0;
+}
+
+.rsched-modal__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* Sidebar */
+.rsched-sidebar {
+    width: 13rem;
+    flex-shrink: 0;
+    background: var(--slds-g-color-surface-2, #f3f3f3);
+    padding: 1.25rem 0;
+    border-right: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+}
+
+.rsched-sidebar__heading {
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-1, #181818);
+    padding: 0 1rem 0.75rem;
+    margin: 0;
+}
+
+.rsched-sidebar__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.rsched-sidebar__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    color: var(--slds-g-color-on-surface-1, #181818);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.rsched-sidebar__item--active {
+    border-left-color: var(--slds-g-color-brand-base-50, #0176d3);
+    background: var(--slds-g-color-surface-1, #fff);
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+    font-weight: var(--slds-g-font-weight-6, 600);
+}
+
+/* Calendar panel */
+.rsched-cal-panel {
+    flex: 1;
+    padding: 1.25rem 1.5rem;
+    border-right: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto;
+}
+
+.rsched-cal__nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rsched-cal__arrow {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--slds-g-color-on-surface-1, #181818);
+    line-height: 1;
+    padding: 0 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.rsched-cal__arrow:hover {
+    background: var(--slds-g-color-surface-2, #f3f3f3);
+}
+
+.rsched-cal__month {
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    font-weight: var(--slds-g-font-weight-6, 600);
+    flex: 1;
+    text-align: center;
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.rsched-cal__year-wrap {
+    position: relative;
+}
+
+.rsched-cal__year-select {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--slds-g-color-border-1, #c9c9c9);
+    border-radius: 0.25rem;
+    padding: 0.25rem 1.5rem 0.25rem 0.5rem;
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    background: var(--slds-g-color-surface-1, #fff) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23444'/%3E%3C/svg%3E") no-repeat right 0.4rem center;
+    cursor: pointer;
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.rsched-cal__grid {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.rsched-cal__grid th {
+    font-size: 0.75rem;
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-2, #6d6d6d);
+    text-align: center;
+    padding: 0.25rem 0;
+}
+
+.rsched-cal__day {
+    text-align: center;
+    padding: 0.4rem 0;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    border-radius: 50%;
+    color: var(--slds-g-color-on-surface-1, #181818);
+    user-select: none;
+}
+
+.rsched-cal__day:hover:not(.rsched-cal__day--other):not(.rsched-cal__day--selected) {
+    background: var(--slds-g-color-surface-2, #f3f3f3);
+    border-radius: 50%;
+}
+
+.rsched-cal__day--other {
+    color: var(--slds-g-color-on-surface-3, #c9c9c9);
+    cursor: default;
+}
+
+.rsched-cal__day--blue {
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+    font-weight: var(--slds-g-font-weight-6, 600);
+}
+
+.rsched-cal__day--today {
+    background: var(--slds-g-color-brand-base-90, #cfe9fe);
+    border-radius: 50%;
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-brand-base-30, #014486);
+}
+
+.rsched-cal__day--selected {
+    background: var(--slds-g-color-brand-base-50, #0176d3);
+    border-radius: 50%;
+    color: #fff;
+    font-weight: var(--slds-g-font-weight-7, 700);
+}
+
+.rsched-cal__today-wrap {
+    text-align: center;
+}
+
+.rsched-cal__today-btn {
+    background: none;
+    border: none;
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+    font-size: 0.875rem;
+    cursor: pointer;
+    font-weight: var(--slds-g-font-weight-6, 600);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.rsched-cal__today-btn:hover {
+    background: var(--slds-g-color-brand-base-95, #eaf4ff);
+}
+
+.rsched-info-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    background: var(--slds-g-color-brand-base-95, #eaf4ff);
+    border-radius: 0.375rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.75rem;
+    color: var(--slds-g-color-brand-base-20, #032d60);
+    line-height: 1.4;
+}
+
+/* Slots panel */
+.rsched-slots-panel {
+    width: 14rem;
+    flex-shrink: 0;
+    padding: 1.25rem 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rsched-slots__date-label {
+    font-size: 0.75rem;
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-2, #6d6d6d);
+    margin: 0 0 0.5rem;
+    text-transform: capitalize;
+}
+
+.rsched-slots__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rsched-slot {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    background: var(--slds-g-color-surface-1, #fff);
+    transition: border-color 0.12s;
+}
+
+.rsched-slot:hover {
+    border-color: var(--slds-g-color-brand-base-50, #0176d3);
+}
+
+.rsched-slot--selected {
+    border-color: var(--slds-g-color-brand-base-50, #0176d3);
+    background: var(--slds-g-color-brand-base-95, #eaf4ff);
+}
+
+.rsched-slot__time {
+    flex: 1;
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-1, #181818);
+}
+
+.rsched-slot__badge {
+    font-size: 0.6875rem;
+    font-weight: var(--slds-g-font-weight-6, 600);
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.75rem;
+    white-space: nowrap;
+}
+
+.rsched-slot__badge--green {
+    background: #d4f5e9;
+    color: #1a5c52;
+}
+
+.rsched-slot__badge--orange {
+    background: #fff0d4;
+    color: #7a4a00;
+}
+
+/* Footer */
+.rsched-modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.75rem;
+    border-top: 1px solid var(--slds-g-color-border-1, #e5e5e5);
+    background: var(--slds-g-color-surface-1, #fff);
+}
+
+.rsched-footer__right {
+    display: flex;
+    gap: 0.75rem;
+}

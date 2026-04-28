@@ -870,6 +870,102 @@
             </div>
         </template>
 
+        <!-- Reschedule Appointment modal -->
+        <template lwc:if={showRescheduleModal}>
+            <div class="lobby-modal-backdrop"></div>
+            <div class="rsched-modal-container">
+                <button class="lobby-modal__close rsched-close" onclick={handleRescheduleClose} aria-label="Close">
+                    <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                </button>
+                <div class="rsched-modal" role="dialog" aria-modal="true" aria-labelledby="rschedTitle">
+                    <div class="rsched-modal__header">
+                        <h2 id="rschedTitle" class="rsched-modal__title">Schedule Appointment</h2>
+                    </div>
+                    <div class="rsched-modal__body">
+                        <!-- Left sidebar -->
+                        <div class="rsched-sidebar">
+                            <p class="rsched-sidebar__heading">Select Slots or Resources</p>
+                            <ul class="rsched-sidebar__nav">
+                                <li class={rschedTabAvailableClass} onclick={handleRschedTabAvailable}>
+                                    <lightning-icon icon-name="utility:date_time" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                    By Available Slots
+                                </li>
+                                <li class={rschedTabResourceClass} onclick={handleRschedTabResource}>
+                                    <lightning-icon icon-name="utility:people" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                    By Required Resources
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Middle calendar panel -->
+                        <div class="rsched-cal-panel">
+                            <div class="rsched-cal__nav">
+                                <button class="rsched-cal__arrow" onclick={handleCalPrev} aria-label="Previous month">&#8249;</button>
+                                <span class="rsched-cal__month">{calMonthLabel}</span>
+                                <button class="rsched-cal__arrow" onclick={handleCalNext} aria-label="Next month">&#8250;</button>
+                                <div class="rsched-cal__year-wrap">
+                                    <select class="rsched-cal__year-select" onchange={handleCalYearChange}>
+                                        <template for:each={calYearOptions} for:item="yr">
+                                            <option key={yr.value} value={yr.value} selected={yr.selected}>{yr.label}</option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            <table class="rsched-cal__grid" aria-label="Calendar">
+                                <thead>
+                                    <tr>
+                                        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={calWeeks} for:item="week">
+                                        <tr key={week.key}>
+                                            <template for:each={week.days} for:item="day">
+                                                <td key={day.key}
+                                                    class={day.cls}
+                                                    data-date={day.dateStr}
+                                                    onclick={handleCalDayClick}>
+                                                    {day.label}
+                                                </td>
+                                            </template>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                            <div class="rsched-cal__today-wrap">
+                                <button class="rsched-cal__today-btn" onclick={handleCalToday}>Today</button>
+                            </div>
+                            <div class="rsched-info-banner">
+                                <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                <span>Service resource will be assigned based on availability for the preferred slot.</span>
+                            </div>
+                        </div>
+
+                        <!-- Right slots panel -->
+                        <div class="rsched-slots-panel">
+                            <p class="rsched-slots__date-label">{calSelectedDateLabel}</p>
+                            <ul class="rsched-slots__list">
+                                <template for:each={calTimeSlots} for:item="slot">
+                                    <li key={slot.id} class={slot.cls} data-id={slot.id} onclick={handleSlotSelect}>
+                                        <lightning-icon icon-name="utility:event" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                        <span class="rsched-slot__time">{slot.time}</span>
+                                        <span class={slot.badgeCls}>{slot.capacity}</span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="rsched-modal__footer">
+                        <lightning-button label="Cancel" onclick={handleRescheduleClose}></lightning-button>
+                        <div class="rsched-footer__right">
+                            <lightning-button label="Previous" onclick={handleRescheduleClose}></lightning-button>
+                            <lightning-button label="Reschedule" variant="brand" onclick={handleRescheduleConfirm}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
         <!-- Waitlist Repositioning confirmation modal -->
         <template lwc:if={showRepoConfirm}>
             <div class="lobby-modal-backdrop"></div>
