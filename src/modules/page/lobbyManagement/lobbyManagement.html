@@ -898,10 +898,15 @@
 
                         <!-- Middle calendar panel -->
                         <div class="rsched-cal-panel">
+                            <div class="rsched-cal__card">
                             <div class="rsched-cal__nav">
-                                <button class="rsched-cal__arrow" onclick={handleCalPrev} aria-label="Previous month">&#8249;</button>
+                                <button class="rsched-cal__arrow" onclick={handleCalPrev} aria-label="Previous month">
+                                    <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                                </button>
                                 <span class="rsched-cal__month">{calMonthLabel}</span>
-                                <button class="rsched-cal__arrow" onclick={handleCalNext} aria-label="Next month">&#8250;</button>
+                                <button class="rsched-cal__arrow" onclick={handleCalNext} aria-label="Next month">
+                                    <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+                                </button>
                                 <div class="rsched-cal__year-wrap">
                                     <select class="rsched-cal__year-select" onchange={handleCalYearChange}>
                                         <template for:each={calYearOptions} for:item="yr">
@@ -934,8 +939,9 @@
                             <div class="rsched-cal__today-wrap">
                                 <button class="rsched-cal__today-btn" onclick={handleCalToday}>Today</button>
                             </div>
+                            </div><!-- end rsched-cal__card -->
                             <div class="rsched-info-banner">
-                                <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                                <lightning-icon icon-name="utility:info_alt" size="small"></lightning-icon>
                                 <span>Service resource will be assigned based on availability for the preferred slot.</span>
                             </div>
                         </div>
