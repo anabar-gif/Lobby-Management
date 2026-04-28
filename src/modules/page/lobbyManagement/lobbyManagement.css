@@ -984,16 +984,8 @@
     width: 14rem;
     flex-shrink: 0;
     background: var(--slds-g-color-surface-2, #f3f3f3);
-    padding: 1.5rem 0 1.5rem;
+    padding: 0;
     border-right: 1px solid var(--slds-g-color-border-1, #e5e5e5);
-}
-
-.rsched-sidebar__heading {
-    font-size: var(--slds-g-font-scale-1, 0.9375rem);
-    font-weight: var(--slds-g-font-weight-7, 700);
-    color: var(--slds-g-color-on-surface-1, #181818);
-    padding: 0 1.25rem 1rem;
-    margin: 0;
 }
 
 .rsched-sidebar__nav {
@@ -1005,24 +997,32 @@
 .rsched-sidebar__item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.25rem;
-    font-size: 0.8125rem;
-    color: var(--slds-g-color-on-surface-2, #6d6d6d);
+    gap: 0.625rem;
+    padding: 0.875rem 1.125rem;
+    font-size: 0.875rem;
+    font-weight: var(--slds-g-font-weight-4, 400);
+    color: var(--slds-g-color-on-surface-1, #181818);
     cursor: pointer;
     border-left: 3px solid transparent;
     transition: background 0.1s;
+    line-height: 1.4;
 }
 
 .rsched-sidebar__item--active {
     border-left-color: var(--slds-g-color-brand-base-50, #0176d3);
     background: var(--slds-g-color-surface-1, #fff);
-    color: var(--slds-g-color-brand-base-50, #0176d3);
-    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-1, #181818);
+    font-weight: var(--slds-g-font-weight-7, 700);
 }
 
 .rsched-sidebar__item:hover:not(.rsched-sidebar__item--active) {
-    background: rgba(0,0,0,0.04);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* Force icon color blue on both active and inactive items */
+.rsched-sidebar__item lightning-icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground: var(--slds-g-color-brand-base-50, #0176d3);
 }
 
 /* Calendar panel */

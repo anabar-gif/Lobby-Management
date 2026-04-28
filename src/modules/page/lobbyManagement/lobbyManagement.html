@@ -884,15 +884,14 @@
                     <div class="rsched-modal__body">
                         <!-- Left sidebar -->
                         <div class="rsched-sidebar">
-                            <p class="rsched-sidebar__heading">Select Slots or Resources</p>
                             <ul class="rsched-sidebar__nav">
                                 <li class={rschedTabAvailableClass} onclick={handleRschedTabAvailable}>
-                                    <lightning-icon icon-name="utility:date_time" size="x-small" class="slds-m-right_x-small"></lightning-icon>
-                                    By Available Slots
+                                    <lightning-icon icon-name="utility:date_time" size="x-small"></lightning-icon>
+                                    <span>By Available Slots</span>
                                 </li>
                                 <li class={rschedTabResourceClass} onclick={handleRschedTabResource}>
-                                    <lightning-icon icon-name="utility:people" size="x-small" class="slds-m-right_x-small"></lightning-icon>
-                                    By Required Resources
+                                    <lightning-icon icon-name="utility:people" size="x-small"></lightning-icon>
+                                    <span>By Required Resources</span>
                                 </li>
                             </ul>
                         </div>
