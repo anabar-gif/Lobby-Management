@@ -1020,7 +1020,7 @@ export default class LobbyManagement extends LightningElement {
         const prevDays = new Date(year, month, 0).getDate();
         for (let i = 0; i < first; i++) {
             const d = prevDays - first + 1 + i;
-            cells.push({ label: d, dateStr: '', cls: 'rsched-cal__day rsched-cal__day--other', key: `p${i}` });
+            cells.push({ label: d, dateStr: '', cls: 'rsched-cal__day rsched-cal__day--other rsched-cal__day--past', key: `p${i}` });
         }
         const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
         for (let d = 1; d <= days; d++) {
