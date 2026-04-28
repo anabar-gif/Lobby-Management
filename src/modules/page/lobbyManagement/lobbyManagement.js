@@ -84,7 +84,34 @@ export default class LobbyManagement extends LightningElement {
         return `${this.upcomingSectionTime} · ${n} ${word}`;
     }
 
-    metaLineSecondary = 'Filtered by All';
+    get metaLineSecondary() {
+        const allAppts = [...(this.currentAppointments ?? []), ...(this.upcomingAppointments ?? [])];
+        let totalMins = 0;
+        allAppts.forEach(a => {
+            if (!a.slot) return;
+            // Parse "9:00 am - 9:30 am" → start and end in minutes from midnight
+            const parts = a.slot.split('-').map(s => s.trim());
+            if (parts.length !== 2) return;
+            const toMins = str => {
+                const m = str.match(/(\d+):(\d+)\s*(am|pm)/i);
+                if (!m) return 0;
+                let h = parseInt(m[1], 10);
+                const min = parseInt(m[2], 10);
+                const period = m[3].toLowerCase();
+                if (period === 'pm' && h !== 12) h += 12;
+                if (period === 'am' && h === 12) h = 0;
+                return h * 60 + min;
+            };
+            const diff = toMins(parts[1]) - toMins(parts[0]);
+            if (diff > 0) totalMins += diff;
+        });
+        const hrs  = Math.floor(totalMins / 60);
+        const mins = totalMins % 60;
+        const label = hrs > 0
+            ? (mins > 0 ? `${hrs} hr ${mins} min` : `${hrs} hr`)
+            : `${mins} min`;
+        return `Total Appointment Duration: ${label}`;
+    }
 
     get metaLinePrimary() {
         const n = (this.currentAppointments?.length ?? 0) + (this.upcomingAppointments?.length ?? 0);
