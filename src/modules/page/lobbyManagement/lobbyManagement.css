@@ -1113,16 +1113,25 @@
 
 .rsched-cal__day {
     text-align: center;
-    padding: 0.35rem 0;
+    padding: 0.3rem 0;
     font-size: 0.875rem;
     cursor: pointer;
     color: var(--slds-g-color-on-surface-1, #181818);
     user-select: none;
 }
 
-.rsched-cal__day:hover:not(.rsched-cal__day--other):not(.rsched-cal__day--selected) {
-    background: var(--slds-g-color-brand-base-90, #cfe9fe);
+/* Use an inline-flex circle on the number, not the whole cell */
+.rsched-cal__day > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
+}
+
+.rsched-cal__day:hover:not(.rsched-cal__day--other):not(.rsched-cal__day--selected) > span {
+    background: var(--slds-g-color-brand-base-90, #cfe9fe);
 }
 
 .rsched-cal__day--other {
@@ -1130,27 +1139,24 @@
     cursor: default;
 }
 
-/* Highlighted dates — light blue circle background */
-.rsched-cal__day--blue {
+/* Highlighted dates — light blue circle */
+.rsched-cal__day--blue > span {
     background: var(--slds-g-color-brand-base-90, #cfe9fe);
-    border-radius: 50%;
     color: var(--slds-g-color-on-surface-1, #181818);
     font-weight: var(--slds-g-font-weight-6, 600);
 }
 
-/* Today — same as highlighted (per image today=24 is selected) */
-.rsched-cal__day--today {
+/* Today */
+.rsched-cal__day--today > span {
     background: var(--slds-g-color-brand-base-90, #cfe9fe);
-    border-radius: 50%;
     font-weight: var(--slds-g-font-weight-7, 700);
     color: var(--slds-g-color-on-surface-1, #181818);
 }
 
-/* Selected — solid dark blue filled circle, white text */
-.rsched-cal__day--selected {
+/* Selected — solid dark blue, white text */
+.rsched-cal__day--selected > span {
     background: var(--slds-g-color-brand-base-50, #0176d3);
-    border-radius: 50%;
-    color: #fff !important;
+    color: #fff;
     font-weight: var(--slds-g-font-weight-7, 700);
 }
 
