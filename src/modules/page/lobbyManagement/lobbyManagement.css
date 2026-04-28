@@ -864,9 +864,9 @@
 }
 
 .lobby-modal__title {
-    font-size: var(--slds-g-font-scale-3, 1.25rem);
-    font-weight: var(--slds-g-font-weight-7, 700);
-    color: var(--slds-g-color-brand-base-50, #0176d3);
+    font-size: 1.25rem;
+    font-weight: var(--slds-g-font-weight-4, 400);
+    color: var(--slds-g-color-brand-base-15, #032d60);
     margin: 0;
     text-align: center;
 }
