@@ -26,8 +26,6 @@
 .lobby-header__icon {
     width: 2.25rem;
     height: 2.25rem;
-    border-radius: 50%;
-    background-color: var(--slds-g-color-brand-base-50, #107cad);
     display: flex;
     align-items: center;
     justify-content: center;
