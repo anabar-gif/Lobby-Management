@@ -1,20 +1,23 @@
-/* ── Root — light gray canvas ───────────────────────────────── */
+/* ── Root ───────────────────────────────────────────────────── */
 :host {
     display: block;
-    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
     min-height: 100%;
+    width: 100%;
 }
 
 .wl-root {
-    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    background-color: var(--slds-g-color-surface-2, #f3f3f3);
     min-height: 100%;
+    width: 100%;
 }
 
 /* ── Page header — white bar ─────────────────────────────────── */
 .wl-page-header {
-    background: var(--slds-g-color-neutral-base-100, #fff);
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    background-color: var(--slds-g-color-surface-1, #ffffff);
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--slds-g-color-border-base-1, #dddbda);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .wl-page-header__eyebrow {
@@ -39,12 +42,14 @@
 
 /* ── Toolbar — single horizontal row, white bg ──────────────── */
 .wl-toolbar {
-    background: var(--slds-g-color-neutral-base-100, #fff);
+    background-color: var(--slds-g-color-surface-1, #ffffff);
     padding: 0.375rem 1rem;
     border-bottom: 1px solid var(--slds-g-color-border-base-1, #dddbda);
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .wl-toolbar__meta-text {
