@@ -1,6 +1,105 @@
 <template>
-    <div class="slds-p-around_medium">
-        <h1 class="slds-text-heading_large">Waitlist Management</h1>
-        <p class="slds-text-body_regular slds-m-top_small slds-text-color_weak">Coming soon.</p>
+    <div class="wl-root">
+
+        <!-- Page Header -->
+        <div class="wl-page-header slds-p-horizontal_medium slds-p-top_medium slds-p-bottom_small">
+            <div class="wl-page-header__eyebrow slds-text-body_small slds-text-color_weak slds-m-bottom_xxx-small">Waitlists</div>
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <div class="slds-grid slds-grid_vertical-align-center slds-col">
+                    <lightning-icon
+                        icon-name="standard:queue"
+                        size="small"
+                        class="slds-m-right_x-small"
+                        alternative-text="Waitlists">
+                    </lightning-icon>
+                    <h1 class="wl-page-header__title slds-text-heading_medium slds-m-right_x-small">{currentView}</h1>
+                    <lightning-button-menu
+                        variant="bare"
+                        menu-alignment="left"
+                        alternative-text="Change view"
+                        class="wl-page-header__view-menu"
+                        onselect={handleViewSelect}>
+                        <lightning-menu-item label="All Waitlists"    value="All Waitlists"></lightning-menu-item>
+                        <lightning-menu-item label="Active Waitlists" value="Active Waitlists"></lightning-menu-item>
+                    </lightning-button-menu>
+                    <lightning-button-icon
+                        icon-name="utility:edit"
+                        variant="bare"
+                        alternative-text="Edit list"
+                        class="slds-m-left_xx-small">
+                    </lightning-button-icon>
+                </div>
+                <div class="slds-col slds-no-flex">
+                    <lightning-button label="New" variant="brand" onclick={handleNew}></lightning-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-header: meta + toolbar -->
+        <div class="wl-toolbar slds-p-horizontal_medium slds-p-bottom_x-small">
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <div class="slds-col">
+                    <span class="slds-text-body_small slds-text-color_weak">{metaLine}</span>
+                </div>
+                <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center">
+                    <!-- Search -->
+                    <div class="wl-toolbar__search slds-m-right_xx-small">
+                        <lightning-input
+                            type="search"
+                            label="Search this list..."
+                            variant="label-hidden"
+                            placeholder="Search this list..."
+                            value={searchTerm}
+                            onchange={handleSearch}>
+                        </lightning-input>
+                    </div>
+                    <!-- Toolbar icon buttons -->
+                    <lightning-button-icon icon-name="utility:settings"       variant="border-filled" alternative-text="Table settings"  class="slds-m-right_xx-small" size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:table"          variant="border-filled" alternative-text="Table view"       class="slds-m-right_xx-small" size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:kanban"         variant="border-filled" alternative-text="Kanban view"      class="slds-m-right_xx-small" size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:refresh"        variant="border-filled" alternative-text="Refresh"          class="slds-m-right_xx-small" size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:edit"           variant="border-filled" alternative-text="Edit columns"     class="slds-m-right_xx-small" size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:filterList"     variant="border-filled" alternative-text="Filter"           class="slds-m-right_xx-small" size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:rows"           variant="border-filled" alternative-text="Column settings"  size="small"></lightning-button-icon>
+                </div>
+            </div>
+        </div>
+
+        <!-- Datatable -->
+        <div class="wl-table-container slds-p-horizontal_medium">
+            <lightning-datatable
+                key-field="id"
+                data={filteredRows}
+                columns={columns}
+                hide-checkbox-column={false}
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+        </div>
+
     </div>
+
+    <!-- New Waitlist modal -->
+    <template lwc:if={showNewModal}>
+        <div class="wl-modal-backdrop"></div>
+        <div class="wl-modal-container">
+            <div class="wl-modal" role="dialog" aria-modal="true" aria-labelledby="newWlModalTitle">
+                <div class="wl-modal__header">
+                    <h2 id="newWlModalTitle" class="wl-modal__title">New Waitlist</h2>
+                </div>
+                <div class="wl-modal__body">
+                    <lightning-input label="Name"              class="slds-m-bottom_small"  value={newWl.name}              onchange={handleNewWlField} data-field="name"></lightning-input>
+                    <lightning-input label="Service Territory" class="slds-m-bottom_small"  value={newWl.territory}         onchange={handleNewWlField} data-field="territory"></lightning-input>
+                    <lightning-input type="checkbox" label="Active"              checked={newWl.active}          onchange={handleNewWlCheck} data-field="active"           class="slds-m-bottom_small"></lightning-input>
+                    <lightning-input type="checkbox" label="Allow Self Check In" checked={newWl.allowSelfCheckin} onchange={handleNewWlCheck} data-field="allowSelfCheckin" class="slds-m-bottom_small"></lightning-input>
+                </div>
+                <div class="wl-modal__footer">
+                    <lightning-button label="Cancel" onclick={handleNewCancel}></lightning-button>
+                    <lightning-button label="Save"   variant="brand" onclick={handleNewSave} class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+            <button class="wl-modal__close" onclick={handleNewCancel} aria-label="Close">
+                <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: var(--slds-g-color-brand-base-50, #0176d3);"></lightning-icon>
+            </button>
+        </div>
+    </template>
 </template>
