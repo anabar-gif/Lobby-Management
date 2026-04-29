@@ -204,7 +204,7 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '1.',
                     workItemId: 'WP-132',
                     linkLabel: 'Julia Green',
-                    topic: 'General Banking • Auto Assigned',
+                    topic: 'General Banking',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:15 AM',
                     waitTime: '00 : 22 mins.'
@@ -242,7 +242,7 @@ export default class LobbyManagement extends LightningElement {
                     id: 'ib-p1',
                     ordinal: '1.',
                     workItemId: 'WP-0215',
-                    linkLabel: 'Lead Participant',
+                    linkLabel: 'Julia Green',
                     topic: 'Investment Planning',
                     slot: '11:00 am - 11:30 am',
                     checkInTime: '11:13 AM',
