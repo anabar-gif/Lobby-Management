@@ -13,20 +13,70 @@
                         alternative-text="Waitlists">
                     </lightning-icon>
                     <h1 class="wl-page-header__title slds-m-right_xx-small">{currentView}</h1>
-                    <lightning-button-menu
-                        variant="bare"
-                        menu-alignment="left"
-                        alternative-text="Change view"
-                        class="wl-page-header__view-menu"
-                        onselect={handleViewSelect}>
-                        <lightning-menu-item label="All Waitlists"    value="All Waitlists"></lightning-menu-item>
-                        <lightning-menu-item label="Active Waitlists" value="Active Waitlists"></lightning-menu-item>
-                    </lightning-button-menu>
+                    <!-- Custom view-switcher button -->
+                    <div class="wl-view-trigger-wrap">
+                        <button
+                            class="wl-view-trigger"
+                            aria-haspopup="listbox"
+                            aria-expanded={viewDropdownOpen}
+                            onclick={handleViewTrigger}
+                            title="Switch list view">
+                            <lightning-icon icon-name="utility:down" size="xx-small" alternative-text=""></lightning-icon>
+                        </button>
+                        <!-- View dropdown panel -->
+                        <template lwc:if={viewDropdownOpen}>
+                            <div class="wl-view-dropdown" role="listbox">
+                                <div class="wl-view-dropdown__search-wrap">
+                                    <lightning-icon icon-name="utility:search" size="x-small" class="wl-view-dropdown__search-icon" alternative-text=""></lightning-icon>
+                                    <input
+                                        class="wl-view-dropdown__search-input"
+                                        type="text"
+                                        placeholder="Search lists..."
+                                        value={viewSearch}
+                                        oninput={handleViewSearch} />
+                                </div>
+                                <div class="wl-view-dropdown__section-label">Recent List Views</div>
+                                <template for:each={recentListViews} for:item="v">
+                                    <button
+                                        key={v.value}
+                                        class={v.itemClass}
+                                        role="option"
+                                        data-value={v.value}
+                                        onclick={handleViewSelect}>
+                                        <template lwc:if={v.selected}>
+                                            <lightning-icon icon-name="utility:check" size="xx-small" class="wl-view-dropdown__check" alternative-text="Selected"></lightning-icon>
+                                        </template>
+                                        <template lwc:else>
+                                            <span class="wl-view-dropdown__check-spacer"></span>
+                                        </template>
+                                        {v.label}
+                                    </button>
+                                </template>
+                                <div class="wl-view-dropdown__section-label">All Other Lists</div>
+                                <template for:each={otherListViews} for:item="v">
+                                    <button
+                                        key={v.value}
+                                        class={v.itemClass}
+                                        role="option"
+                                        data-value={v.value}
+                                        onclick={handleViewSelect}>
+                                        <template lwc:if={v.selected}>
+                                            <lightning-icon icon-name="utility:check" size="xx-small" class="wl-view-dropdown__check" alternative-text="Selected"></lightning-icon>
+                                        </template>
+                                        <template lwc:else>
+                                            <span class="wl-view-dropdown__check-spacer"></span>
+                                        </template>
+                                        {v.label}
+                                    </button>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
                     <lightning-button-icon
-                        icon-name="utility:edit"
+                        icon-name="utility:pinned"
                         variant="bare"
                         size="small"
-                        alternative-text="Edit list"
+                        alternative-text="Pin list"
                         class="slds-m-left_xx-small">
                     </lightning-button-icon>
                 </div>
@@ -36,12 +86,10 @@
             </div>
         </div>
 
-        <!-- Toolbar: meta + search + icons -->
+        <!-- Toolbar: single row — meta left, search+icons right, all vertically centred -->
         <div class="wl-toolbar">
-            <div class="wl-toolbar__meta">
-                <span class="wl-toolbar__meta-text">{metaLine}</span>
-            </div>
-            <div class="wl-toolbar__controls">
+            <span class="wl-toolbar__meta-text">{metaLine}</span>
+            <div class="wl-toolbar__right">
                 <div class="wl-toolbar__search">
                     <lightning-input
                         type="search"
@@ -53,12 +101,12 @@
                     </lightning-input>
                 </div>
                 <div class="wl-toolbar__icons">
-                    <lightning-button-icon icon-name="utility:settings"   variant="border-filled" alternative-text="Settings"       size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:table"      variant="border-filled" alternative-text="Table view"     size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:kanban"     variant="border-filled" alternative-text="Kanban view"    size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:refresh"    variant="border-filled" alternative-text="Refresh"        size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:edit"       variant="border-filled" alternative-text="Edit columns"   size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:filterList" variant="border-filled" alternative-text="Filter"         size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:settings"   variant="border-filled" alternative-text="Settings"        size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:table"      variant="border-filled" alternative-text="Table view"      size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:kanban"     variant="border-filled" alternative-text="Kanban view"     size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:refresh"    variant="border-filled" alternative-text="Refresh"         size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:edit"       variant="border-filled" alternative-text="Edit columns"    size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:filterList" variant="border-filled" alternative-text="Filter"          size="small"></lightning-button-icon>
                     <lightning-button-icon icon-name="utility:rows"       variant="border-filled" alternative-text="Column settings" size="small"></lightning-button-icon>
                 </div>
             </div>

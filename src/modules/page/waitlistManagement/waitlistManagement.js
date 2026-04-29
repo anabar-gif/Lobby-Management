@@ -70,11 +70,22 @@ const SEED_ROWS = [
     },
 ];
 
+const RECENT_VIEWS = [
+    { label: 'All Waitlists',              value: 'All Waitlists' },
+    { label: 'My Waitlists',               value: 'My Waitlists' },
+    { label: 'Recently Viewed (Pinned list)', value: 'Recently Viewed (Pinned list)' },
+];
+const OTHER_VIEWS = [
+    { label: 'Recently Viewed Waitlists',  value: 'Recently Viewed Waitlists' },
+];
+
 export default class WaitlistManagement extends LightningElement {
-    @track currentView    = 'All Waitlists';
-    @track searchTerm     = '';
-    @track showNewModal   = false;
-    @track rows           = [...SEED_ROWS];
+    @track currentView       = 'All Waitlists';
+    @track viewDropdownOpen  = false;
+    @track viewSearch        = '';
+    @track searchTerm        = '';
+    @track showNewModal      = false;
+    @track rows              = [...SEED_ROWS];
     @track newWl = {
         name: '',
         territory: '',
@@ -83,6 +94,20 @@ export default class WaitlistManagement extends LightningElement {
     };
 
     columns = COLUMNS;
+
+    _buildViewList(list) {
+        const term = (this.viewSearch || '').toLowerCase();
+        return list
+            .filter((v) => !term || v.label.toLowerCase().includes(term))
+            .map((v) => ({
+                ...v,
+                selected: v.value === this.currentView,
+                itemClass: `wl-view-dropdown__item${v.value === this.currentView ? ' wl-view-dropdown__item--selected' : ''}`,
+            }));
+    }
+
+    get recentListViews() { return this._buildViewList(RECENT_VIEWS); }
+    get otherListViews()  { return this._buildViewList(OTHER_VIEWS);  }
 
     get metaLine() {
         const n = this.filteredRows.length;
@@ -101,8 +126,32 @@ export default class WaitlistManagement extends LightningElement {
         return base.map((r, i) => ({ ...r, rowNum: String(i + 1) }));
     }
 
+    connectedCallback() {
+        this._docClick = (e) => {
+            if (!this.template.querySelector('.wl-view-trigger-wrap')?.contains(e.target)) {
+                this.viewDropdownOpen = false;
+            }
+        };
+        document.addEventListener('click', this._docClick);
+    }
+
+    disconnectedCallback() {
+        document.removeEventListener('click', this._docClick);
+    }
+
+    handleViewTrigger(event) {
+        event.stopPropagation();
+        this.viewDropdownOpen = !this.viewDropdownOpen;
+        this.viewSearch = '';
+    }
+
+    handleViewSearch(event) {
+        this.viewSearch = event.target.value;
+    }
+
     handleViewSelect(event) {
-        this.currentView = event.detail.value;
+        this.currentView = event.currentTarget.dataset.value;
+        this.viewDropdownOpen = false;
     }
 
     handleSearch(event) {
