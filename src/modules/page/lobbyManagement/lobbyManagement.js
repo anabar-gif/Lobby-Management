@@ -841,7 +841,10 @@ export default class LobbyManagement extends LightningElement {
         const name = allParticipants.find(p => p.id === id)?.linkLabel || 'this Participant';
         this._repoPendingId     = id;
         this._repoPendingAction = action;
-        this.repoConfirmMessage = `Are you sure you want to move ${name} to ${position} in the ${section} waitlist?`;
+        const directionPhrase = action === 'last'
+            ? `Moving ${name} to the end of the waitlist will delay his appointment by 55 minutes. Are you sure you want to continue?`
+            : `Moving ${name} to the beginning of the waitlist will move up his appointment by 55 minutes. Are you sure you want to continue?`;
+        this.repoConfirmMessage = directionPhrase;
         this.activeMenuRowId    = null; // close menu
         this.showRepoConfirm    = true;
     }
