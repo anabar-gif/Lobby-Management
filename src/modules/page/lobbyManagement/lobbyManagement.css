@@ -24,8 +24,8 @@
 }
 
 .lobby-header__icon {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,9 +33,11 @@
 }
 
 .lobby-header__icon-img {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: block;
 }
+
 
 .lobby-header__eyebrow {
     font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
