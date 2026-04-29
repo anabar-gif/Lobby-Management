@@ -2,8 +2,8 @@
     <div class="wl-root">
 
         <!-- Page Header -->
-        <div class="wl-page-header slds-p-horizontal_medium slds-p-top_medium slds-p-bottom_small">
-            <div class="wl-page-header__eyebrow slds-text-body_small slds-text-color_weak slds-m-bottom_xxx-small">Waitlists</div>
+        <div class="wl-page-header">
+            <div class="wl-page-header__eyebrow">Waitlists</div>
             <div class="slds-grid slds-grid_vertical-align-center">
                 <div class="slds-grid slds-grid_vertical-align-center slds-col">
                     <lightning-icon
@@ -12,7 +12,7 @@
                         class="slds-m-right_x-small"
                         alternative-text="Waitlists">
                     </lightning-icon>
-                    <h1 class="wl-page-header__title slds-text-heading_medium slds-m-right_x-small">{currentView}</h1>
+                    <h1 class="wl-page-header__title slds-m-right_xx-small">{currentView}</h1>
                     <lightning-button-menu
                         variant="bare"
                         menu-alignment="left"
@@ -25,6 +25,7 @@
                     <lightning-button-icon
                         icon-name="utility:edit"
                         variant="bare"
+                        size="small"
                         alternative-text="Edit list"
                         class="slds-m-left_xx-small">
                     </lightning-button-icon>
@@ -35,38 +36,36 @@
             </div>
         </div>
 
-        <!-- Sub-header: meta + toolbar -->
-        <div class="wl-toolbar slds-p-horizontal_medium slds-p-bottom_x-small">
-            <div class="slds-grid slds-grid_vertical-align-center">
-                <div class="slds-col">
-                    <span class="slds-text-body_small slds-text-color_weak">{metaLine}</span>
+        <!-- Toolbar: meta + search + icons -->
+        <div class="wl-toolbar">
+            <div class="wl-toolbar__meta">
+                <span class="wl-toolbar__meta-text">{metaLine}</span>
+            </div>
+            <div class="wl-toolbar__controls">
+                <div class="wl-toolbar__search">
+                    <lightning-input
+                        type="search"
+                        label="Search this list..."
+                        variant="label-hidden"
+                        placeholder="Search this list..."
+                        value={searchTerm}
+                        onchange={handleSearch}>
+                    </lightning-input>
                 </div>
-                <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center">
-                    <!-- Search -->
-                    <div class="wl-toolbar__search slds-m-right_xx-small">
-                        <lightning-input
-                            type="search"
-                            label="Search this list..."
-                            variant="label-hidden"
-                            placeholder="Search this list..."
-                            value={searchTerm}
-                            onchange={handleSearch}>
-                        </lightning-input>
-                    </div>
-                    <!-- Toolbar icon buttons -->
-                    <lightning-button-icon icon-name="utility:settings"       variant="border-filled" alternative-text="Table settings"  class="slds-m-right_xx-small" size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:table"          variant="border-filled" alternative-text="Table view"       class="slds-m-right_xx-small" size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:kanban"         variant="border-filled" alternative-text="Kanban view"      class="slds-m-right_xx-small" size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:refresh"        variant="border-filled" alternative-text="Refresh"          class="slds-m-right_xx-small" size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:edit"           variant="border-filled" alternative-text="Edit columns"     class="slds-m-right_xx-small" size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:filterList"     variant="border-filled" alternative-text="Filter"           class="slds-m-right_xx-small" size="small"></lightning-button-icon>
-                    <lightning-button-icon icon-name="utility:rows"           variant="border-filled" alternative-text="Column settings"  size="small"></lightning-button-icon>
+                <div class="wl-toolbar__icons">
+                    <lightning-button-icon icon-name="utility:settings"   variant="border-filled" alternative-text="Settings"       size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:table"      variant="border-filled" alternative-text="Table view"     size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:kanban"     variant="border-filled" alternative-text="Kanban view"    size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:refresh"    variant="border-filled" alternative-text="Refresh"        size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:edit"       variant="border-filled" alternative-text="Edit columns"   size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:filterList" variant="border-filled" alternative-text="Filter"         size="small"></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:rows"       variant="border-filled" alternative-text="Column settings" size="small"></lightning-button-icon>
                 </div>
             </div>
         </div>
 
-        <!-- Datatable -->
-        <div class="wl-table-container slds-p-horizontal_medium">
+        <!-- Datatable — edge-to-edge, no card wrapper -->
+        <div class="wl-table-container">
             <lightning-datatable
                 key-field="id"
                 data={filteredRows}

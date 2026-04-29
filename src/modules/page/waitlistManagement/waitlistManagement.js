@@ -2,6 +2,13 @@ import { LightningElement, track } from 'lwc';
 
 const COLUMNS = [
     {
+        label: '',
+        fieldName: 'rowNum',
+        type: 'text',
+        initialWidth: 40,
+        cellAttributes: { style: 'color: var(--slds-g-color-neutral-base-50, #706e6b); font-size: 0.75rem;' },
+    },
+    {
         label: 'Name',
         fieldName: 'nameUrl',
         type: 'url',
@@ -20,12 +27,14 @@ const COLUMNS = [
         fieldName: 'active',
         type: 'boolean',
         sortable: true,
+        initialWidth: 120,
     },
     {
         label: 'Allow Self Check In',
         fieldName: 'allowSelfCheckin',
         type: 'boolean',
         sortable: true,
+        initialWidth: 180,
     },
     {
         type: 'action',
@@ -41,6 +50,7 @@ const COLUMNS = [
 const SEED_ROWS = [
     {
         id: 'wl-1',
+        rowNum: '1',
         name: 'General Banking',
         nameUrl: '#',
         territory: 'Market St Branch',
@@ -50,6 +60,7 @@ const SEED_ROWS = [
     },
     {
         id: 'wl-2',
+        rowNum: '2',
         name: 'Wealth Management',
         nameUrl: '#',
         territory: 'Market St Branch',
@@ -80,12 +91,14 @@ export default class WaitlistManagement extends LightningElement {
 
     get filteredRows() {
         const term = (this.searchTerm || '').toLowerCase().trim();
-        if (!term) return this.rows;
-        return this.rows.filter(
-            (r) =>
-                r.name.toLowerCase().includes(term) ||
-                r.territory.toLowerCase().includes(term)
-        );
+        const base = term
+            ? this.rows.filter(
+                  (r) =>
+                      r.name.toLowerCase().includes(term) ||
+                      r.territory.toLowerCase().includes(term)
+              )
+            : this.rows;
+        return base.map((r, i) => ({ ...r, rowNum: String(i + 1) }));
     }
 
     handleViewSelect(event) {
