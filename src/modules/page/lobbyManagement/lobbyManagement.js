@@ -475,7 +475,7 @@ export default class LobbyManagement extends LightningElement {
     // ── General Banking composer form state ──
     @track ciGuestType  = 'existing';
     @track ciTopic      = 'general-banking';
-    @track ciResource   = 'adam-milne';
+    @track ciResource   = '';
     @track ciDesc       = '';
     @track ciFirstName  = '';
     @track ciLastName   = '';
@@ -499,7 +499,7 @@ export default class LobbyManagement extends LightningElement {
     // ── Investment Banking composer form state ──
     @track ibCiGuestType  = 'existing';
     @track ibCiTopic      = 'investment-banking';
-    @track ibCiResource   = 'adam-milne';
+    @track ibCiResource   = '';
     @track ibCiDesc       = '';
     @track ibCiFirstName  = '';
     @track ibCiLastName   = '';
@@ -629,7 +629,7 @@ export default class LobbyManagement extends LightningElement {
         this.ciFirstName = ''; this.ciLastName = ''; this.ciContact = '';
         this.ciCompany = ''; this.ciEmail = '';
         this.ciTopic    = 'general-banking';
-        this.ciResource = 'adam-milne';
+        this.ciResource = '';
         this.ciDesc     = '';
         this.showCheckinComposer = false;
         this._showToast(`${participantName} was added to the waitlist General Banking.`);
@@ -682,7 +682,7 @@ export default class LobbyManagement extends LightningElement {
         this.ibCiFirstName = ''; this.ibCiLastName = ''; this.ibCiContact = '';
         this.ibCiCompany = ''; this.ibCiEmail = '';
         this.ibCiTopic    = 'investment-banking';
-        this.ibCiResource = 'adam-milne';
+        this.ibCiResource = '';
         this.ibCiDesc     = '';
         this.showCheckinComposerInvestment = false;
         this._showToast(`${participantName} was added to the waitlist Investment Banking.`);
