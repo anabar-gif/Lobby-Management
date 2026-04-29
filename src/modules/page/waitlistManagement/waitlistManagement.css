@@ -1,19 +1,20 @@
-/* ── Root ──────────────────────────────────────────────────── */
+/* ── Root — light gray canvas ───────────────────────────────── */
 :host {
     display: block;
-    background: var(--slds-g-color-neutral-base-100, #fff);
-}
-
-.wl-root {
-    background: var(--slds-g-color-neutral-base-100, #fff);
+    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
     min-height: 100%;
 }
 
-/* ── Page header ───────────────────────────────────────────── */
+.wl-root {
+    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+    min-height: 100%;
+}
+
+/* ── Page header — white bar ─────────────────────────────────── */
 .wl-page-header {
     background: var(--slds-g-color-neutral-base-100, #fff);
-    padding: 0.625rem 1rem 0.5rem 1rem;
-    border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--slds-g-color-border-base-1, #dddbda);
 }
 
 .wl-page-header__eyebrow {
@@ -36,11 +37,10 @@
     --slds-c-button-bare-color-text: var(--slds-g-color-neutral-base-30, #444);
 }
 
-/* ── Toolbar — single horizontal row ───────────────────────── */
+/* ── Toolbar — single horizontal row, gray bg ───────────────── */
 .wl-toolbar {
-    background: var(--slds-g-color-neutral-base-100, #fff);
+    background: var(--slds-g-color-neutral-base-95, #f3f3f3);
     padding: 0.375rem 1rem;
-    border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -169,9 +169,13 @@
     flex-shrink: 0;
 }
 
-/* ── Table — flush, no card, no horizontal padding ─────────── */
+/* ── Table — boxed card inside gray canvas ──────────────────── */
 .wl-table-container {
     background: var(--slds-g-color-neutral-base-100, #fff);
+    margin: 0 1rem 1rem 1rem;
+    border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
+    border-radius: var(--slds-g-radius-border-2, 0.25rem);
+    overflow: hidden;
 }
 
 /* ── Modal ─────────────────────────────────────────────────── */

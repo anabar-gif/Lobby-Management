@@ -37,6 +37,12 @@ const COLUMNS = [
         initialWidth: 180,
     },
     {
+        label: 'Link',
+        fieldName: 'selfCheckinUrl',
+        type: 'url',
+        typeAttributes: { label: { fieldName: 'selfCheckinUrl' }, target: '_blank' },
+    },
+    {
         type: 'action',
         typeAttributes: {
             rowActions: [
@@ -57,6 +63,7 @@ const SEED_ROWS = [
         territoryUrl: '#',
         active: true,
         allowSelfCheckin: true,
+        selfCheckinUrl: 'https://dundermifflin.sfdctest.test1.my.pc-rnd.site.com/customers/s/self-check-in',
     },
     {
         id: 'wl-2',
@@ -67,6 +74,7 @@ const SEED_ROWS = [
         territoryUrl: '#',
         active: true,
         allowSelfCheckin: false,
+        selfCheckinUrl: null,
     },
 ];
 
