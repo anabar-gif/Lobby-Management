@@ -283,7 +283,7 @@ export default class LobbyManagement extends LightningElement {
             waitTime: '00 : 10 mins.',
             showCheckin: false,
             checkedIn: true,
-            checkedInLabel: 'Checked In at 9:00 am'
+            checkedInLabel: 'Checked In'
         },
         {
             id: 'a2',
@@ -975,7 +975,7 @@ export default class LobbyManagement extends LightningElement {
                 return {
                     ...appt,
                     checkedIn: true,
-                    checkedInLabel: `Checked In at ${startTime}`,
+                    checkedInLabel: 'Checked In',
                     showCheckin: false,
                     showWaitAlert: true,
                     waitLabel: 'Wait Time:',
