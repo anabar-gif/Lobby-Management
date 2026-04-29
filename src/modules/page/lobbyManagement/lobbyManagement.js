@@ -817,6 +817,40 @@ export default class LobbyManagement extends LightningElement {
     _repoPendingAction = null; // 'first' | 'last'
 
     /** Finds which section (General Banking / Investment Banking) a participant belongs to. */
+    // Infer possessive pronoun from first name using a curated female-name list.
+    // Falls back to "their" when the name is ambiguous or unrecognised.
+    _genderPronoun(fullName) {
+        const femaleNames = new Set([
+            'julia','emma','olivia','ava','isabella','sophia','mia','charlotte','amelia','harper',
+            'evelyn','abigail','emily','elizabeth','mila','ella','avery','sofia','camila','aria',
+            'scarlett','victoria','madison','luna','grace','chloe','penelope','layla','riley','zoey',
+            'nora','lily','eleanor','hannah','lillian','addison','aubrey','ellie','stella','natalie',
+            'zoe','leah','hazel','violet','aurora','savannah','audrey','brooklyn','bella','claire',
+            'skylar','lucy','paisley','everly','anna','caroline','nova','genesis','emilia','kennedy',
+            'samantha','maya','willow','kinsley','naomi','aaliyah','elena','sarah','ariana','allison',
+            'gabriella','alice','hailey','eva','autumn','quinn','nevaeh','piper','ruby','serenity',
+            'delilah','paige','camille','maria','lydia','alexa','kate','brianna','diana','jessica',
+            'morgan','melanie','gianna','rachel','jasmine','isabel','jocelyn','andrea','alexis',
+            'lola','daisy','grace','sophie','natasha','lisa','donna','sandra','patricia','jennifer',
+            'arna','sumaiyah','lakshmi','priya','ananya','divya','pooja','kavya','deepa','meera',
+        ]);
+        const first = (fullName || '').split(' ')[0].toLowerCase();
+        if (femaleNames.has(first)) return 'her';
+        // a short list of common male names to confirm 'his'
+        const maleNames = new Set([
+            'james','john','robert','michael','william','david','richard','joseph','thomas','charles',
+            'christopher','daniel','matthew','anthony','mark','donald','steven','paul','andrew','joshua',
+            'kenneth','kevin','brian','george','timothy','ronald','edward','jason','jeffrey','ryan',
+            'jacob','gary','nicholas','eric','jonathan','stephen','larry','justin','scott','brandon',
+            'benjamin','samuel','raymond','frank','gregory','alexander','patrick','jack','dennis','jerry',
+            'tyler','aaron','jose','adam','henry','nathan','douglas','zachary','peter','kyle','noah',
+            'ethan','liam','mason','logan','oliver','lucas','aiden','elijah','jayden','sebastian',
+            'won','clain','raj','arjun','vikram','rohit','aditya','suresh','ramesh','kumar',
+        ]);
+        if (maleNames.has(first)) return 'his';
+        return 'their';
+    }
+
     _findParticipantSection(id) {
         if (this.generalBankingTopics.some(t => t.participants.some(p => p.id === id))) {
             return 'General Banking';
@@ -841,9 +875,10 @@ export default class LobbyManagement extends LightningElement {
         const name = allParticipants.find(p => p.id === id)?.linkLabel || 'this Participant';
         this._repoPendingId     = id;
         this._repoPendingAction = action;
+        const pronoun = this._genderPronoun(name);
         const directionPhrase = action === 'last'
-            ? `Moving ${name} to the end of the waitlist will delay his appointment by 55 minutes. Are you sure you want to continue?`
-            : `Moving ${name} to the beginning of the waitlist will move up his appointment by 55 minutes. Are you sure you want to continue?`;
+            ? `Moving ${name} to the end of the waitlist will delay ${pronoun} appointment by 55 minutes. Are you sure you want to continue?`
+            : `Moving ${name} to the beginning of the waitlist will move up ${pronoun} appointment by 55 minutes. Are you sure you want to continue?`;
         this.repoConfirmMessage = directionPhrase;
         this.activeMenuRowId    = null; // close menu
         this.showRepoConfirm    = true;
