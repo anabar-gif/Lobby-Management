@@ -740,7 +740,9 @@ export default class LobbyManagement extends LightningElement {
 
     get filteredParticipantsDyn() {
         const q = this.dynParticipantSearch.toLowerCase();
-        return this.participantItems.filter(p => !q || p.label.toLowerCase().includes(q));
+        return q
+            ? this.participantRecentItems.filter(p => p.label.toLowerCase().includes(q) || (p.meta && p.meta.includes(q)))
+            : this.participantRecentItems;
     }
 
     get activeDynWl() {
