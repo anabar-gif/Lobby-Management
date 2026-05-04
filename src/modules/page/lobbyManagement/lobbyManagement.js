@@ -859,14 +859,38 @@ export default class LobbyManagement extends LightningElement {
         // Add participant and close the composer in a single @track mutation
         this.dynamicWaitlists = this.dynamicWaitlists.map(w => {
             if (w.id !== wl.id) return w;
-            const existingTopics = w.topics || [{ id: `${w.id}-default`, label: `${w.name} (0)`, participants: [] }];
-            const updated = existingTopics.map((t, idx) => {
-                if (idx !== 0) return t;
+
+            // Build initial topic sections from workTypes if not yet created
+            const seedTopics = (w.workTypes && w.workTypes.length)
+                ? w.workTypes.map(t => ({
+                    id: `${w.id}-${typeof t === 'object' ? t.value : t}`,
+                    label: `${typeof t === 'object' ? t.label : t} (0)`,
+                    participants: [],
+                }))
+                : [{ id: `${w.id}-default`, label: `${w.name} (0)`, participants: [] }];
+
+            const existingTopics = (w.topics && w.topics.length) ? w.topics : seedTopics;
+
+            // Find or create the section matching the selected topic
+            const targetId = `${w.id}-${this.dynCiTopic}`;
+            let matched = false;
+            const updated = existingTopics.map(t => {
+                if (t.id !== targetId) return t;
+                matched = true;
                 const rows = [newRow, ...t.participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
                 const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
                 return { ...t, participants: rows, label: `${labelBase} (${rows.length})` };
             });
-            return { ...w, topics: updated, openSections: [updated[0].id], showCheckinComposer: false };
+
+            // If no matching section found, add to the first one
+            if (!matched && updated.length) {
+                const rows = [newRow, ...updated[0].participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+                const labelBase = updated[0].label.replace(/\s*\(\d+\)$/, '');
+                updated[0] = { ...updated[0], participants: rows, label: `${labelBase} (${rows.length})` };
+            }
+
+            const openSection = updated.find(t => t.participants.length > 0)?.id || updated[0]?.id;
+            return { ...w, topics: updated, openSections: [openSection], showCheckinComposer: false };
         });
 
         // Reset
