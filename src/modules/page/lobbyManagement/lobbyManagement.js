@@ -752,7 +752,8 @@ export default class LobbyManagement extends LightningElement {
     /** Returns dynamicWaitlists enriched with flat participant list */
     get enrichedDynamicWaitlists() {
         return this.dynamicWaitlists.map(w => {
-            const topics = w.topics && w.topics.length ? w.topics : [];
+            // Only show topic sections that have at least one participant
+            const topics = (w.topics && w.topics.length ? w.topics : []).filter(t => t.participants.length > 0);
             const allParticipants = topics.flatMap(t => t.participants);
             const total = allParticipants.length;
             return {
