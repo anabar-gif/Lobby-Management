@@ -70,6 +70,7 @@ export default class LobbyManagement extends LightningElement {
                 participants: [],
                 openSections: [],
                 topics: null,
+                showCheckinComposer: false,
             }));
         if (newEntries.length) {
             this.dynamicWaitlists = [...this.dynamicWaitlists, ...newEntries];
@@ -746,12 +747,10 @@ export default class LobbyManagement extends LightningElement {
         return this.dynamicWaitlists.find(w => w.id === this.activeDynWlId) || null;
     }
 
-    /** Returns dynamicWaitlists enriched with flat participant list and composer flag */
+    /** Returns dynamicWaitlists enriched with flat participant list */
     get enrichedDynamicWaitlists() {
         return this.dynamicWaitlists.map(w => {
-            const topics = w.topics && w.topics.length
-                ? w.topics
-                : [];
+            const topics = w.topics && w.topics.length ? w.topics : [];
             const allParticipants = topics.flatMap(t => t.participants);
             const total = allParticipants.length;
             return {
@@ -759,7 +758,6 @@ export default class LobbyManagement extends LightningElement {
                 topics,
                 allParticipants,
                 hasParticipants: total > 0,
-                showCheckinComposer: this.activeDynWlId === w.id,
                 metaLeft: `Showing ${total} of ${total} Items • Updated just now`,
                 metaRight: 'Total Appointment Duration: 0 hr 0 min',
             };
@@ -776,20 +774,22 @@ export default class LobbyManagement extends LightningElement {
 
     handleDynQueueCheckIn(event) {
         const id = event.currentTarget.dataset.id;
-        const opening = this.activeDynWlId !== id;
-        // Write activeDynWlId first so dynCheckinTopicOptions resolves correctly
-        this.activeDynWlId = opening ? id : null;
-        if (opening) {
+        this.dynamicWaitlists = this.dynamicWaitlists.map(w => {
+            const opening = w.id === id && !w.showCheckinComposer;
+            return { ...w, showCheckinComposer: w.id === id ? !w.showCheckinComposer : false };
+        });
+        // Sync activeDynWlId for dynCheckinTopicOptions
+        const opened = this.dynamicWaitlists.find(w => w.showCheckinComposer);
+        this.activeDynWlId = opened ? opened.id : null;
+        if (opened) {
             const opts = this.dynCheckinTopicOptions;
             this.dynCiTopic = opts.length ? opts[0].value : '';
         }
-        // Force @track mutation so enrichedDynamicWaitlists getter re-evaluates
-        this.dynamicWaitlists = [...this.dynamicWaitlists];
     }
 
     handleCloseDynCheckinComposer() {
+        this.dynamicWaitlists = this.dynamicWaitlists.map(w => ({ ...w, showCheckinComposer: false }));
         this.activeDynWlId = null;
-        this.dynamicWaitlists = [...this.dynamicWaitlists];
     }
 
     handleDynCiGuestTypeChange(event) { this.dynCiGuestType = event.target.value; }
@@ -851,7 +851,7 @@ export default class LobbyManagement extends LightningElement {
             waitTime:   '00 : 00 mins.',
         };
 
-        // Ensure the waitlist has a topics array; add/update the default topic section
+        // Add participant and close the composer in a single @track mutation
         this.dynamicWaitlists = this.dynamicWaitlists.map(w => {
             if (w.id !== wl.id) return w;
             const existingTopics = w.topics || [{ id: `${w.id}-default`, label: `${w.name} (0)`, participants: [] }];
@@ -861,7 +861,7 @@ export default class LobbyManagement extends LightningElement {
                 const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
                 return { ...t, participants: rows, label: `${labelBase} (${rows.length})` };
             });
-            return { ...w, topics: updated, openSections: [updated[0].id] };
+            return { ...w, topics: updated, openSections: [updated[0].id], showCheckinComposer: false };
         });
 
         // Reset
@@ -872,7 +872,6 @@ export default class LobbyManagement extends LightningElement {
         this.dynCiResource = '';
         this.dynCiDesc = '';
         this.activeDynWlId = null;
-        this.dynamicWaitlists = [...this.dynamicWaitlists];
         this._showToast(`${participantName} was added to the waitlist ${wl.name}.`);
     }
 
