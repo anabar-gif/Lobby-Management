@@ -38,6 +38,9 @@ const ASSET_QUEUE_ICON =
 export default class LobbyManagement extends LightningElement {
     queueIconUrl = ASSET_QUEUE_ICON;
 
+    /** Dynamic waitlists created from the Waitlist Management page */
+    @track dynamicWaitlists = [];
+
     connectedCallback() {
         this._handleDocClick = (e) => {
             const insideRowMenu  = e.target.closest?.('.lobby-row-menu-wrap') || e.target.closest?.('.lobby-row-menu__dropdown');
@@ -46,10 +49,39 @@ export default class LobbyManagement extends LightningElement {
             if (this.activeApptMenuId && !insideApptMenu) this.activeApptMenuId = null;
         };
         document.addEventListener('click', this._handleDocClick, true);
+
+        // Load any previously created waitlists from localStorage
+        this._loadDynamicWaitlists();
+
+        // Listen for new waitlists created while this component is mounted
+        this._handleStorage = (e) => {
+            if (e.key === 'lobby_dynamic_waitlists') {
+                this._loadDynamicWaitlists();
+            }
+        };
+        window.addEventListener('storage', this._handleStorage);
+    }
+
+    _loadDynamicWaitlists() {
+        try {
+            const data = JSON.parse(localStorage.getItem('lobby_dynamic_waitlists') || '[]');
+            this.dynamicWaitlists = data.map(w => ({
+                id: w.id,
+                name: w.name,
+                territory: w.territory,
+                workTypes: w.workTypes || [],
+                resources: w.resources || [],
+                participants: [],
+                openSections: [],
+            }));
+        } catch (e) {
+            this.dynamicWaitlists = [];
+        }
     }
 
     disconnectedCallback() {
         document.removeEventListener('click', this._handleDocClick, true);
+        window.removeEventListener('storage', this._handleStorage);
     }
 
     @track selectedBranch = 'Market St Branch';

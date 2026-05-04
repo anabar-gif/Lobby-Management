@@ -377,16 +377,19 @@ export default class WaitlistManagement extends LightningElement {
 
     // ── Save ───────────────────────────────────────────────────
     handleCreatorSave() {
-        this.nameError     = !this.creator.name.trim();
+        this.nameError      = !this.creator.name.trim();
         this.territoryError = !this.creator.territoryValue;
         if (this.nameError || this.territoryError) return;
 
-        const id = `wl-${Date.now()}`;
+        const id   = `wl-${Date.now()}`;
+        const name = this.creator.name.trim();
+
+        // Add to the datatable
         this.rows = [
             ...this.rows,
             {
                 id,
-                name: this.creator.name.trim(),
+                name,
                 nameUrl: '#',
                 territory: this.creator.territoryLabel,
                 territoryUrl: '#',
@@ -396,8 +399,27 @@ export default class WaitlistManagement extends LightningElement {
             },
         ];
 
+        // Persist to localStorage so Lobby Management can pick it up
+        try {
+            const existing = JSON.parse(localStorage.getItem('lobby_dynamic_waitlists') || '[]');
+            existing.push({
+                id,
+                name,
+                territory: this.creator.territoryLabel,
+                workTypes: this.creator.workTypes,
+                resources: this.creator.resources,
+                active: this.creator.active,
+            });
+            localStorage.setItem('lobby_dynamic_waitlists', JSON.stringify(existing));
+            // Notify other tabs / same-tab listeners
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'lobby_dynamic_waitlists',
+                newValue: JSON.stringify(existing),
+            }));
+        } catch (e) { /* storage unavailable */ }
+
         this.handleCreatorCancel();
-        this._toast(`Waitlist "${this.creator.name.trim()}" created successfully.`);
+        this._toast(`Waitlist "${name}" created successfully.`);
     }
 
     // ── Row actions ────────────────────────────────────────────
