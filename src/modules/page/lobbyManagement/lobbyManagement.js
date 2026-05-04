@@ -52,22 +52,28 @@ export default class LobbyManagement extends LightningElement {
         document.addEventListener('click', this._handleDocClick, true);
 
         // Seed from waitlists already created before navigating here
-        this._syncFromStore(getWaitlists());
-        // Subscribe for live updates (waitlist created while this view is mounted)
-        this._unsubscribeStore = subscribeWaitlists(all => this._syncFromStore(all));
+        this._mergeFromStore(getWaitlists());
+        // Subscribe for live updates — only appends new entries, never replaces existing ones
+        this._unsubscribeStore = subscribeWaitlists(all => this._mergeFromStore(all));
     }
 
-    _syncFromStore(all) {
-        this.dynamicWaitlists = all.map(w => ({
-            id: w.id,
-            name: w.name,
-            territory: w.territory,
-            workTypes: w.workTypes || [],
-            resources: w.resources || [],
-            participants: [],
-            openSections: [],
-            topics: null,
-        }));
+    _mergeFromStore(all) {
+        const existingIds = new Set(this.dynamicWaitlists.map(w => w.id));
+        const newEntries = all
+            .filter(w => !existingIds.has(w.id))
+            .map(w => ({
+                id: w.id,
+                name: w.name,
+                territory: w.territory,
+                workTypes: w.workTypes || [],
+                resources: w.resources || [],
+                participants: [],
+                openSections: [],
+                topics: null,
+            }));
+        if (newEntries.length) {
+            this.dynamicWaitlists = [...this.dynamicWaitlists, ...newEntries];
+        }
     }
 
     disconnectedCallback() {
