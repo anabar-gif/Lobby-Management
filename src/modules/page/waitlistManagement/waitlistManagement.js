@@ -240,22 +240,28 @@ export default class WaitlistManagement extends LightningElement {
     // ── Lifecycle ──────────────────────────────────────────────
     connectedCallback() {
         this._docClick = (e) => {
+            // composedPath() traverses shadow DOM boundaries correctly
+            const path = e.composedPath ? e.composedPath() : [];
+            const inEl = (sel) => {
+                const el = this.template.querySelector(sel);
+                return el && (el.contains(e.target) || path.includes(el));
+            };
             // close view dropdown
-            if (!this.template.querySelector('.wl-view-trigger-wrap')?.contains(e.target)) {
+            if (!inEl('.wl-view-trigger-wrap')) {
                 this.viewDropdownOpen = false;
             }
             // close territory dropdown if clicking outside it
-            if (!this.template.querySelector('.wl-creator__territory-wrap')?.contains(e.target)) {
+            if (!inEl('.wl-creator__territory-wrap')) {
                 this.showTerritoryDropdown = false;
             }
             // close work-type dropdown
             const wtWrap = this.template.querySelectorAll('.wl-creator__add-wrap')[0];
-            if (wtWrap && !wtWrap.contains(e.target)) {
+            if (wtWrap && !wtWrap.contains(e.target) && !path.includes(wtWrap)) {
                 this.showWorkTypeDropdown = false;
             }
             // close resource dropdown
             const resWrap = this.template.querySelectorAll('.wl-creator__add-wrap')[1];
-            if (resWrap && !resWrap.contains(e.target)) {
+            if (resWrap && !resWrap.contains(e.target) && !path.includes(resWrap)) {
                 this.showResourceDropdown = false;
             }
         };
@@ -315,6 +321,11 @@ export default class WaitlistManagement extends LightningElement {
 
     handleTerritoryFocus() {
         this.showTerritoryDropdown = true;
+    }
+
+    handleTerritoryBlur() {
+        // Delay so click on an item fires before the dropdown closes
+        setTimeout(() => { this.showTerritoryDropdown = false; }, 200);
     }
 
     handleTerritorySearch(event) {

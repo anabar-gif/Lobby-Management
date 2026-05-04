@@ -159,6 +159,7 @@
                             value={creator.territorySearch}
                             oninput={handleTerritorySearch}
                             onfocus={handleTerritoryFocus}
+                            onblur={handleTerritoryBlur}
                             autocomplete="off" />
                         <lightning-icon icon-name="utility:search" size="x-small" class="wl-creator__territory-icon" alternative-text=""></lightning-icon>
                         <template lwc:if={showTerritoryDropdown}>
