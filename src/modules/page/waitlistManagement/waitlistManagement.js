@@ -1,4 +1,5 @@
 import { LightningElement, track } from 'lwc';
+import { addWaitlist } from 'data/waitlistStore';
 
 const COLUMNS = [
     {
@@ -399,24 +400,15 @@ export default class WaitlistManagement extends LightningElement {
             },
         ];
 
-        // Persist to localStorage so Lobby Management can pick it up
-        try {
-            const existing = JSON.parse(localStorage.getItem('lobby_dynamic_waitlists') || '[]');
-            existing.push({
-                id,
-                name,
-                territory: this.creator.territoryLabel,
-                workTypes: this.creator.workTypes,
-                resources: this.creator.resources,
-                active: this.creator.active,
-            });
-            localStorage.setItem('lobby_dynamic_waitlists', JSON.stringify(existing));
-            // Notify other tabs / same-tab listeners
-            window.dispatchEvent(new StorageEvent('storage', {
-                key: 'lobby_dynamic_waitlists',
-                newValue: JSON.stringify(existing),
-            }));
-        } catch (e) { /* storage unavailable */ }
+        // Push to the shared in-memory store so Lobby Management picks it up instantly
+        addWaitlist({
+            id,
+            name,
+            territory: this.creator.territoryLabel,
+            workTypes: this.creator.workTypes,
+            resources: this.creator.resources,
+            active: this.creator.active,
+        });
 
         this.handleCreatorCancel();
         this._toast(`Waitlist "${name}" created successfully.`);

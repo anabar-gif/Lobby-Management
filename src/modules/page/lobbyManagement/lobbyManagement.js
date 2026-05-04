@@ -1,4 +1,5 @@
 import { LightningElement, track } from 'lwc';
+import { getWaitlists, subscribe as subscribeWaitlists } from 'data/waitlistStore';
 
 /** Parses the first integer in parentheses, e.g. `Notary (1)` → 1. Missing → +∞ so those sort last. */
 function parseBracketCount(label) {
@@ -49,10 +50,29 @@ export default class LobbyManagement extends LightningElement {
             if (this.activeApptMenuId && !insideApptMenu) this.activeApptMenuId = null;
         };
         document.addEventListener('click', this._handleDocClick, true);
+
+        // Seed from waitlists already created before navigating here
+        this._syncFromStore(getWaitlists());
+        // Subscribe for live updates (waitlist created while this view is mounted)
+        this._unsubscribeStore = subscribeWaitlists(all => this._syncFromStore(all));
+    }
+
+    _syncFromStore(all) {
+        this.dynamicWaitlists = all.map(w => ({
+            id: w.id,
+            name: w.name,
+            territory: w.territory,
+            workTypes: w.workTypes || [],
+            resources: w.resources || [],
+            participants: [],
+            openSections: [],
+            topics: null,
+        }));
     }
 
     disconnectedCallback() {
         document.removeEventListener('click', this._handleDocClick, true);
+        if (this._unsubscribeStore) this._unsubscribeStore();
     }
 
     @track selectedBranch = 'Market St Branch';
