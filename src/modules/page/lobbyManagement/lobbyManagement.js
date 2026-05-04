@@ -770,18 +770,20 @@ export default class LobbyManagement extends LightningElement {
 
     handleDynQueueCheckIn(event) {
         const id = event.currentTarget.dataset.id;
-        if (this.activeDynWlId === id) {
-            this.activeDynWlId = null;
-        } else {
-            this.activeDynWlId = id;
-            // Pre-select first topic
+        const opening = this.activeDynWlId !== id;
+        // Write activeDynWlId first so dynCheckinTopicOptions resolves correctly
+        this.activeDynWlId = opening ? id : null;
+        if (opening) {
             const opts = this.dynCheckinTopicOptions;
             this.dynCiTopic = opts.length ? opts[0].value : '';
         }
+        // Force @track mutation so enrichedDynamicWaitlists getter re-evaluates
+        this.dynamicWaitlists = [...this.dynamicWaitlists];
     }
 
     handleCloseDynCheckinComposer() {
         this.activeDynWlId = null;
+        this.dynamicWaitlists = [...this.dynamicWaitlists];
     }
 
     handleDynCiGuestTypeChange(event) { this.dynCiGuestType = event.target.value; }
@@ -864,6 +866,7 @@ export default class LobbyManagement extends LightningElement {
         this.dynCiResource = '';
         this.dynCiDesc = '';
         this.activeDynWlId = null;
+        this.dynamicWaitlists = [...this.dynamicWaitlists];
         this._showToast(`${participantName} was added to the waitlist ${wl.name}.`);
     }
 
