@@ -1,5 +1,5 @@
 import { LightningElement, track } from 'lwc';
-import { addWaitlist } from 'data/waitlistStore';
+import { addWaitlist, getRows, setRows } from 'data/waitlistStore';
 
 const COLUMNS = [
     {
@@ -127,7 +127,7 @@ export default class WaitlistManagement extends LightningElement {
     @track viewDropdownOpen     = false;
     @track viewSearch           = '';
     @track searchTerm           = '';
-    @track rows                 = [...SEED_ROWS];
+    @track rows                 = getRows() ?? [...SEED_ROWS];
 
     // Creator panel
     @track showCreator          = false;
@@ -400,6 +400,9 @@ export default class WaitlistManagement extends LightningElement {
             },
         ];
 
+        // Persist rows so they survive tab navigation
+        setRows(this.rows);
+
         // Push to the shared in-memory store so Lobby Management picks it up instantly
         addWaitlist({
             id,
@@ -420,6 +423,7 @@ export default class WaitlistManagement extends LightningElement {
         const row      = event.detail.row;
         if (name === 'delete') {
             this.rows = this.rows.filter((r) => r.id !== row.id);
+            setRows(this.rows);
             this._toast(`"${row.name}" deleted.`);
         }
     }
