@@ -13,7 +13,6 @@
                         alternative-text="Waitlists">
                     </lightning-icon>
                     <h1 class="wl-page-header__title slds-m-right_xx-small">{currentView}</h1>
-                    <!-- Custom view-switcher button -->
                     <div class="wl-view-trigger-wrap">
                         <button
                             class="wl-view-trigger"
@@ -23,7 +22,6 @@
                             title="Switch list view">
                             <lightning-icon icon-name="utility:down" size="xx-small" alternative-text=""></lightning-icon>
                         </button>
-                        <!-- View dropdown panel -->
                         <template lwc:if={viewDropdownOpen}>
                             <div class="wl-view-dropdown" role="listbox">
                                 <div class="wl-view-dropdown__search-wrap">
@@ -37,12 +35,7 @@
                                 </div>
                                 <div class="wl-view-dropdown__section-label">Recent List Views</div>
                                 <template for:each={recentListViews} for:item="v">
-                                    <button
-                                        key={v.value}
-                                        class={v.itemClass}
-                                        role="option"
-                                        data-value={v.value}
-                                        onclick={handleViewSelect}>
+                                    <button key={v.value} class={v.itemClass} role="option" data-value={v.value} onclick={handleViewSelect}>
                                         <template lwc:if={v.selected}>
                                             <lightning-icon icon-name="utility:check" size="xx-small" class="wl-view-dropdown__check" alternative-text="Selected"></lightning-icon>
                                         </template>
@@ -54,12 +47,7 @@
                                 </template>
                                 <div class="wl-view-dropdown__section-label">All Other Lists</div>
                                 <template for:each={otherListViews} for:item="v">
-                                    <button
-                                        key={v.value}
-                                        class={v.itemClass}
-                                        role="option"
-                                        data-value={v.value}
-                                        onclick={handleViewSelect}>
+                                    <button key={v.value} class={v.itemClass} role="option" data-value={v.value} onclick={handleViewSelect}>
                                         <template lwc:if={v.selected}>
                                             <lightning-icon icon-name="utility:check" size="xx-small" class="wl-view-dropdown__check" alternative-text="Selected"></lightning-icon>
                                         </template>
@@ -86,7 +74,7 @@
             </div>
         </div>
 
-        <!-- Toolbar: single row — meta left, search+icons right, all vertically centred -->
+        <!-- Toolbar -->
         <div class="wl-toolbar">
             <span class="wl-toolbar__meta-text">{metaLine}</span>
             <div class="wl-toolbar__right">
@@ -112,7 +100,7 @@
             </div>
         </div>
 
-        <!-- Datatable — edge-to-edge, no card wrapper -->
+        <!-- Datatable -->
         <div class="wl-table-container">
             <lightning-datatable
                 key-field="id"
@@ -124,28 +112,226 @@
 
     </div>
 
-    <!-- New Waitlist modal -->
-    <template lwc:if={showNewModal}>
-        <div class="wl-modal-backdrop"></div>
-        <div class="wl-modal-container">
-            <div class="wl-modal" role="dialog" aria-modal="true" aria-labelledby="newWlModalTitle">
-                <div class="wl-modal__header">
-                    <h2 id="newWlModalTitle" class="wl-modal__title">New Waitlist</h2>
-                </div>
-                <div class="wl-modal__body">
-                    <lightning-input label="Name"              class="slds-m-bottom_small"  value={newWl.name}              onchange={handleNewWlField} data-field="name"></lightning-input>
-                    <lightning-input label="Service Territory" class="slds-m-bottom_small"  value={newWl.territory}         onchange={handleNewWlField} data-field="territory"></lightning-input>
-                    <lightning-input type="checkbox" label="Active"              checked={newWl.active}          onchange={handleNewWlCheck} data-field="active"           class="slds-m-bottom_small"></lightning-input>
-                    <lightning-input type="checkbox" label="Allow Self Check In" checked={newWl.allowSelfCheckin} onchange={handleNewWlCheck} data-field="allowSelfCheckin" class="slds-m-bottom_small"></lightning-input>
-                </div>
-                <div class="wl-modal__footer">
-                    <lightning-button label="Cancel" onclick={handleNewCancel}></lightning-button>
-                    <lightning-button label="Save"   variant="brand" onclick={handleNewSave} class="slds-m-left_x-small"></lightning-button>
-                </div>
+    <!-- ── Slide-in Creator Panel ─────────────────────────────── -->
+    <template lwc:if={showCreator}>
+
+        <!-- Scrim (click to close) -->
+        <div class="wl-creator-scrim" onclick={handleCreatorCancel}></div>
+
+        <!-- Panel -->
+        <div class={creatorPanelClass} role="dialog" aria-modal="true" aria-labelledby="creatorTitle">
+
+            <!-- Header -->
+            <div class="wl-creator__header">
+                <h2 id="creatorTitle" class="wl-creator__title">Create Waitlist</h2>
+                <button class="wl-creator__close" onclick={handleCreatorCancel} aria-label="Close">
+                    <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+                </button>
             </div>
-            <button class="wl-modal__close" onclick={handleNewCancel} aria-label="Close">
-                <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: var(--slds-g-color-brand-base-50, #0176d3);"></lightning-icon>
-            </button>
-        </div>
+
+            <!-- Scrollable body -->
+            <div class="wl-creator__body">
+
+                <!-- Waitlist Name -->
+                <div class="wl-creator__field-group">
+                    <label class="wl-creator__label wl-creator__label--required" for="cr-name">Waitlist Name</label>
+                    <input
+                        id="cr-name"
+                        class={nameInputClass}
+                        type="text"
+                        placeholder="e.g. General Banking"
+                        value={creator.name}
+                        oninput={handleCreatorName} />
+                    <template lwc:if={nameError}>
+                        <p class="wl-creator__error">Waitlist Name is required.</p>
+                    </template>
+                </div>
+
+                <!-- Service Territory -->
+                <div class="wl-creator__field-group">
+                    <label class="wl-creator__label wl-creator__label--required" for="cr-territory">Service Territory</label>
+                    <div class="wl-creator__territory-wrap">
+                        <input
+                            id="cr-territory"
+                            class={territoryInputClass}
+                            type="text"
+                            placeholder="Search territories..."
+                            value={creator.territorySearch}
+                            oninput={handleTerritorySearch}
+                            onfocus={handleTerritoryFocus}
+                            autocomplete="off" />
+                        <lightning-icon icon-name="utility:search" size="x-small" class="wl-creator__territory-icon" alternative-text=""></lightning-icon>
+                        <template lwc:if={showTerritoryDropdown}>
+                            <div class="wl-creator__territory-dropdown">
+                                <div class="wl-creator__territory-section">Recent Items</div>
+                                <template for:each={filteredTerritories} for:item="t">
+                                    <button
+                                        key={t.value}
+                                        class="wl-creator__territory-item"
+                                        data-value={t.value}
+                                        data-label={t.label}
+                                        onclick={handleTerritorySelect}>
+                                        <lightning-icon icon-name="standard:service_territory" size="x-small" class="wl-creator__territory-item-icon" alternative-text=""></lightning-icon>
+                                        <span class="wl-creator__territory-item-text">
+                                            <span class="wl-creator__territory-item-name">{t.label}</span>
+                                            <span class="wl-creator__territory-item-meta">{t.meta}</span>
+                                        </span>
+                                    </button>
+                                </template>
+                                <template lwc:if={noTerritoryResults}>
+                                    <div class="wl-creator__territory-empty">No matches found.</div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                    <template lwc:if={territoryError}>
+                        <p class="wl-creator__error">Service Territory is required.</p>
+                    </template>
+                </div>
+
+                <!-- Description -->
+                <div class="wl-creator__field-group">
+                    <label class="wl-creator__label" for="cr-desc">Description</label>
+                    <textarea
+                        id="cr-desc"
+                        class="wl-creator__textarea"
+                        placeholder="Optional description..."
+                        value={creator.description}
+                        oninput={handleCreatorDesc}
+                        rows="3">
+                    </textarea>
+                </div>
+
+                <!-- Work Types -->
+                <div class="wl-creator__field-group">
+                    <div class="wl-creator__chip-header">
+                        <label class="wl-creator__label">Work Types</label>
+                        <div class="wl-creator__add-wrap">
+                            <button class="wl-creator__add-btn" onclick={handleWorkTypeToggle} aria-label="Add work type">
+                                <lightning-icon icon-name="utility:add" size="x-small" alternative-text=""></lightning-icon>
+                                <span>Add</span>
+                            </button>
+                            <template lwc:if={showWorkTypeDropdown}>
+                                <div class="wl-creator__chip-dropdown">
+                                    <template for:each={availableWorkTypes} for:item="wt">
+                                        <button
+                                            key={wt.value}
+                                            class="wl-creator__chip-option"
+                                            data-value={wt.value}
+                                            data-label={wt.label}
+                                            onclick={handleAddWorkType}>
+                                            {wt.label}
+                                        </button>
+                                    </template>
+                                    <template lwc:if={noAvailableWorkTypes}>
+                                        <div class="wl-creator__chip-option wl-creator__chip-option--empty">All work types added</div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="wl-creator__chip-list">
+                        <template for:each={creator.workTypes} for:item="wt">
+                            <span key={wt.value} class="wl-creator__chip">
+                                <lightning-icon icon-name="utility:work_order" size="xx-small" class="wl-creator__chip-icon" alternative-text=""></lightning-icon>
+                                {wt.label}
+                                <button class="wl-creator__chip-remove" data-value={wt.value} onclick={handleRemoveWorkType} aria-label="Remove">
+                                    <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Remove"></lightning-icon>
+                                </button>
+                            </span>
+                        </template>
+                        <template lwc:if={noWorkTypes}>
+                            <span class="wl-creator__chip-placeholder">No work types selected</span>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Service Resources -->
+                <div class="wl-creator__field-group">
+                    <div class="wl-creator__chip-header">
+                        <label class="wl-creator__label">Service Resources</label>
+                        <div class="wl-creator__add-wrap">
+                            <button class="wl-creator__add-btn" onclick={handleResourceToggle} aria-label="Add resource">
+                                <lightning-icon icon-name="utility:add" size="x-small" alternative-text=""></lightning-icon>
+                                <span>Add</span>
+                            </button>
+                            <template lwc:if={showResourceDropdown}>
+                                <div class="wl-creator__chip-dropdown">
+                                    <template for:each={availableResources} for:item="r">
+                                        <button
+                                            key={r.value}
+                                            class="wl-creator__chip-option"
+                                            data-value={r.value}
+                                            data-label={r.label}
+                                            onclick={handleAddResource}>
+                                            <lightning-icon icon-name="standard:service_resource" size="x-small" class="wl-creator__chip-option-icon" alternative-text=""></lightning-icon>
+                                            {r.label}
+                                        </button>
+                                    </template>
+                                    <template lwc:if={noAvailableResources}>
+                                        <div class="wl-creator__chip-option wl-creator__chip-option--empty">All resources added</div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="wl-creator__chip-list">
+                        <template for:each={creator.resources} for:item="r">
+                            <span key={r.value} class="wl-creator__chip wl-creator__chip--resource">
+                                <lightning-icon icon-name="standard:service_resource" size="xx-small" class="wl-creator__chip-icon" alternative-text=""></lightning-icon>
+                                {r.label}
+                                <button class="wl-creator__chip-remove" data-value={r.value} onclick={handleRemoveResource} aria-label="Remove">
+                                    <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Remove"></lightning-icon>
+                                </button>
+                            </span>
+                        </template>
+                        <template lwc:if={noResources}>
+                            <span class="wl-creator__chip-placeholder">No resources selected</span>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Toggles -->
+                <div class="wl-creator__field-group wl-creator__field-group--toggles">
+                    <div class="wl-creator__toggle-row">
+                        <div class="wl-creator__toggle-info">
+                            <span class="wl-creator__toggle-label">Active</span>
+                            <span class="wl-creator__toggle-desc">Waitlist is live and accepting participants</span>
+                        </div>
+                        <button
+                            class={activeToggleClass}
+                            role="switch"
+                            aria-checked={creator.active}
+                            onclick={handleToggleActive}
+                            title="Toggle Active">
+                            <span class="wl-creator__toggle-knob"></span>
+                        </button>
+                    </div>
+                    <div class="wl-creator__toggle-row">
+                        <div class="wl-creator__toggle-info">
+                            <span class="wl-creator__toggle-label">Enable Self Check-In</span>
+                            <span class="wl-creator__toggle-desc">Customers can check in via public link</span>
+                        </div>
+                        <button
+                            class={selfCheckinToggleClass}
+                            role="switch"
+                            aria-checked={creator.selfCheckin}
+                            onclick={handleToggleSelfCheckin}
+                            title="Toggle Self Check-In">
+                            <span class="wl-creator__toggle-knob"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </div><!-- /body -->
+
+            <!-- Footer -->
+            <div class="wl-creator__footer">
+                <lightning-button label="Cancel" variant="neutral" onclick={handleCreatorCancel}></lightning-button>
+                <lightning-button label="Create Waitlist" variant="brand" onclick={handleCreatorSave}></lightning-button>
+            </div>
+
+        </div><!-- /panel -->
+
     </template>
 </template>

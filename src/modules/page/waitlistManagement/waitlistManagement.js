@@ -56,7 +56,6 @@ const COLUMNS = [
 const SEED_ROWS = [
     {
         id: 'wl-1',
-        rowNum: '1',
         name: 'General Banking',
         nameUrl: '#',
         territory: 'Market St Branch',
@@ -67,7 +66,6 @@ const SEED_ROWS = [
     },
     {
         id: 'wl-2',
-        rowNum: '2',
         name: 'Wealth Management',
         nameUrl: '#',
         territory: 'Market St Branch',
@@ -78,31 +76,71 @@ const SEED_ROWS = [
     },
 ];
 
+const ALL_TERRITORIES = [
+    { value: 'dc',          label: 'DC',                  meta: 'Working Hours 10 • Open Mon–Fri' },
+    { value: 'market-st',   label: 'Market St Branch',    meta: 'Working Hours 10 • Open Mon–Fri' },
+    { value: 'mission-st',  label: 'Mission St Branch',   meta: 'Working Hours 10 • Open Mon–Fri' },
+    { value: 'q4-01',       label: 'Q4 Branch 01',        meta: 'Working Hours 10 • Open Mon–Fri' },
+    { value: 'q4-03',       label: 'Q4 Branch 03',        meta: 'Working Hours 10 • Open Mon–Fri' },
+    { value: 'virtual',     label: 'Virtual Retail Banking', meta: 'Working Hours 10 • Virtual' },
+];
+
+const ALL_WORK_TYPES = [
+    { value: 'general-banking',    label: 'General Banking' },
+    { value: 'wealth-mgmt',        label: 'Wealth Management' },
+    { value: 'insurance-planning', label: 'Insurance Planning' },
+    { value: 'savings-account',    label: 'Savings Account' },
+    { value: 'investment-planning', label: 'Investment Planning' },
+];
+
+const ALL_RESOURCES = [
+    { value: 'adam-milne',  label: 'Adam Milne' },
+    { value: 'tom-sawyer',  label: 'Tom Sawyer' },
+    { value: 'rachel-adams', label: 'Rachel Adams' },
+    { value: 'michael-scott', label: 'Michael Scott' },
+];
+
 const RECENT_VIEWS = [
-    { label: 'All Waitlists',              value: 'All Waitlists' },
-    { label: 'My Waitlists',               value: 'My Waitlists' },
+    { label: 'All Waitlists',                value: 'All Waitlists' },
+    { label: 'My Waitlists',                 value: 'My Waitlists' },
     { label: 'Recently Viewed (Pinned list)', value: 'Recently Viewed (Pinned list)' },
 ];
 const OTHER_VIEWS = [
-    { label: 'Recently Viewed Waitlists',  value: 'Recently Viewed Waitlists' },
+    { label: 'Recently Viewed Waitlists', value: 'Recently Viewed Waitlists' },
 ];
 
+const EMPTY_CREATOR = () => ({
+    name: '',
+    territorySearch: '',
+    territoryValue: '',
+    territoryLabel: '',
+    description: '',
+    workTypes: [],
+    resources: [],
+    active: true,
+    selfCheckin: false,
+});
+
 export default class WaitlistManagement extends LightningElement {
-    @track currentView       = 'All Waitlists';
-    @track viewDropdownOpen  = false;
-    @track viewSearch        = '';
-    @track searchTerm        = '';
-    @track showNewModal      = false;
-    @track rows              = [...SEED_ROWS];
-    @track newWl = {
-        name: '',
-        territory: '',
-        active: false,
-        allowSelfCheckin: false,
-    };
+    @track currentView          = 'All Waitlists';
+    @track viewDropdownOpen     = false;
+    @track viewSearch           = '';
+    @track searchTerm           = '';
+    @track rows                 = [...SEED_ROWS];
+
+    // Creator panel
+    @track showCreator          = false;
+    @track creatorVisible       = false; // drives slide-in animation
+    @track creator              = EMPTY_CREATOR();
+    @track showTerritoryDropdown = false;
+    @track showWorkTypeDropdown  = false;
+    @track showResourceDropdown  = false;
+    @track nameError            = false;
+    @track territoryError       = false;
 
     columns = COLUMNS;
 
+    // ── View switcher ──────────────────────────────────────────
     _buildViewList(list) {
         const term = (this.viewSearch || '').toLowerCase();
         return list
@@ -117,6 +155,7 @@ export default class WaitlistManagement extends LightningElement {
     get recentListViews() { return this._buildViewList(RECENT_VIEWS); }
     get otherListViews()  { return this._buildViewList(OTHER_VIEWS);  }
 
+    // ── Table data ─────────────────────────────────────────────
     get metaLine() {
         const n = this.filteredRows.length;
         return `${n} item${n !== 1 ? 's' : ''} • Sorted by Name • Updated a few seconds ago`;
@@ -134,10 +173,84 @@ export default class WaitlistManagement extends LightningElement {
         return base.map((r, i) => ({ ...r, rowNum: String(i + 1) }));
     }
 
+    // ── Creator computed ───────────────────────────────────────
+    get creatorPanelClass() {
+        return `wl-creator${this.creatorVisible ? ' wl-creator--open' : ''}`;
+    }
+
+    get nameInputClass() {
+        return `wl-creator__input${this.nameError ? ' wl-creator__input--error' : ''}`;
+    }
+
+    get territoryInputClass() {
+        return `wl-creator__input wl-creator__input--territory${this.territoryError ? ' wl-creator__input--error' : ''}`;
+    }
+
+    get filteredTerritories() {
+        const term = (this.creator.territorySearch || '').toLowerCase();
+        return ALL_TERRITORIES.filter(
+            (t) => !term || t.label.toLowerCase().includes(term)
+        );
+    }
+
+    get noTerritoryResults() {
+        return this.filteredTerritories.length === 0;
+    }
+
+    get availableWorkTypes() {
+        const selected = new Set(this.creator.workTypes.map((w) => w.value));
+        return ALL_WORK_TYPES.filter((w) => !selected.has(w.value));
+    }
+
+    get noAvailableWorkTypes() {
+        return this.availableWorkTypes.length === 0;
+    }
+
+    get noWorkTypes() {
+        return this.creator.workTypes.length === 0;
+    }
+
+    get availableResources() {
+        const selected = new Set(this.creator.resources.map((r) => r.value));
+        return ALL_RESOURCES.filter((r) => !selected.has(r.value));
+    }
+
+    get noAvailableResources() {
+        return this.availableResources.length === 0;
+    }
+
+    get noResources() {
+        return this.creator.resources.length === 0;
+    }
+
+    get activeToggleClass() {
+        return `wl-creator__toggle${this.creator.active ? ' wl-creator__toggle--on' : ''}`;
+    }
+
+    get selfCheckinToggleClass() {
+        return `wl-creator__toggle${this.creator.selfCheckin ? ' wl-creator__toggle--on' : ''}`;
+    }
+
+    // ── Lifecycle ──────────────────────────────────────────────
     connectedCallback() {
         this._docClick = (e) => {
+            // close view dropdown
             if (!this.template.querySelector('.wl-view-trigger-wrap')?.contains(e.target)) {
                 this.viewDropdownOpen = false;
+            }
+            // close territory dropdown if clicking outside it
+            if (!this.template.querySelector('.wl-creator__territory-wrap')?.contains(e.target)) {
+                this.showTerritoryDropdown = false;
+            }
+            // close work-type dropdown
+            const wtWrap = this.template.querySelectorAll('.wl-creator__add-wrap')[0];
+            if (wtWrap && !wtWrap.contains(e.target)) {
+                this.showWorkTypeDropdown = false;
+            }
+            // close resource dropdown
+            const resWrap = this.template.querySelectorAll('.wl-creator__add-wrap')[1];
+            if (resWrap && !resWrap.contains(e.target)) {
+                this.showResourceDropdown = false;
             }
         };
         document.addEventListener('click', this._docClick);
@@ -147,6 +260,7 @@ export default class WaitlistManagement extends LightningElement {
         document.removeEventListener('click', this._docClick);
     }
 
+    // ── View switcher handlers ─────────────────────────────────
     handleViewTrigger(event) {
         event.stopPropagation();
         this.viewDropdownOpen = !this.viewDropdownOpen;
@@ -166,44 +280,127 @@ export default class WaitlistManagement extends LightningElement {
         this.searchTerm = event.target.value;
     }
 
+    // ── Creator open/close ─────────────────────────────────────
     handleNew() {
-        this.newWl = { name: '', territory: '', active: false, allowSelfCheckin: false };
-        this.showNewModal = true;
+        this.creator = EMPTY_CREATOR();
+        this.nameError = false;
+        this.territoryError = false;
+        this.showCreator = true;
+        // next tick: trigger slide-in animation
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => { this.creatorVisible = true; }, 16);
     }
 
-    handleNewCancel() {
-        this.showNewModal = false;
+    handleCreatorCancel() {
+        this.creatorVisible = false;
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => { this.showCreator = false; }, 300);
     }
 
-    handleNewWlField(event) {
-        const field = event.currentTarget.dataset.field;
-        this.newWl = { ...this.newWl, [field]: event.target.value };
+    // ── Creator field handlers ─────────────────────────────────
+    handleCreatorName(event) {
+        this.creator = { ...this.creator, name: event.target.value };
+        if (event.target.value.trim()) this.nameError = false;
     }
 
-    handleNewWlCheck(event) {
-        const field = event.currentTarget.dataset.field;
-        this.newWl = { ...this.newWl, [field]: event.target.checked };
+    handleCreatorDesc(event) {
+        this.creator = { ...this.creator, description: event.target.value };
     }
 
-    handleNewSave() {
-        if (!this.newWl.name.trim()) return;
+    handleTerritoryFocus() {
+        this.showTerritoryDropdown = true;
+    }
+
+    handleTerritorySearch(event) {
+        this.creator = { ...this.creator, territorySearch: event.target.value, territoryValue: '', territoryLabel: '' };
+        this.showTerritoryDropdown = true;
+        if (event.target.value.trim()) this.territoryError = false;
+    }
+
+    handleTerritorySelect(event) {
+        event.stopPropagation();
+        const value = event.currentTarget.dataset.value;
+        const label = event.currentTarget.dataset.label;
+        this.creator = { ...this.creator, territoryValue: value, territoryLabel: label, territorySearch: label };
+        this.showTerritoryDropdown = false;
+        this.territoryError = false;
+    }
+
+    // ── Work Types ─────────────────────────────────────────────
+    handleWorkTypeToggle(event) {
+        event.stopPropagation();
+        this.showWorkTypeDropdown = !this.showWorkTypeDropdown;
+        this.showResourceDropdown = false;
+    }
+
+    handleAddWorkType(event) {
+        event.stopPropagation();
+        const value = event.currentTarget.dataset.value;
+        const label = event.currentTarget.dataset.label;
+        this.creator = { ...this.creator, workTypes: [...this.creator.workTypes, { value, label }] };
+        this.showWorkTypeDropdown = false;
+    }
+
+    handleRemoveWorkType(event) {
+        const value = event.currentTarget.dataset.value;
+        this.creator = { ...this.creator, workTypes: this.creator.workTypes.filter((w) => w.value !== value) };
+    }
+
+    // ── Service Resources ──────────────────────────────────────
+    handleResourceToggle(event) {
+        event.stopPropagation();
+        this.showResourceDropdown = !this.showResourceDropdown;
+        this.showWorkTypeDropdown = false;
+    }
+
+    handleAddResource(event) {
+        event.stopPropagation();
+        const value = event.currentTarget.dataset.value;
+        const label = event.currentTarget.dataset.label;
+        this.creator = { ...this.creator, resources: [...this.creator.resources, { value, label }] };
+        this.showResourceDropdown = false;
+    }
+
+    handleRemoveResource(event) {
+        const value = event.currentTarget.dataset.value;
+        this.creator = { ...this.creator, resources: this.creator.resources.filter((r) => r.value !== value) };
+    }
+
+    // ── Toggles ────────────────────────────────────────────────
+    handleToggleActive() {
+        this.creator = { ...this.creator, active: !this.creator.active };
+    }
+
+    handleToggleSelfCheckin() {
+        this.creator = { ...this.creator, selfCheckin: !this.creator.selfCheckin };
+    }
+
+    // ── Save ───────────────────────────────────────────────────
+    handleCreatorSave() {
+        this.nameError     = !this.creator.name.trim();
+        this.territoryError = !this.creator.territoryValue;
+        if (this.nameError || this.territoryError) return;
+
         const id = `wl-${Date.now()}`;
         this.rows = [
             ...this.rows,
             {
                 id,
-                name: this.newWl.name,
+                name: this.creator.name.trim(),
                 nameUrl: '#',
-                territory: this.newWl.territory || '—',
+                territory: this.creator.territoryLabel,
                 territoryUrl: '#',
-                active: this.newWl.active,
-                allowSelfCheckin: this.newWl.allowSelfCheckin,
+                active: this.creator.active,
+                allowSelfCheckin: this.creator.selfCheckin,
+                selfCheckinUrl: null,
             },
         ];
-        this.showNewModal = false;
-        this._toast(`Waitlist "${this.newWl.name}" created.`);
+
+        this.handleCreatorCancel();
+        this._toast(`Waitlist "${this.creator.name.trim()}" created successfully.`);
     }
 
+    // ── Row actions ────────────────────────────────────────────
     handleRowAction(event) {
         const { name } = event.detail.action;
         const row      = event.detail.row;
@@ -211,7 +408,6 @@ export default class WaitlistManagement extends LightningElement {
             this.rows = this.rows.filter((r) => r.id !== row.id);
             this._toast(`"${row.name}" deleted.`);
         }
-        // edit: expand later
     }
 
     _toast(message) {
