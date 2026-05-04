@@ -873,66 +873,55 @@
                             <div class="lobby-card__separator-slot" aria-hidden="true">
                                 <div class="lobby-card__separator-line"></div>
                             </div>
-                            <!-- Body: participants accordion or empty state -->
+                            <!-- Body: flat participant list or empty state -->
                             <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
-                                <template lwc:if={wl.topics}>
-                                    <lightning-accordion
-                                        class="lobby-queue-accordion"
-                                        allow-multiple-sections-open
-                                        active-section-name={wl.openSections}>
-                                        <template for:each={wl.topics} for:item="topic">
-                                            <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
-                                                <template lwc:if={topic.participants.length}>
-                                                    <template for:each={topic.participants} for:item="row">
-                                                        <div key={row.id} class="lobby-queue-participant slds-m-top_small">
-                                                            <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                                <div class="lobby-queue-participant__identity">
-                                                                    <div class="lobby-queue-participant__title-row">
-                                                                        <span class="lobby-queue-participant__title slds-truncate">
-                                                                            <span class="lobby-queue-participant__link">{row.linkLabel}</span>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
-                                                                </div>
-                                                                <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
-                                                                    <div class="lobby-row-menu-wrap">
-                                                                        <lightning-button-icon
-                                                                            icon-name="utility:down"
-                                                                            variant="border-filled"
-                                                                            alternative-text="Participant actions"
-                                                                            title="Participant actions"
-                                                                            data-id={row.id}
-                                                                            onclick={handleQueueParticipantMenu}>
-                                                                        </lightning-button-icon>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
-                                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                                    <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-                                                                        <lightning-icon class="lobby-appt__clock-icon slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
-                                                                        <span class="lobby-appt__slot slds-truncate">{row.slot}</span>
-                                                                    </div>
-                                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">Checked In</span>
-                                                                    <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                                        <lightning-icon class="lobby-appt__wait-clock slds-m-right_xx-small" icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
-                                                                        <span class="lobby-appt__wait-label">Wait Time:</span>
-                                                                        <span class="lobby-appt__wait-time slds-m-left_xx-small">{row.waitTime}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                                </template>
-                                                <template lwc:else>
-                                                    <div class="lobby-empty-state">
-                                                        <p class="lobby-empty-state__title">No participants yet</p>
-                                                        <p class="lobby-empty-state__body">Use Check In to add someone to this waitlist.</p>
+                                <template lwc:if={wl.hasParticipants}>
+                                    <template for:each={wl.allParticipants} for:item="row">
+                                        <div key={row.id} class="lobby-queue-participant slds-m-top_small">
+                                            <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                <div class="lobby-queue-participant__identity">
+                                                    <div class="lobby-queue-participant__title-row">
+                                                        <span class="lobby-queue-participant__title slds-truncate">
+                                                            <span class="lobby-queue-participant__link">{row.linkLabel}</span>
+                                                        </span>
                                                     </div>
-                                                </template>
-                                            </lightning-accordion-section>
-                                        </template>
-                                    </lightning-accordion>
+                                                    <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
+                                                </div>
+                                                <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
+                                                    <div class="lobby-row-menu-wrap">
+                                                        <lightning-button-icon
+                                                            icon-name="utility:down"
+                                                            variant="border-filled"
+                                                            alternative-text="Participant actions"
+                                                            title="Participant actions"
+                                                            data-id={row.id}
+                                                            onclick={handleQueueParticipantMenu}>
+                                                        </lightning-button-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                    <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                        <lightning-icon class="lobby-appt__clock-icon slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                        <span class="lobby-appt__slot slds-truncate">{row.slot}</span>
+                                                    </div>
+                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">Checked In</span>
+                                                    <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                        <lightning-icon class="lobby-appt__wait-clock slds-m-right_xx-small" icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                        <span class="lobby-appt__wait-label">Wait Time:</span>
+                                                        <span class="lobby-appt__wait-time slds-m-left_xx-small">{row.waitTime}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template lwc:else>
+                                    <div class="lobby-empty-state">
+                                        <p class="lobby-empty-state__title">No participants yet</p>
+                                        <p class="lobby-empty-state__body">Use Check In to add someone to this waitlist.</p>
+                                    </div>
                                 </template>
                             </div>
 

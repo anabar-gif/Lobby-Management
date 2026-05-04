@@ -740,18 +740,21 @@ export default class LobbyManagement extends LightningElement {
         return this.dynamicWaitlists.find(w => w.id === this.activeDynWlId) || null;
     }
 
-    /** Returns dynamicWaitlists enriched with a `topics` fallback and `showCheckinComposer` flag */
+    /** Returns dynamicWaitlists enriched with flat participant list and composer flag */
     get enrichedDynamicWaitlists() {
         return this.dynamicWaitlists.map(w => {
             const topics = w.topics && w.topics.length
                 ? w.topics
-                : [{ id: `${w.id}-default`, label: `${w.name} (0)`, participants: [] }];
-            const totalParticipants = topics.reduce((s, t) => s + t.participants.length, 0);
+                : [];
+            const allParticipants = topics.flatMap(t => t.participants);
+            const total = allParticipants.length;
             return {
                 ...w,
                 topics,
+                allParticipants,
+                hasParticipants: total > 0,
                 showCheckinComposer: this.activeDynWlId === w.id,
-                metaLeft: `Showing ${totalParticipants} of ${totalParticipants} Items • Updated just now`,
+                metaLeft: `Showing ${total} of ${total} Items • Updated just now`,
                 metaRight: 'Total Appointment Duration: 0 hr 0 min',
             };
         });
