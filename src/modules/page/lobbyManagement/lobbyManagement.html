@@ -919,8 +919,44 @@
                                 </template>
                                 <template lwc:else>
                                     <div class="lobby-empty-state">
-                                        <p class="lobby-empty-state__title">No participants yet</p>
-                                        <p class="lobby-empty-state__body">Use Check In to add someone to this waitlist.</p>
+                                        <div class="lobby-empty-state__illustration" aria-hidden="true">
+                                            <svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" class="lobby-empty-state__svg">
+                                                <!-- Ground line -->
+                                                <line x1="20" y1="128" x2="200" y2="128" stroke="#b8dff5" stroke-width="2" stroke-linecap="round"/>
+                                                <!-- Sun -->
+                                                <circle cx="158" cy="38" r="22" fill="none" stroke="#b8dff5" stroke-width="2.5"/>
+                                                <circle cx="158" cy="38" r="14" fill="#c8e8f8"/>
+                                                <!-- Sun rings -->
+                                                <circle cx="158" cy="38" r="30" fill="none" stroke="#daeefa" stroke-width="1.5"/>
+                                                <circle cx="158" cy="38" r="38" fill="none" stroke="#e8f5fc" stroke-width="1"/>
+                                                <!-- Cloud 1 -->
+                                                <ellipse cx="100" cy="52" rx="18" ry="10" fill="#daeefa"/>
+                                                <ellipse cx="114" cy="48" rx="14" ry="10" fill="#daeefa"/>
+                                                <ellipse cx="86" cy="56" rx="12" ry="8" fill="#daeefa"/>
+                                                <!-- Cloud 2 (small) -->
+                                                <ellipse cx="52" cy="62" rx="11" ry="6" fill="#e8f5fc"/>
+                                                <ellipse cx="62" cy="59" rx="9" ry="6" fill="#e8f5fc"/>
+                                                <!-- Main cactus body -->
+                                                <rect x="96" y="72" width="14" height="56" rx="7" fill="#b8dff5"/>
+                                                <!-- Left arm -->
+                                                <rect x="82" y="88" width="14" height="8" rx="4" fill="#b8dff5"/>
+                                                <rect x="82" y="80" width="8" height="20" rx="4" fill="#b8dff5"/>
+                                                <!-- Right arm -->
+                                                <rect x="110" y="96" width="14" height="8" rx="4" fill="#b8dff5"/>
+                                                <rect x="116" y="88" width="8" height="20" rx="4" fill="#b8dff5"/>
+                                                <!-- Small cactus left -->
+                                                <rect x="58" y="106" width="8" height="22" rx="4" fill="#c8e8f8"/>
+                                                <rect x="52" y="112" width="8" height="6" rx="3" fill="#c8e8f8"/>
+                                                <!-- Small cactus right -->
+                                                <rect x="152" y="110" width="7" height="18" rx="3.5" fill="#c8e8f8"/>
+                                                <rect x="152" y="114" width="7" height="5" rx="2.5" fill="#c8e8f8"/>
+                                                <!-- Mountains -->
+                                                <polygon points="128,128 148,98 168,128" fill="none" stroke="#c8e8f8" stroke-width="2" stroke-linejoin="round"/>
+                                                <polygon points="142,128 158,106 174,128" fill="none" stroke="#daeefa" stroke-width="1.5" stroke-linejoin="round"/>
+                                            </svg>
+                                        </div>
+                                        <p class="lobby-empty-state__title">No participants found</p>
+                                        <p class="lobby-empty-state__body">There aren&apos;t any participants added to this waitlist.</p>
                                     </div>
                                 </template>
                             </div>

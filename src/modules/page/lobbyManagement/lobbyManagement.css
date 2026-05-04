@@ -113,23 +113,32 @@
     justify-content: center;
     padding: var(--slds-g-spacing-xxx-large, 3rem) var(--slds-g-spacing-large, 1.5rem);
     text-align: center;
-    gap: var(--slds-g-spacing-small, 0.75rem);
+    gap: var(--slds-g-spacing-x-small, 0.5rem);
 }
 
-.lobby-empty-state__icon {
-    opacity: 0.4;
+.lobby-empty-state__illustration {
+    width: 12rem;
+    margin-bottom: 0.5rem;
+}
+
+.lobby-empty-state__svg {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .lobby-empty-state__title {
     font-size: var(--slds-g-font-scale-3, 1rem);
     font-weight: 700;
-    color: var(--slds-g-color-neutral-base-50, #6b7280);
+    color: var(--slds-g-color-neutral-base-30, #374151);
+    margin: 0;
 }
 
 .lobby-empty-state__body {
     font-size: var(--slds-g-font-scale-neg-2, 0.8125rem);
-    color: var(--slds-g-color-neutral-base-60, #9ca3af);
+    color: var(--slds-g-color-neutral-base-50, #6b7280);
     max-width: 16rem;
+    margin: 0;
 }
 
 .lobby-card__body-scroll {
