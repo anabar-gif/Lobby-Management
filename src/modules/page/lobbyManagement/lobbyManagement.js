@@ -49,39 +49,10 @@ export default class LobbyManagement extends LightningElement {
             if (this.activeApptMenuId && !insideApptMenu) this.activeApptMenuId = null;
         };
         document.addEventListener('click', this._handleDocClick, true);
-
-        // Load any previously created waitlists from localStorage
-        this._loadDynamicWaitlists();
-
-        // Listen for new waitlists created while this component is mounted
-        this._handleStorage = (e) => {
-            if (e.key === 'lobby_dynamic_waitlists') {
-                this._loadDynamicWaitlists();
-            }
-        };
-        window.addEventListener('storage', this._handleStorage);
-    }
-
-    _loadDynamicWaitlists() {
-        try {
-            const data = JSON.parse(localStorage.getItem('lobby_dynamic_waitlists') || '[]');
-            this.dynamicWaitlists = data.map(w => ({
-                id: w.id,
-                name: w.name,
-                territory: w.territory,
-                workTypes: w.workTypes || [],
-                resources: w.resources || [],
-                participants: [],
-                openSections: [],
-            }));
-        } catch (e) {
-            this.dynamicWaitlists = [];
-        }
     }
 
     disconnectedCallback() {
         document.removeEventListener('click', this._handleDocClick, true);
-        window.removeEventListener('storage', this._handleStorage);
     }
 
     @track selectedBranch = 'Market St Branch';
@@ -718,6 +689,159 @@ export default class LobbyManagement extends LightningElement {
         this.ibCiDesc     = '';
         this.showCheckinComposerInvestment = false;
         this._showToast(`${participantName} was added to the waitlist Investment Banking.`);
+    }
+
+    // ── Dynamic waitlist check-in (shared state; only one open at a time) ──
+    @track activeDynWlId = null;   // id of the waitlist whose composer is open
+
+    @track dynCiGuestType  = 'existing';
+    @track dynCiTopic      = '';
+    @track dynCiResource   = '';
+    @track dynCiDesc       = '';
+    @track dynCiFirstName  = '';
+    @track dynCiLastName   = '';
+    @track dynCiContact    = '';
+    @track dynCiCompany    = '';
+    @track dynCiEmail      = '';
+    @track dynParticipantSearch = '';
+    @track showDynParticipantDropdown = false;
+    @track showDynParticipantTypeDropdown = false;
+    @track selectedDynParticipantType = 'Account';
+
+    get dynCiIsNewParticipant() { return this.dynCiGuestType === 'new'; }
+    get dynCiIsExisting()       { return this.dynCiGuestType === 'existing'; }
+
+    get filteredParticipantsDyn() {
+        const q = this.dynParticipantSearch.toLowerCase();
+        return this.participantItems.filter(p => !q || p.label.toLowerCase().includes(q));
+    }
+
+    get activeDynWl() {
+        return this.dynamicWaitlists.find(w => w.id === this.activeDynWlId) || null;
+    }
+
+    /** Returns dynamicWaitlists enriched with a `topics` fallback and `showCheckinComposer` flag */
+    get enrichedDynamicWaitlists() {
+        return this.dynamicWaitlists.map(w => {
+            const topics = w.topics && w.topics.length
+                ? w.topics
+                : [{ id: `${w.id}-default`, label: `${w.name} (0)`, participants: [] }];
+            const totalParticipants = topics.reduce((s, t) => s + t.participants.length, 0);
+            return {
+                ...w,
+                topics,
+                showCheckinComposer: this.activeDynWlId === w.id,
+                metaLeft: `Showing ${totalParticipants} of ${totalParticipants} Items • Updated just now`,
+                metaRight: 'Total Appointment Duration: 0 hr 0 min',
+            };
+        });
+    }
+
+    get dynCheckinTopicOptions() {
+        const wl = this.activeDynWl;
+        if (!wl || !wl.workTypes || !wl.workTypes.length) {
+            return [{ label: wl ? wl.name : 'General', value: 'general' }];
+        }
+        return wl.workTypes.map(t => ({ label: t, value: t.toLowerCase().replace(/\s+/g, '-') }));
+    }
+
+    handleDynQueueCheckIn(event) {
+        const id = event.currentTarget.dataset.id;
+        if (this.activeDynWlId === id) {
+            this.activeDynWlId = null;
+        } else {
+            this.activeDynWlId = id;
+            // Pre-select first topic
+            const opts = this.dynCheckinTopicOptions;
+            this.dynCiTopic = opts.length ? opts[0].value : '';
+        }
+    }
+
+    handleCloseDynCheckinComposer() {
+        this.activeDynWlId = null;
+    }
+
+    handleDynCiGuestTypeChange(event) { this.dynCiGuestType = event.target.value; }
+    handleDynCiTopicChange(event)     { this.dynCiTopic     = event.detail.value; }
+    handleDynCiResourceChange(event)  { this.dynCiResource  = event.detail.value; }
+    handleDynCiDescChange(event)      { this.dynCiDesc      = event.target.value; }
+    handleDynCiFirstNameChange(event) { this.dynCiFirstName = event.target.value; }
+    handleDynCiLastNameChange(event)  { this.dynCiLastName  = event.target.value; }
+    handleDynCiContactChange(event)   { this.dynCiContact   = event.target.value; }
+    handleDynCiCompanyChange(event)   { this.dynCiCompany   = event.target.value; }
+    handleDynCiEmailChange(event)     { this.dynCiEmail     = event.target.value; }
+
+    handleDynParticipantTypeToggle() {
+        this.showDynParticipantTypeDropdown = !this.showDynParticipantTypeDropdown;
+        this.showDynParticipantDropdown = false;
+    }
+    handleDynParticipantTypeBlur() {
+        setTimeout(() => { this.showDynParticipantTypeDropdown = false; }, 200);
+    }
+    handleDynParticipantTypeSelect(event) {
+        const opt = this.participantTypeOptions.find(o => o.id === event.currentTarget.dataset.id);
+        if (opt) this.selectedDynParticipantType = opt.label;
+        this.showDynParticipantTypeDropdown = false;
+    }
+    handleDynParticipantFocus() {
+        this.showDynParticipantDropdown = true;
+        this.showDynParticipantTypeDropdown = false;
+    }
+    handleDynParticipantInput(event) {
+        this.dynParticipantSearch = event.target.value;
+        this.showDynParticipantDropdown = true;
+    }
+    handleDynParticipantSelect(event) {
+        const item = this.participantItems.find(p => p.id === event.currentTarget.dataset.id);
+        if (item) this.dynParticipantSearch = item.label;
+        this.showDynParticipantDropdown = false;
+    }
+    handleDynParticipantBlur() {
+        setTimeout(() => { this.showDynParticipantDropdown = false; }, 200);
+    }
+
+    handleSubmitCheckinComposerDyn() {
+        const wl = this.activeDynWl;
+        if (!wl) return;
+        const participantName = this.dynCiIsNewParticipant
+            ? `${this.dynCiFirstName.trim()} ${this.dynCiLastName.trim()}`.trim() || 'New Participant'
+            : this.dynParticipantSearch.trim() || 'New Participant';
+        const resourceLabel = this._resourceValueToLabel(this.dynCiResource);
+        const topicLabel    = this.dynCheckinTopicOptions.find(o => o.value === this.dynCiTopic)?.label || this.dynCiTopic;
+
+        const newRow = {
+            id:         `dyn-new-${Date.now()}`,
+            ordinal:    '1.',
+            workItemId: this._nextWpId(),
+            linkLabel:  participantName,
+            topic:      `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
+            slot:       this._nowSlot(),
+            checkInTime: this._nowTime(),
+            waitTime:   '00 : 00 mins.',
+        };
+
+        // Ensure the waitlist has a topics array; add/update the default topic section
+        this.dynamicWaitlists = this.dynamicWaitlists.map(w => {
+            if (w.id !== wl.id) return w;
+            const existingTopics = w.topics || [{ id: `${w.id}-default`, label: `${w.name} (0)`, participants: [] }];
+            const updated = existingTopics.map((t, idx) => {
+                if (idx !== 0) return t;
+                const rows = [newRow, ...t.participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+                const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
+                return { ...t, participants: rows, label: `${labelBase} (${rows.length})` };
+            });
+            return { ...w, topics: updated, openSections: [updated[0].id] };
+        });
+
+        // Reset
+        this.dynParticipantSearch = '';
+        this.dynCiGuestType = 'existing';
+        this.dynCiFirstName = ''; this.dynCiLastName = ''; this.dynCiContact = '';
+        this.dynCiCompany = ''; this.dynCiEmail = '';
+        this.dynCiResource = '';
+        this.dynCiDesc = '';
+        this.activeDynWlId = null;
+        this._showToast(`${participantName} was added to the waitlist ${wl.name}.`);
     }
 
     handleQueueInfo() {

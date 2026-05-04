@@ -836,9 +836,10 @@
                 </lightning-layout-item>
 
                 <!-- Dynamic waitlists created from Waitlist Management -->
-                <template for:each={dynamicWaitlists} for:item="wl">
+                <template for:each={enrichedDynamicWaitlists} for:item="wl">
                     <lightning-layout-item key={wl.id} size="12" large-device-size="4" padding="horizontal-small">
                         <article class="lobby-card slds-card">
+                            <!-- Header -->
                             <div class="slds-card__header slds-grid lobby-queue-card__header">
                                 <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
                                     <div class="slds-media__figure">
@@ -846,25 +847,283 @@
                                     </div>
                                     <div class="slds-media__body">
                                         <h2 class="lobby-queue-title">{wl.name}</h2>
-                                        <p class="lobby-card__meta slds-m-top_xx-small">Showing 0 of 0 Items • Updated just now</p>
-                                        <p class="lobby-card__meta">Total Appointment Duration: 0 hr 0 min</p>
+                                        <p class="lobby-card__meta slds-m-top_xx-small">{wl.metaLeft}</p>
+                                        <p class="lobby-card__meta">{wl.metaRight}</p>
                                     </div>
                                 </header>
                                 <div class="slds-no-flex">
                                     <lightning-button-group class="lobby-queue-button-group">
-                                        <lightning-button label="Check In" variant="neutral" class="lobby-queue-checkin-btn"></lightning-button>
-                                        <lightning-button-icon icon-name="utility:info" variant="border-filled" size="small" alternative-text="Info"></lightning-button-icon>
-                                        <lightning-button-icon icon-name="utility:refresh" variant="border-filled" size="small" alternative-text="Refresh"></lightning-button-icon>
+                                        <lightning-button
+                                            label="Check In"
+                                            variant="neutral"
+                                            title="Check In"
+                                            data-id={wl.id}
+                                            onclick={handleDynQueueCheckIn}>
+                                        </lightning-button>
+                                        <lightning-button-icon
+                                            icon-name="utility:refresh"
+                                            variant="border-filled"
+                                            alternative-text="Refresh queue"
+                                            title="Refresh"
+                                            onclick={handleRefresh}>
+                                        </lightning-button-icon>
                                     </lightning-button-group>
                                 </div>
                             </div>
-                            <div class="slds-card__body slds-p-horizontal_medium slds-p-top_small">
-                                <div class="lobby-empty-state">
-                                    <lightning-icon icon-name="standard:empty" size="large" class="lobby-empty-state__icon" alternative-text=""></lightning-icon>
-                                    <p class="lobby-empty-state__title">No participants found</p>
-                                    <p class="lobby-empty-state__body">There aren't any participants added to this waitlist.</p>
-                                </div>
+                            <div class="lobby-card__separator-slot" aria-hidden="true">
+                                <div class="lobby-card__separator-line"></div>
                             </div>
+                            <!-- Body: participants accordion or empty state -->
+                            <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
+                                <template lwc:if={wl.topics}>
+                                    <lightning-accordion
+                                        class="lobby-queue-accordion"
+                                        allow-multiple-sections-open
+                                        active-section-name={wl.openSections}>
+                                        <template for:each={wl.topics} for:item="topic">
+                                            <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                                <template lwc:if={topic.participants.length}>
+                                                    <template for:each={topic.participants} for:item="row">
+                                                        <div key={row.id} class="lobby-queue-participant slds-m-top_small">
+                                                            <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                                <div class="lobby-queue-participant__identity">
+                                                                    <div class="lobby-queue-participant__title-row">
+                                                                        <span class="lobby-queue-participant__title slds-truncate">
+                                                                            <span class="lobby-queue-participant__link">{row.linkLabel}</span>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
+                                                                </div>
+                                                                <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
+                                                                    <div class="lobby-row-menu-wrap">
+                                                                        <lightning-button-icon
+                                                                            icon-name="utility:down"
+                                                                            variant="border-filled"
+                                                                            alternative-text="Participant actions"
+                                                                            title="Participant actions"
+                                                                            data-id={row.id}
+                                                                            onclick={handleQueueParticipantMenu}>
+                                                                        </lightning-button-icon>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
+                                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                                    <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                                        <lightning-icon class="lobby-appt__clock-icon slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                                        <span class="lobby-appt__slot slds-truncate">{row.slot}</span>
+                                                                    </div>
+                                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">Checked In</span>
+                                                                    <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                                        <lightning-icon class="lobby-appt__wait-clock slds-m-right_xx-small" icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                        <span class="lobby-appt__wait-label">Wait Time:</span>
+                                                                        <span class="lobby-appt__wait-time slds-m-left_xx-small">{row.waitTime}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </template>
+                                                <template lwc:else>
+                                                    <div class="lobby-empty-state">
+                                                        <p class="lobby-empty-state__title">No participants yet</p>
+                                                        <p class="lobby-empty-state__body">Use Check In to add someone to this waitlist.</p>
+                                                    </div>
+                                                </template>
+                                            </lightning-accordion-section>
+                                        </template>
+                                    </lightning-accordion>
+                                </template>
+                            </div>
+
+                            <!-- Check-in composer overlay -->
+                            <template lwc:if={wl.showCheckinComposer}>
+                                <div class="lobby-checkin-overlay-scrim" onclick={handleCloseDynCheckinComposer}></div>
+                                <div class="lobby-checkin-overlay">
+                                    <div class="lobby-checkin-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                        <span class="lobby-checkin-overlay__title">Check In Customer - {wl.name}</span>
+                                        <button
+                                            class="slds-button slds-button_icon lobby-checkin-overlay__close"
+                                            title="Close"
+                                            onclick={handleCloseDynCheckinComposer}>
+                                            <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                                        </button>
+                                    </div>
+                                    <div class="lobby-checkin-overlay__body">
+                                        <!-- Account Status -->
+                                        <div class="lobby-checkin-field">
+                                            <fieldset class="slds-form-element">
+                                                <legend class="lobby-checkin-label">
+                                                    <abbr class="lobby-checkin-required" title="required">*</abbr> Account Status
+                                                </legend>
+                                                <div class="slds-form-element__control slds-m-top_xx-small">
+                                                    <div class="slds-grid slds-gutters_small">
+                                                        <div class="slds-col">
+                                                            <span class="slds-radio">
+                                                                <input type="radio" id="dyn-ci-existing" name="dyn-ci-guest-type" value="existing" checked={dynCiIsExisting} onchange={handleDynCiGuestTypeChange} />
+                                                                <label class="slds-radio__label" for="dyn-ci-existing">
+                                                                    <span class="slds-radio_faux"></span>
+                                                                    <span class="slds-form-element__label">Existing User</span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                        <div class="slds-col">
+                                                            <span class="slds-radio">
+                                                                <input type="radio" id="dyn-ci-new" name="dyn-ci-guest-type" value="new" onchange={handleDynCiGuestTypeChange} />
+                                                                <label class="slds-radio__label" for="dyn-ci-new">
+                                                                    <span class="slds-radio_faux"></span>
+                                                                    <span class="slds-form-element__label">Guest</span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <!-- New guest form -->
+                                        <template lwc:if={dynCiIsNewParticipant}>
+                                            <div class="lobby-checkin-field lobby-newp-grid">
+                                                <div class="lobby-newp-col">
+                                                    <label class="lobby-checkin-label" for="dyn-ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
+                                                    <input id="dyn-ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={dynCiFirstName} oninput={handleDynCiFirstNameChange} />
+                                                </div>
+                                                <div class="lobby-newp-col">
+                                                    <label class="lobby-checkin-label" for="dyn-ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
+                                                    <input id="dyn-ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={dynCiLastName} oninput={handleDynCiLastNameChange} />
+                                                </div>
+                                                <div class="lobby-newp-col">
+                                                    <label class="lobby-checkin-label" for="dyn-ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
+                                                    <input id="dyn-ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={dynCiContact} oninput={handleDynCiContactChange} />
+                                                </div>
+                                                <div class="lobby-newp-col">
+                                                    <label class="lobby-checkin-label" for="dyn-ci-company">Company</label>
+                                                    <input id="dyn-ci-company" type="text" class="lobby-newp-input" placeholder="Enter participant's company" value={dynCiCompany} oninput={handleDynCiCompanyChange} />
+                                                </div>
+                                            </div>
+                                            <div class="lobby-checkin-field">
+                                                <label class="lobby-checkin-label" for="dyn-ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
+                                                <input id="dyn-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={dynCiEmail} oninput={handleDynCiEmailChange} />
+                                            </div>
+                                        </template>
+                                        <!-- Existing user search -->
+                                        <template lwc:else>
+                                            <div class="lobby-checkin-field lobby-participant-field">
+                                                <label class="lobby-checkin-label">
+                                                    <abbr class="lobby-checkin-required" title="required">*</abbr> User
+                                                </label>
+                                                <div class="lobby-grouped-combobox">
+                                                    <div class="lobby-grouped-combobox__type-wrap">
+                                                        <button type="button"
+                                                            class="lobby-grouped-combobox__type-btn"
+                                                            onclick={handleDynParticipantTypeToggle}
+                                                            onblur={handleDynParticipantTypeBlur}>
+                                                            <span class="lobby-grouped-combobox__type-label">{selectedDynParticipantType}</span>
+                                                            <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
+                                                        </button>
+                                                        <template lwc:if={showDynParticipantTypeDropdown}>
+                                                            <div class="lobby-grouped-combobox__type-dropdown">
+                                                                <ul role="listbox">
+                                                                    <template for:each={participantTypeOptions} for:item="opt">
+                                                                        <li key={opt.id}
+                                                                            class="lobby-grouped-combobox__type-option"
+                                                                            data-id={opt.id}
+                                                                            role="option"
+                                                                            onclick={handleDynParticipantTypeSelect}>
+                                                                            <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
+                                                                            <span>{opt.label}</span>
+                                                                        </li>
+                                                                    </template>
+                                                                </ul>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                    <div class="lobby-grouped-combobox__search-wrap">
+                                                        <input
+                                                            type="text"
+                                                            class="lobby-grouped-combobox__search-input"
+                                                            placeholder="Search..."
+                                                            value={dynParticipantSearch}
+                                                            onfocus={handleDynParticipantFocus}
+                                                            oninput={handleDynParticipantInput}
+                                                            onblur={handleDynParticipantBlur} />
+                                                        <lightning-icon class="lobby-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
+                                                        <template lwc:if={showDynParticipantDropdown}>
+                                                            <div class="lobby-participant-combobox__dropdown">
+                                                                <div class="lobby-participant-combobox__group-label">Recent Items</div>
+                                                                <ul class="lobby-participant-combobox__list" role="listbox">
+                                                                    <template for:each={filteredParticipantsDyn} for:item="item">
+                                                                        <li key={item.id}
+                                                                            class="lobby-participant-combobox__option"
+                                                                            data-id={item.id}
+                                                                            role="option"
+                                                                            onclick={handleDynParticipantSelect}>
+                                                                            <div class="lobby-participant-combobox__option-icon">
+                                                                                <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
+                                                                            </div>
+                                                                            <div class="lobby-participant-combobox__option-text">
+                                                                                <div class="lobby-participant-combobox__option-name">{item.label}</div>
+                                                                                <template lwc:if={item.meta}>
+                                                                                    <div class="lobby-participant-combobox__option-meta">{item.meta}</div>
+                                                                                </template>
+                                                                            </div>
+                                                                        </li>
+                                                                    </template>
+                                                                </ul>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <!-- Work Topic -->
+                                        <div class="lobby-checkin-field">
+                                            <label class="lobby-checkin-label" for="dyn-ci-topic">
+                                                <abbr class="lobby-checkin-required" title="required">*</abbr> Work Topic
+                                            </label>
+                                            <lightning-combobox
+                                                id="dyn-ci-topic"
+                                                label="Work Topic"
+                                                variant="label-hidden"
+                                                value={dynCiTopic}
+                                                options={dynCheckinTopicOptions}
+                                                onchange={handleDynCiTopicChange}>
+                                            </lightning-combobox>
+                                        </div>
+                                        <!-- Description -->
+                                        <div class="lobby-checkin-field">
+                                            <label class="lobby-checkin-label" for="dyn-ci-desc">Description</label>
+                                            <lightning-textarea
+                                                id="dyn-ci-desc"
+                                                label="Description"
+                                                variant="label-hidden"
+                                                value={dynCiDesc}
+                                                placeholder="Enter a description for participant's visit..."
+                                                max-length="500"
+                                                onchange={handleDynCiDescChange}>
+                                            </lightning-textarea>
+                                        </div>
+                                        <!-- Preferred Resource -->
+                                        <div class="lobby-checkin-field">
+                                            <label class="lobby-checkin-label" for="dyn-ci-resource">Preferred Resource</label>
+                                            <lightning-combobox
+                                                id="dyn-ci-resource"
+                                                label="Preferred Resource"
+                                                variant="label-hidden"
+                                                value={dynCiResource}
+                                                options={checkinResourceOptions}
+                                                onchange={handleDynCiResourceChange}>
+                                            </lightning-combobox>
+                                        </div>
+                                    </div>
+                                    <div class="lobby-checkin-overlay__footer">
+                                        <lightning-button
+                                            label="Check In"
+                                            variant="brand"
+                                            onclick={handleSubmitCheckinComposerDyn}>
+                                        </lightning-button>
+                                    </div>
+                                </div>
+                            </template>
                         </article>
                     </lightning-layout-item>
                 </template>
