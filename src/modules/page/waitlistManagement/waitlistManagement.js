@@ -87,11 +87,16 @@ const ALL_TERRITORIES = [
 ];
 
 const ALL_WORK_TYPES = [
-    { value: 'general-banking',    label: 'General Banking' },
-    { value: 'wealth-mgmt',        label: 'Wealth Management' },
-    { value: 'insurance-planning', label: 'Insurance Planning' },
-    { value: 'savings-account',    label: 'Savings Account' },
+    { value: 'general-banking',     label: 'General Banking' },
+    { value: 'wealth-mgmt',         label: 'Wealth Management' },
+    { value: 'insurance-planning',  label: 'Insurance Planning' },
+    { value: 'savings-account',     label: 'Savings Account' },
     { value: 'investment-planning', label: 'Investment Planning' },
+    { value: 'retail-loan',         label: 'Retail Loan' },
+    { value: 'commercial-loan',     label: 'Commercial Loan' },
+    { value: 'industrial-loan',     label: 'Industrial Loan' },
+    { value: 'loan-information',    label: 'Loan Information' },
+    { value: 'loan-application',    label: 'Loan Application' },
 ];
 
 const ALL_RESOURCES = [

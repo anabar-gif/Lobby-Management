@@ -769,7 +769,12 @@ export default class LobbyManagement extends LightningElement {
         if (!wl || !wl.workTypes || !wl.workTypes.length) {
             return [{ label: wl ? wl.name : 'General', value: 'general' }];
         }
-        return wl.workTypes.map(t => ({ label: t, value: t.toLowerCase().replace(/\s+/g, '-') }));
+        // workTypes are stored as { value, label } objects from the creator panel
+        return wl.workTypes.map(t =>
+            (typeof t === 'object' && t.label)
+                ? { label: t.label, value: t.value }
+                : { label: t, value: String(t).toLowerCase().replace(/\s+/g, '-') }
+        );
     }
 
     handleDynQueueCheckIn(event) {
