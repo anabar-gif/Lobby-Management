@@ -831,7 +831,8 @@ export default class LobbyManagement extends LightningElement {
         this.showDynParticipantDropdown = true;
     }
     handleDynParticipantSelect(event) {
-        const item = this.participantItems.find(p => p.id === event.currentTarget.dataset.id);
+        const id = event.currentTarget.dataset.id;
+        const item = this.participantRecentItems.find(p => p.id === id);
         if (item) this.dynParticipantSearch = item.label;
         this.showDynParticipantDropdown = false;
     }
