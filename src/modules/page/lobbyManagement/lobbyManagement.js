@@ -515,6 +515,7 @@ export default class LobbyManagement extends LightningElement {
 
     get ciIsNewParticipant() { return this.ciGuestType === 'new'; }
     get ciPersonLabel()      { return this.ciGuestType === 'new' ? "guest's" : "participant's"; }
+    get ciDescPh()           { return `Enter a description for the ${this.ciGuestType === 'new' ? 'guest' : 'user'}'s interaction...`; }
     get ciFNamePh()    { return `Enter ${this.ciPersonLabel} first name`; }
     get ciLNamePh()    { return `Enter ${this.ciPersonLabel} last name`; }
     get ciContactPh()  { return `Enter ${this.ciPersonLabel} contact number`; }
@@ -545,6 +546,7 @@ export default class LobbyManagement extends LightningElement {
 
     get ibCiIsNewParticipant() { return this.ibCiGuestType === 'new'; }
     get ibCiPersonLabel()      { return this.ibCiGuestType === 'new' ? "guest's" : "participant's"; }
+    get ibCiDescPh()           { return `Enter a description for the ${this.ibCiGuestType === 'new' ? 'guest' : 'user'}'s interaction...`; }
     get ibCiFNamePh()    { return `Enter ${this.ibCiPersonLabel} first name`; }
     get ibCiLNamePh()    { return `Enter ${this.ibCiPersonLabel} last name`; }
     get ibCiContactPh()  { return `Enter ${this.ibCiPersonLabel} contact number`; }
@@ -749,6 +751,7 @@ export default class LobbyManagement extends LightningElement {
 
     get dynCiIsNewParticipant() { return this.dynCiGuestType === 'new'; }
     get dynCiPersonLabel()      { return this.dynCiGuestType === 'new' ? "guest's" : "participant's"; }
+    get dynCiDescPh()           { return `Enter a description for the ${this.dynCiGuestType === 'new' ? 'guest' : 'user'}'s interaction...`; }
     get dynCiFNamePh()    { return `Enter ${this.dynCiPersonLabel} first name`; }
     get dynCiLNamePh()    { return `Enter ${this.dynCiPersonLabel} last name`; }
     get dynCiContactPh()  { return `Enter ${this.dynCiPersonLabel} contact number`; }

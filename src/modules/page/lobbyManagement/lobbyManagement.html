@@ -512,7 +512,7 @@
                                             label="Description"
                                             variant="label-hidden"
                                             value={ciDesc}
-                                            placeholder="Enter a description for the user's interaction..."
+                                            placeholder={ciDescPh}
                                             max-length="500"
                                             onchange={handleCiDescChange}>
                                         </lightning-textarea>
@@ -806,7 +806,7 @@
                                             label="Description"
                                             variant="label-hidden"
                                             value={ibCiDesc}
-                                            placeholder="Enter a description for the user's interaction..."
+                                            placeholder={ibCiDescPh}
                                             max-length="500"
                                             onchange={handleIbCiDescChange}>
                                         </lightning-textarea>
@@ -1134,9 +1134,9 @@
                                                 label="Description"
                                                 variant="label-hidden"
                                                 value={dynCiDesc}
-                                            placeholder="Enter a description for the user's interaction..."
-                                            max-length="500"
-                                            onchange={handleDynCiDescChange}>
+                                                placeholder={dynCiDescPh}
+                                                max-length="500"
+                                                onchange={handleDynCiDescChange}>
                                             </lightning-textarea>
                                         </div>
                                         <!-- Preferred Resource -->
