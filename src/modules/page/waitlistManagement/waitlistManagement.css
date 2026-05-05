@@ -237,9 +237,9 @@
 }
 
 .wl-creator__title {
-    font-size: var(--slds-g-font-scale-3, 1.125rem);
-    font-weight: var(--slds-g-font-weight-7, 700);
-    color: var(--slds-g-color-neutral-base-10, #181818);
+    font-size: 1.25rem; /* 20px */
+    font-weight: 400;   /* regular */
+    color: #001E5B;
     margin: 0;
 }
 
@@ -251,7 +251,10 @@
     display: flex;
     align-items: center;
     border-radius: var(--slds-g-radius-border-2, 0.25rem);
-    color: var(--slds-g-color-neutral-base-40, #706e6b);
+    /* Electric Blue 40 = #0176D3 in SLDS */
+    color: #0176D3;
+    --slds-c-icon-color-foreground: #0176D3;
+    --slds-c-icon-color-foreground-default: #0176D3;
     transition: background 0.15s;
 }
 
