@@ -514,6 +514,12 @@ export default class LobbyManagement extends LightningElement {
     @track ciEmail      = '';
 
     get ciIsNewParticipant() { return this.ciGuestType === 'new'; }
+    get ciPersonLabel()      { return this.ciGuestType === 'new' ? "guest's" : "participant's"; }
+    get ciFNamePh()    { return `Enter ${this.ciPersonLabel} first name`; }
+    get ciLNamePh()    { return `Enter ${this.ciPersonLabel} last name`; }
+    get ciContactPh()  { return `Enter ${this.ciPersonLabel} contact number`; }
+    get ciCompanyPh()  { return `Enter ${this.ciPersonLabel} company`; }
+    get ciEmailPh()    { return `Enter ${this.ciPersonLabel} email address...`; }
     get ciIsExisting()       { return this.ciGuestType === 'existing'; }
 
     handleCiGuestTypeChange(event) { this.ciGuestType = event.target.value; }
@@ -538,6 +544,12 @@ export default class LobbyManagement extends LightningElement {
     @track ibCiEmail      = '';
 
     get ibCiIsNewParticipant() { return this.ibCiGuestType === 'new'; }
+    get ibCiPersonLabel()      { return this.ibCiGuestType === 'new' ? "guest's" : "participant's"; }
+    get ibCiFNamePh()    { return `Enter ${this.ibCiPersonLabel} first name`; }
+    get ibCiLNamePh()    { return `Enter ${this.ibCiPersonLabel} last name`; }
+    get ibCiContactPh()  { return `Enter ${this.ibCiPersonLabel} contact number`; }
+    get ibCiCompanyPh()  { return `Enter ${this.ibCiPersonLabel} company`; }
+    get ibCiEmailPh()    { return `Enter ${this.ibCiPersonLabel} email address...`; }
     get ibCiIsExisting()       { return this.ibCiGuestType === 'existing'; }
 
     handleIbCiGuestTypeChange(event) { this.ibCiGuestType = event.target.value; }
@@ -736,6 +748,12 @@ export default class LobbyManagement extends LightningElement {
     @track selectedDynParticipantType = 'Account';
 
     get dynCiIsNewParticipant() { return this.dynCiGuestType === 'new'; }
+    get dynCiPersonLabel()      { return this.dynCiGuestType === 'new' ? "guest's" : "participant's"; }
+    get dynCiFNamePh()    { return `Enter ${this.dynCiPersonLabel} first name`; }
+    get dynCiLNamePh()    { return `Enter ${this.dynCiPersonLabel} last name`; }
+    get dynCiContactPh()  { return `Enter ${this.dynCiPersonLabel} contact number`; }
+    get dynCiCompanyPh()  { return `Enter ${this.dynCiPersonLabel} company`; }
+    get dynCiEmailPh()    { return `Enter ${this.dynCiPersonLabel} email address...`; }
     get dynCiIsExisting()       { return this.dynCiGuestType === 'existing'; }
 
     get filteredParticipantsDyn() {

@@ -398,24 +398,24 @@
                                         <div class="lobby-checkin-field lobby-newp-grid">
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
-                                                <input id="ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={ciFirstName} oninput={handleCiFirstNameChange} />
+                                                <input id="ci-fname" type="text" class="lobby-newp-input" placeholder={ciFNamePh} value={ciFirstName} oninput={handleCiFirstNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
-                                                <input id="ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={ciLastName} oninput={handleCiLastNameChange} />
+                                                <input id="ci-lname" type="text" class="lobby-newp-input" placeholder={ciLNamePh} value={ciLastName} oninput={handleCiLastNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
-                                                <input id="ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={ciContact} oninput={handleCiContactChange} />
+                                                <input id="ci-contact" type="tel" class="lobby-newp-input" placeholder={ciContactPh} value={ciContact} oninput={handleCiContactChange} />
                                             </div>
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ci-company">Company</label>
-                                                <input id="ci-company" type="text" class="lobby-newp-input" placeholder="Enter participant's company" value={ciCompany} oninput={handleCiCompanyChange} />
+                                                <input id="ci-company" type="text" class="lobby-newp-input" placeholder={ciCompanyPh} value={ciCompany} oninput={handleCiCompanyChange} />
                                             </div>
                                         </div>
                                         <div class="lobby-checkin-field">
                                             <label class="lobby-checkin-label" for="ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
-                                            <input id="ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={ciEmail} oninput={handleCiEmailChange} />
+                                            <input id="ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={ciEmailPh} value={ciEmail} oninput={handleCiEmailChange} />
                                         </div>
                                     </template>
                                     <!-- Participant grouped combobox (existing) -->
@@ -694,24 +694,24 @@
                                         <div class="lobby-checkin-field lobby-newp-grid">
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ib-ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
-                                                <input id="ib-ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={ibCiFirstName} oninput={handleIbCiFirstNameChange} />
+                                                <input id="ib-ci-fname" type="text" class="lobby-newp-input" placeholder={ibCiFNamePh} value={ibCiFirstName} oninput={handleIbCiFirstNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ib-ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
-                                                <input id="ib-ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={ibCiLastName} oninput={handleIbCiLastNameChange} />
+                                                <input id="ib-ci-lname" type="text" class="lobby-newp-input" placeholder={ibCiLNamePh} value={ibCiLastName} oninput={handleIbCiLastNameChange} />
                                             </div>
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ib-ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
-                                                <input id="ib-ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={ibCiContact} oninput={handleIbCiContactChange} />
+                                                <input id="ib-ci-contact" type="tel" class="lobby-newp-input" placeholder={ibCiContactPh} value={ibCiContact} oninput={handleIbCiContactChange} />
                                             </div>
                                             <div class="lobby-newp-col">
                                                 <label class="lobby-checkin-label" for="ib-ci-company">Company</label>
-                                                <input id="ib-ci-company" type="text" class="lobby-newp-input" placeholder="Enter participant's company" value={ibCiCompany} oninput={handleIbCiCompanyChange} />
+                                                <input id="ib-ci-company" type="text" class="lobby-newp-input" placeholder={ibCiCompanyPh} value={ibCiCompany} oninput={handleIbCiCompanyChange} />
                                             </div>
                                         </div>
                                         <div class="lobby-checkin-field">
                                             <label class="lobby-checkin-label" for="ib-ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
-                                            <input id="ib-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={ibCiEmail} oninput={handleIbCiEmailChange} />
+                                            <input id="ib-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={ibCiEmailPh} value={ibCiEmail} oninput={handleIbCiEmailChange} />
                                         </div>
                                     </template>
                                     <!-- Participant grouped combobox (existing) -->
@@ -1022,24 +1022,24 @@
                                             <div class="lobby-checkin-field lobby-newp-grid">
                                                 <div class="lobby-newp-col">
                                                     <label class="lobby-checkin-label" for="dyn-ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
-                                                    <input id="dyn-ci-fname" type="text" class="lobby-newp-input" placeholder="Enter participant's first name" value={dynCiFirstName} oninput={handleDynCiFirstNameChange} />
+                                                    <input id="dyn-ci-fname" type="text" class="lobby-newp-input" placeholder={dynCiFNamePh} value={dynCiFirstName} oninput={handleDynCiFirstNameChange} />
                                                 </div>
                                                 <div class="lobby-newp-col">
                                                     <label class="lobby-checkin-label" for="dyn-ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
-                                                    <input id="dyn-ci-lname" type="text" class="lobby-newp-input" placeholder="Enter participant's last name" value={dynCiLastName} oninput={handleDynCiLastNameChange} />
+                                                    <input id="dyn-ci-lname" type="text" class="lobby-newp-input" placeholder={dynCiLNamePh} value={dynCiLastName} oninput={handleDynCiLastNameChange} />
                                                 </div>
                                                 <div class="lobby-newp-col">
                                                     <label class="lobby-checkin-label" for="dyn-ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
-                                                    <input id="dyn-ci-contact" type="tel" class="lobby-newp-input" placeholder="Enter participant's contact number" value={dynCiContact} oninput={handleDynCiContactChange} />
+                                                    <input id="dyn-ci-contact" type="tel" class="lobby-newp-input" placeholder={dynCiContactPh} value={dynCiContact} oninput={handleDynCiContactChange} />
                                                 </div>
                                                 <div class="lobby-newp-col">
                                                     <label class="lobby-checkin-label" for="dyn-ci-company">Company</label>
-                                                    <input id="dyn-ci-company" type="text" class="lobby-newp-input" placeholder="Enter participant's company" value={dynCiCompany} oninput={handleDynCiCompanyChange} />
+                                                    <input id="dyn-ci-company" type="text" class="lobby-newp-input" placeholder={dynCiCompanyPh} value={dynCiCompany} oninput={handleDynCiCompanyChange} />
                                                 </div>
                                             </div>
                                             <div class="lobby-checkin-field">
                                                 <label class="lobby-checkin-label" for="dyn-ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
-                                                <input id="dyn-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder="Enter participant's email address..." value={dynCiEmail} oninput={handleDynCiEmailChange} />
+                                                <input id="dyn-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={dynCiEmailPh} value={dynCiEmail} oninput={handleDynCiEmailChange} />
                                             </div>
                                         </template>
                                         <!-- Existing user search -->
