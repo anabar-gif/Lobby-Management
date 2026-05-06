@@ -102,6 +102,24 @@ export default class LobbyManagement extends LightningElement {
     currentSectionTime = '9:10 AM';
     upcomingSectionTime = '10:11 AM';
 
+    _apptWithWaitClasses(appt) {
+        const red = !!appt.waitAlertRed;
+        return {
+            ...appt,
+            waitClockClass: `${red ? 'lobby-appt__wait-clock--red' : 'lobby-appt__wait-clock'} slds-m-right_xx-small`,
+            waitLabelClass: red ? 'lobby-appt__wait-label--red' : 'lobby-appt__wait-label',
+            waitTimeClass:  `${red ? 'lobby-appt__wait-time--red' : 'lobby-appt__wait-time'} slds-m-left_xx-small`,
+        };
+    }
+
+    get currentAppointmentsView() {
+        return (this.currentAppointments || []).map(a => this._apptWithWaitClasses(a));
+    }
+
+    get upcomingAppointmentsView() {
+        return (this.upcomingAppointments || []).map(a => this._apptWithWaitClasses(a));
+    }
+
     get currentSectionMetaLine() {
         const n = this.currentAppointments?.length ?? 0;
         const word = n === 1 ? 'appointment' : 'appointments';
@@ -310,6 +328,7 @@ export default class LobbyManagement extends LightningElement {
             serviceApptLabel: 'Service Appointment',
             slot: '9:00 am - 9:30 am',
             showWaitAlert: true,
+            waitAlertRed: true,
             waitLabel: 'Wait Time:',
             waitTime: '00 : 10 mins.',
             showCheckin: false,

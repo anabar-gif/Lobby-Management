@@ -96,7 +96,7 @@
                                     <div class="lobby-section__label">Current</div>
                                     <div class="lobby-section__meta slds-m-top_xx-small">{currentSectionMetaLine}</div>
                                 </div>
-                                <template for:each={currentAppointments} for:item="appt">
+                                <template for:each={currentAppointmentsView} for:item="appt">
                                     <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
                                         <div class="lobby-appt__body slds-p-around_small">
                                             <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
@@ -155,13 +155,13 @@
                                                 <template lwc:if={appt.showWaitAlert}>
                                                     <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
                                                         <lightning-icon
-                                                            class="lobby-appt__wait-clock slds-m-right_xx-small"
+                                                            class={appt.waitClockClass}
                                                             icon-name="utility:clock"
                                                             size="x-small"
                                                             alternative-text="">
                                                         </lightning-icon>
-                                                        <span class="lobby-appt__wait-label">{appt.waitLabel}</span>
-                                                        <span class="lobby-appt__wait-time slds-m-left_xx-small">{appt.waitTime}</span>
+                                                        <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                        <span class={appt.waitTimeClass}>{appt.waitTime}</span>
                                                     </div>
                                                 </template>
                                             </div>
@@ -175,7 +175,7 @@
                                     <div class="lobby-section__label">Upcoming</div>
                                     <div class="lobby-section__meta slds-m-top_xx-small">{upcomingSectionMetaLine}</div>
                                 </div>
-                                <template for:each={upcomingAppointments} for:item="appt">
+                                <template for:each={upcomingAppointmentsView} for:item="appt">
                                     <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
                                         <div class="lobby-appt__body slds-p-around_small">
                                             <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
@@ -234,13 +234,13 @@
                                                 <template lwc:if={appt.showWaitAlert}>
                                                     <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
                                                         <lightning-icon
-                                                            class="lobby-appt__wait-clock slds-m-right_xx-small"
+                                                            class={appt.waitClockClass}
                                                             icon-name="utility:clock"
                                                             size="x-small"
                                                             alternative-text="">
                                                         </lightning-icon>
-                                                        <span class="lobby-appt__wait-label">{appt.waitLabel}</span>
-                                                        <span class="lobby-appt__wait-time slds-m-left_xx-small">{appt.waitTime}</span>
+                                                        <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                        <span class={appt.waitTimeClass}>{appt.waitTime}</span>
                                                     </div>
                                                 </template>
                                             </div>
