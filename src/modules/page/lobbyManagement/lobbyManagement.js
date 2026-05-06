@@ -320,7 +320,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'a2',
             customerName: 'James Clain',
             subtitle: 'Savings Account • Rachel Adams',
-            serviceApptLabel: 'Service Appointment',
+            serviceApptLabel: 'Interaction',
             slot: '9:30 am - 10:00 am',
             showWaitAlert: false,
             showCheckin: true
