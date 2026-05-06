@@ -307,6 +307,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'a1',
             customerName: 'Arna Sumaiyah',
             subtitle: 'Savings Account • Rachel Adams',
+            serviceApptLabel: 'Service Appointment',
             slot: '9:00 am - 9:30 am',
             showWaitAlert: true,
             waitLabel: 'Wait Time:',
@@ -319,6 +320,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'a2',
             customerName: 'James Clain',
             subtitle: 'Savings Account • Rachel Adams',
+            serviceApptLabel: 'Service Appointment',
             slot: '9:30 am - 10:00 am',
             showWaitAlert: false,
             showCheckin: true
@@ -330,6 +332,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'b1',
             customerName: 'Smith Kim',
             subtitle: 'Savings Account • Rachel Adams',
+            serviceApptLabel: 'Service Appointment',
             slot: '10:00 am - 10:30 am',
             showWaitAlert: false,
             showCheckin: true
@@ -338,6 +341,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'b2',
             customerName: 'Regina Hem',
             subtitle: 'Savings Account • Rachel Adams',
+            serviceApptLabel: 'Service Appointment',
             slot: '10:00 am - 10:30 am',
             showWaitAlert: false,
             showCheckin: true

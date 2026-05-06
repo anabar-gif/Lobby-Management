@@ -111,6 +111,11 @@
                                                     <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>
                                                         {appt.subtitle}
                                                     </div>
+                                                    <template lwc:if={appt.serviceApptLabel}>
+                                                        <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.serviceApptLabel}>
+                                                            {appt.serviceApptLabel}
+                                                        </div>
+                                                    </template>
                                                 </div>
                                                 <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
                                                     <template lwc:if={appt.showCheckin}>
@@ -185,6 +190,11 @@
                                                     <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>
                                                         {appt.subtitle}
                                                     </div>
+                                                    <template lwc:if={appt.serviceApptLabel}>
+                                                        <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.serviceApptLabel}>
+                                                            {appt.serviceApptLabel}
+                                                        </div>
+                                                    </template>
                                                 </div>
                                                 <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
                                                     <template lwc:if={appt.showCheckin}>
