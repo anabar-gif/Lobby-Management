@@ -104,13 +104,13 @@ export default class LobbyManagement extends LightningElement {
 
     get currentSectionMetaLine() {
         const n = this.currentAppointments?.length ?? 0;
-        const word = n === 1 ? 'interaction' : 'interactions';
+        const word = n === 1 ? 'appointment' : 'appointments';
         return `${this.currentSectionTime} · ${n} ${word}`;
     }
 
     get upcomingSectionMetaLine() {
         const n = this.upcomingAppointments?.length ?? 0;
-        const word = n === 1 ? 'interaction' : 'interactions';
+        const word = n === 1 ? 'appointment' : 'appointments';
         return `${this.upcomingSectionTime} · ${n} ${word}`;
     }
 
