@@ -580,6 +580,15 @@ export default class LobbyManagement extends LightningElement {
         }));
     }
 
+    /** Returns a formatted wait time string based on position (0-based) in the queue.
+     *  Assumes ~15 minutes per person ahead. */
+    _calcWaitTime(peopleAhead) {
+        const totalMins = peopleAhead * 15;
+        const hrs = Math.floor(totalMins / 60).toString().padStart(2, '0');
+        const mins = (totalMins % 60).toString().padStart(2, '0');
+        return `${hrs} : ${mins} mins.`;
+    }
+
     _nowTime() {
         const now = new Date();
         const hh = now.getHours();
@@ -644,6 +653,9 @@ export default class LobbyManagement extends LightningElement {
         const sectionId       = this._topicValueToSectionId(this.ciTopic);
         const checkInTime     = this._nowTime();
 
+        const matchingSection = this.generalBankingTopics.find(t => t.id === sectionId);
+        const peopleAhead = matchingSection ? matchingSection.participants.length : 0;
+
         const newRow = {
             id:          `gb-new-${Date.now()}`,
             ordinal:     '1.',
@@ -652,7 +664,7 @@ export default class LobbyManagement extends LightningElement {
             topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
             slot:        this._nowSlot(),
             checkInTime,
-            waitTime:    '00 : 00 mins.',
+            waitTime:    this._calcWaitTime(peopleAhead),
         };
 
         // Deep-copy topics, append new row into the matching section, re-number ordinals
@@ -699,6 +711,9 @@ export default class LobbyManagement extends LightningElement {
         const topicLabel      = this._topicValueToLabel(this.ibCiTopic);
         const checkInTime     = this._nowTime();
 
+        const ibSection = this.investmentBankingTopics.find(t => t.id === 'investment-planning');
+        const ibPeopleAhead = ibSection ? ibSection.participants.length : 0;
+
         const newRow = {
             id:          `ib-new-${Date.now()}`,
             ordinal:     '1.',
@@ -707,7 +722,7 @@ export default class LobbyManagement extends LightningElement {
             topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
             slot:        this._nowSlot(),
             checkInTime,
-            waitTime:    '00 : 00 mins.',
+            waitTime:    this._calcWaitTime(ibPeopleAhead),
         };
 
         const updated = this.investmentBankingTopics.map(t => {
@@ -874,17 +889,6 @@ export default class LobbyManagement extends LightningElement {
         const resourceLabel = this._resourceValueToLabel(this.dynCiResource);
         const topicLabel    = this.dynCheckinTopicOptions.find(o => o.value === this.dynCiTopic)?.label || this.dynCiTopic;
 
-        const newRow = {
-            id:         `dyn-new-${Date.now()}`,
-            ordinal:    '1.',
-            workItemId: this._nextWpId(),
-            linkLabel:  participantName,
-            topic:      `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
-            slot:       this._nowSlot(),
-            checkInTime: this._nowTime(),
-            waitTime:   '00 : 00 mins.',
-        };
-
         // Add participant and close the composer in a single @track mutation
         this.dynamicWaitlists = this.dynamicWaitlists.map(w => {
             if (w.id !== wl.id) return w;
@@ -902,6 +906,20 @@ export default class LobbyManagement extends LightningElement {
 
             // Find or create the section matching the selected topic
             const targetId = `${w.id}-${this.dynCiTopic}`;
+            const dynSection = existingTopics.find(t => t.id === targetId) || existingTopics[0];
+            const dynPeopleAhead = dynSection ? dynSection.participants.length : 0;
+
+            const newRow = {
+                id:         `dyn-new-${Date.now()}`,
+                ordinal:    '1.',
+                workItemId: this._nextWpId(),
+                linkLabel:  participantName,
+                topic:      `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
+                slot:       this._nowSlot(),
+                checkInTime: this._nowTime(),
+                waitTime:   this._calcWaitTime(dynPeopleAhead),
+            };
+
             let matched = false;
             const updated = existingTopics.map(t => {
                 if (t.id !== targetId) return t;
