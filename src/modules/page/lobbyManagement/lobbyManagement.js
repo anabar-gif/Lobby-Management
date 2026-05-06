@@ -655,10 +655,10 @@ export default class LobbyManagement extends LightningElement {
             waitTime:    '00 : 00 mins.',
         };
 
-        // Deep-copy topics, prepend new row into the matching section, re-number ordinals
+        // Deep-copy topics, append new row into the matching section, re-number ordinals
         const updated = this.generalBankingTopics.map(t => {
             if (t.id !== sectionId) return t;
-            const rows = [newRow, ...t.participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+            const rows = [...t.participants, newRow].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
             const count = rows.length;
             const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
             return { ...t, participants: rows, label: `${labelBase} (${count})` };
@@ -712,7 +712,7 @@ export default class LobbyManagement extends LightningElement {
 
         const updated = this.investmentBankingTopics.map(t => {
             if (t.id !== 'investment-planning') return t;
-            const rows = [newRow, ...t.participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+            const rows = [...t.participants, newRow].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
             const count = rows.length;
             const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
             return { ...t, participants: rows, label: `${labelBase} (${count})` };
@@ -906,14 +906,14 @@ export default class LobbyManagement extends LightningElement {
             const updated = existingTopics.map(t => {
                 if (t.id !== targetId) return t;
                 matched = true;
-                const rows = [newRow, ...t.participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+                const rows = [...t.participants, newRow].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
                 const labelBase = t.label.replace(/\s*\(\d+\)$/, '');
                 return { ...t, participants: rows, label: `${labelBase} (${rows.length})` };
             });
 
             // If no matching section found, add to the first one
             if (!matched && updated.length) {
-                const rows = [newRow, ...updated[0].participants].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
+                const rows = [...updated[0].participants, newRow].map((r, i) => ({ ...r, ordinal: `${i + 1}.` }));
                 const labelBase = updated[0].label.replace(/\s*\(\d+\)$/, '');
                 updated[0] = { ...updated[0], participants: rows, label: `${labelBase} (${rows.length})` };
             }
