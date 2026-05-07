@@ -1677,19 +1677,23 @@
 /* Side panels (chart + summary) */
 .lobby-panel-overlay {
     position: fixed;
-    inset: 0;
+    top: 96px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.15);
     z-index: 8999;
 }
 
 .lobby-panel {
     position: fixed;
-    top: 0;
+    top: 96px;
     right: 0;
-    height: 100vh;
+    height: calc(100vh - 96px);
     width: min(420px, 100vw);
     background: var(--slds-g-color-surface-1, #fff);
     border-left: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+    border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
     box-shadow: -6px 0 24px rgba(0,0,0,0.18);
     z-index: 9000;
     display: flex;
@@ -1697,6 +1701,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
+    border-radius: 0.5rem 0 0 0;
 }
 
 .lobby-panel__header {
