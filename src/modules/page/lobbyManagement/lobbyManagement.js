@@ -102,6 +102,85 @@ export default class LobbyManagement extends LightningElement {
     currentSectionTime = '9:10 AM';
     upcomingSectionTime = '10:11 AM';
 
+    // ── Metric card helpers ──────────────────────────────────────────────────
+
+    _allWaitlistParticipants() {
+        const gbParts = (this.generalBankingTopics || []).flatMap(t => t.participants || []);
+        const ibParts = (this.investmentBankingTopics || []).flatMap(t => t.participants || []);
+        const dynParts = (this.dynamicWaitlists || []).flatMap(w =>
+            (w.topics || []).flatMap(t => t.participants || [])
+        );
+        return [...gbParts, ...ibParts, ...dynParts];
+    }
+
+    _parseWaitMins(waitTime) {
+        if (!waitTime) return 0;
+        const m = waitTime.match(/(\d+)\s*:\s*(\d+)/);
+        if (!m) return 0;
+        return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+    }
+
+    get metricTotalCheckedIn() {
+        return this._allWaitlistParticipants().length;
+    }
+
+    get metricAvgWait() {
+        const parts = this._allWaitlistParticipants();
+        if (!parts.length) return '—';
+        const total = parts.reduce((s, p) => s + this._parseWaitMins(p.waitTime), 0);
+        const avg = Math.round(total / parts.length);
+        const h = Math.floor(avg / 60).toString().padStart(2, '0');
+        const m = (avg % 60).toString().padStart(2, '0');
+        return `${h} : ${m} mins`;
+    }
+
+    get metricLongestWait() {
+        const parts = this._allWaitlistParticipants();
+        if (!parts.length) return '—';
+        const max = Math.max(...parts.map(p => this._parseWaitMins(p.waitTime)));
+        const h = Math.floor(max / 60).toString().padStart(2, '0');
+        const m = (max % 60).toString().padStart(2, '0');
+        return `${h} : ${m} mins`;
+    }
+
+    get metricLongestWaitIsHigh() {
+        const parts = this._allWaitlistParticipants();
+        if (!parts.length) return false;
+        const max = Math.max(...parts.map(p => this._parseWaitMins(p.waitTime)));
+        return max >= 30;
+    }
+
+    get metricLongestWaitIconClass() {
+        return this.metricLongestWaitIsHigh
+            ? 'lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red'
+            : 'lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange';
+    }
+
+    get metricLongestWaitValueClass() {
+        return this.metricLongestWaitIsHigh
+            ? 'lobby-metric-card__value lobby-metric-card__value--small lobby-metric-card__value--red'
+            : 'lobby-metric-card__value lobby-metric-card__value--small';
+    }
+
+    get metricUpcoming() {
+        return (this.upcomingAppointments || []).length;
+    }
+
+    get metricActiveWaitlists() {
+        const gbActive = (this.generalBankingTopics || []).some(t => (t.participants || []).length > 0) ? 1 : 0;
+        const ibActive = (this.investmentBankingTopics || []).some(t => (t.participants || []).length > 0) ? 1 : 0;
+        const dynActive = (this.dynamicWaitlists || []).filter(w =>
+            (w.topics || []).some(t => (t.participants || []).length > 0)
+        ).length;
+        return gbActive + ibActive + dynActive;
+    }
+
+    get metricCurrentlyServed() {
+        return (this.currentAppointments || []).filter(a => a.checkedIn).length;
+    }
+
+    // ────────────────────────────────────────────────────────────────────────
+
     _apptWithWaitClasses(appt) {
         const red = !!appt.waitAlertRed;
         return {
