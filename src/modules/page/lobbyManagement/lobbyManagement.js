@@ -186,6 +186,60 @@ export default class LobbyManagement extends LightningElement {
         return (this.currentAppointments || []).filter(a => a.checkedIn).length;
     }
 
+    // ── New metric cards ─────────────────────────────────────────────────────
+
+    @track _noShowCount = 2;
+    @track _transferredCount = 0;
+
+    get metricVipCount() {
+        return this._allWaitlistParticipants().filter(p => p.isVip).length;
+    }
+
+    get metricOverdueCount() {
+        return this._allWaitlistParticipants().filter(p => this._parseWaitMins(p.waitTime) > 45).length;
+    }
+
+    get metricNoShowsToday() {
+        return this._noShowCount;
+    }
+
+    get metricQueuesAtCapacity() {
+        const allTopics = (topics) => (topics || []);
+        const gbRed = this._queueHealth(allTopics(this.generalBankingTopics)) === 'red' ? 1 : 0;
+        const ibRed = this._queueHealth(allTopics(this.investmentBankingTopics)) === 'red' ? 1 : 0;
+        const dynRed = (this.dynamicWaitlists || []).filter(w => this._queueHealth(w.topics) === 'red').length;
+        return gbRed + ibRed + dynRed;
+    }
+
+    get metricTransferred() {
+        return this._transferredCount;
+    }
+
+    get metricAvgServiceTime() {
+        const mins = this._allWaitlistParticipants().map(p => this._parseWaitMins(p.waitTime));
+        if (!mins.length) return '—';
+        const avg = Math.round(mins.reduce((a, b) => a + b, 0) / mins.length);
+        return `${avg} min`;
+    }
+
+    get metricQueuesAtCapacityClass() {
+        return this.metricQueuesAtCapacity > 0
+            ? 'lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red'
+            : 'lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--green';
+    }
+
+    get metricOverdueClass() {
+        return this.metricOverdueCount > 0
+            ? 'lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red'
+            : 'lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--teal';
+    }
+
+    get metricOverdueValueClass() {
+        return this.metricOverdueCount > 0
+            ? 'lobby-metric-card__value lobby-metric-card__value--red'
+            : 'lobby-metric-card__value';
+    }
+
     // ── Batch 1: Live ticker, overdue, health, search ───────────────────────
 
     /** Adds 1 minute to every participant's waitTime across all waitlists. */
@@ -1655,6 +1709,7 @@ export default class LobbyManagement extends LightningElement {
             });
         }
 
+        this._transferredCount += 1;
         this.showTransferModal = false;
         this._showToast(`${participant.linkLabel} transferred successfully.`);
     }

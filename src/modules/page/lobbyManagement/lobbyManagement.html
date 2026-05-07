@@ -173,6 +173,72 @@
                     </div>
                 </div>
 
+                <!-- 7. VIP Participants -->
+                <div class="lobby-metric-card">
+                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--indigo">
+                        <lightning-icon icon-name="utility:ribbon" size="small" alternative-text="VIP"></lightning-icon>
+                    </div>
+                    <div class="lobby-metric-card__body">
+                        <div class="lobby-metric-card__value">{metricVipCount}</div>
+                        <div class="lobby-metric-card__label">VIP Participants</div>
+                    </div>
+                </div>
+
+                <!-- 8. Overdue Now -->
+                <div class="lobby-metric-card">
+                    <div class={metricOverdueClass}>
+                        <lightning-icon icon-name="utility:error" size="small" alternative-text="Overdue"></lightning-icon>
+                    </div>
+                    <div class="lobby-metric-card__body">
+                        <div class={metricOverdueValueClass}>{metricOverdueCount}</div>
+                        <div class="lobby-metric-card__label">Overdue (&gt;45 min)</div>
+                    </div>
+                </div>
+
+                <!-- 9. No-Shows Today -->
+                <div class="lobby-metric-card">
+                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red">
+                        <lightning-icon icon-name="utility:ban" size="small" alternative-text="No-Shows"></lightning-icon>
+                    </div>
+                    <div class="lobby-metric-card__body">
+                        <div class="lobby-metric-card__value">{metricNoShowsToday}</div>
+                        <div class="lobby-metric-card__label">No-Shows Today</div>
+                    </div>
+                </div>
+
+                <!-- 10. Queues at Capacity -->
+                <div class="lobby-metric-card">
+                    <div class={metricQueuesAtCapacityClass}>
+                        <lightning-icon icon-name="utility:priority" size="small" alternative-text="At Capacity"></lightning-icon>
+                    </div>
+                    <div class="lobby-metric-card__body">
+                        <div class="lobby-metric-card__value">{metricQueuesAtCapacity}</div>
+                        <div class="lobby-metric-card__label">Queues at Capacity</div>
+                    </div>
+                </div>
+
+                <!-- 11. Transferred Today -->
+                <div class="lobby-metric-card">
+                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
+                        <lightning-icon icon-name="utility:forward" size="small" alternative-text="Transferred"></lightning-icon>
+                    </div>
+                    <div class="lobby-metric-card__body">
+                        <div class="lobby-metric-card__value">{metricTransferred}</div>
+                        <div class="lobby-metric-card__label">Transferred Today</div>
+                    </div>
+                </div>
+
+                <!-- 12. Avg Service Time -->
+                <div class="lobby-metric-card">
+                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange">
+                        <lightning-icon icon-name="utility:timer" size="small" alternative-text="Service Time"></lightning-icon>
+                    </div>
+                    <div class="lobby-metric-card__body">
+                        <div class="lobby-metric-card__value lobby-metric-card__value--small">{metricAvgServiceTime}</div>
+                        <div class="lobby-metric-card__label">Avg Service Time</div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
