@@ -134,6 +134,22 @@
             </div>
         </div>
 
+        <!-- ── Global search bar ── -->
+        <div class="lobby-search-bar slds-p-horizontal_medium slds-p-vertical_small">
+            <div class="lobby-search-bar__inner">
+                <lightning-icon class="lobby-search-bar__icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
+                <input
+                    type="text"
+                    class="lobby-search-bar__input"
+                    placeholder="Search participants across all queues…"
+                    value={globalSearch}
+                    oninput={handleGlobalSearchChange} />
+                <template lwc:if={hasGlobalSearch}>
+                    <button class="lobby-search-bar__clear" onclick={handleGlobalSearchClear} title="Clear search">✕</button>
+                </template>
+            </div>
+        </div>
+
         <div class="lobby-main slds-p-top_medium slds-p-bottom_large slds-p-horizontal_medium">
             <lightning-layout multiple-rows="true" pull-to-boundary="small" class="lobby-layout">
                 <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
@@ -330,7 +346,7 @@
                         <div class="slds-card__header slds-grid lobby-queue-card__header">
                             <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
                                 <div class="slds-media__figure">
-                                    <span class="lobby-queue-dot" aria-hidden="true"></span>
+                                    <span class={generalBankingDotClass} aria-hidden="true"></span>
                                 </div>
                                 <div class="slds-media__body">
                                     <h2 class="lobby-queue-title">General Banking</h2>
@@ -370,10 +386,10 @@
                                 allow-multiple-sections-open
                                 active-section-name={generalBankingOpenSections}
                                 onsectiontoggle={handleGeneralAccordionToggle}>
-                                <template for:each={generalBankingTopics} for:item="topic">
+                                <template for:each={generalBankingTopicsFiltered} for:item="topic">
                                     <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
                                         <template for:each={topic.participants} for:item="row">
-                                            <div key={row.id} class="lobby-queue-participant slds-m-top_small">
+                                            <div key={row.id} class={row.cardClass}>
                                                 <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
                                                     <div class="lobby-queue-participant__identity">
                                                         <div class="lobby-queue-participant__title-row">
@@ -410,7 +426,7 @@
                                                                 alternative-text="">
                                                             </lightning-icon>
                                                             <span class="lobby-appt__wait-label">Wait Time:</span>
-                                                            <span class="lobby-appt__wait-time slds-m-left_xx-small">{row.waitTime}</span>
+                                                            <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -622,7 +638,7 @@
                         <div class="slds-card__header slds-grid lobby-queue-card__header">
                             <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
                                 <div class="slds-media__figure">
-                                    <span class="lobby-queue-dot" aria-hidden="true"></span>
+                                    <span class={investmentBankingDotClass} aria-hidden="true"></span>
                                 </div>
                                 <div class="slds-media__body">
                                     <h2 class="lobby-queue-title">Investment Banking</h2>
@@ -661,10 +677,10 @@
                                 class="lobby-queue-accordion"
                                 active-section-name={investmentBankingOpenSection}
                                 onsectiontoggle={handleInvestmentAccordionToggle}>
-                                <template for:each={investmentBankingTopics} for:item="topic">
+                                <template for:each={investmentBankingTopicsFiltered} for:item="topic">
                                     <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
                                         <template for:each={topic.participants} for:item="row">
-                                            <div key={row.id} class="lobby-queue-participant slds-m-top_small">
+                                            <div key={row.id} class={row.cardClass}>
                                                 <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
                                                     <div class="lobby-queue-participant__identity">
                                                         <div class="lobby-queue-participant__title-row">
@@ -701,7 +717,7 @@
                                                                 alternative-text="">
                                                             </lightning-icon>
                                                             <span class="lobby-appt__wait-label">Wait Time:</span>
-                                                            <span class="lobby-appt__wait-time slds-m-left_xx-small">{row.waitTime}</span>
+                                                            <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -908,7 +924,7 @@
                             <div class="slds-card__header slds-grid lobby-queue-card__header">
                                 <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
                                     <div class="slds-media__figure">
-                                        <span class="lobby-queue-dot" aria-hidden="true"></span>
+                                        <span class={wl.dotClass} aria-hidden="true"></span>
                                     </div>
                                     <div class="slds-media__body">
                                         <h2 class="lobby-queue-title">{wl.name}</h2>
@@ -951,7 +967,7 @@
                                         <template for:each={wl.topics} for:item="topic">
                                             <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
                                                 <template for:each={topic.participants} for:item="row">
-                                                    <div key={row.id} class="lobby-queue-participant slds-m-top_small">
+                                                    <div key={row.id} class={row.cardClass}>
                                                         <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
                                                             <div class="lobby-queue-participant__identity">
                                                                 <div class="lobby-queue-participant__title-row">
@@ -980,7 +996,7 @@
                                                                 <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
                                                                     <lightning-icon class="lobby-appt__wait-clock slds-m-right_xx-small" icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
                                                                     <span class="lobby-appt__wait-label">Wait Time:</span>
-                                                                    <span class="lobby-appt__wait-time slds-m-left_xx-small">{row.waitTime}</span>
+                                                                    <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                                 </div>
                                                             </div>
                                                         </div>

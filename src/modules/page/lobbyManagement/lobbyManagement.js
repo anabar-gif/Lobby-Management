@@ -51,6 +51,9 @@ export default class LobbyManagement extends LightningElement {
         };
         document.addEventListener('click', this._handleDocClick, true);
 
+        // Live wait time ticker — increments every 60 seconds
+        this._waitTimerInterval = setInterval(() => this._tickWaitTimes(), 60000);
+
         // Seed from waitlists already created before navigating here
         this._mergeFromStore(getWaitlists());
         // Subscribe for live updates — only appends new entries, never replaces existing ones
@@ -80,6 +83,7 @@ export default class LobbyManagement extends LightningElement {
     disconnectedCallback() {
         document.removeEventListener('click', this._handleDocClick, true);
         if (this._unsubscribeStore) this._unsubscribeStore();
+        if (this._waitTimerInterval) clearInterval(this._waitTimerInterval);
     }
 
     @track selectedBranch = 'Market St Branch';
@@ -178,6 +182,152 @@ export default class LobbyManagement extends LightningElement {
     get metricCurrentlyServed() {
         return (this.currentAppointments || []).filter(a => a.checkedIn).length;
     }
+
+    // ── Batch 1: Live ticker, overdue, health, search ───────────────────────
+
+    /** Adds 1 minute to every participant's waitTime across all waitlists. */
+    _tickWaitTimes() {
+        const addMin = (waitTime) => {
+            const m = (waitTime || '').match(/(\d+)\s*:\s*(\d+)/);
+            if (!m) return waitTime;
+            let total = parseInt(m[1], 10) * 60 + parseInt(m[2], 10) + 1;
+            const h = Math.floor(total / 60).toString().padStart(2, '0');
+            const min = (total % 60).toString().padStart(2, '0');
+            return `${h} : ${min} mins.`;
+        };
+        const tickParticipants = parts => parts.map(p => ({ ...p, waitTime: addMin(p.waitTime) }));
+        const tickTopics = topics => topics.map(t => ({ ...t, participants: tickParticipants(t.participants || []) }));
+
+        this.generalBankingTopics    = tickTopics(this.generalBankingTopics);
+        this.investmentBankingTopics = tickTopics(this.investmentBankingTopics);
+        this.dynamicWaitlists = this.dynamicWaitlists.map(w => ({
+            ...w,
+            topics: tickTopics(w.topics || []),
+        }));
+    }
+
+    /** Returns true if wait time exceeds 45 minutes. */
+    _isOverdue(waitTime) {
+        return this._parseWaitMins(waitTime) > 45;
+    }
+
+    /** Returns CSS class for a waitlist participant row — adds overdue style if wait > 45 min. */
+    _participantCardClass(waitTime) {
+        return this._isOverdue(waitTime)
+            ? 'lobby-queue-participant slds-m-top_small lobby-queue-participant--overdue'
+            : 'lobby-queue-participant slds-m-top_small';
+    }
+
+    /** Returns health status string — 'green', 'yellow', or 'red' — for a set of topics. */
+    _queueHealth(topics) {
+        const parts = (topics || []).flatMap(t => t.participants || []);
+        if (!parts.length) return 'green';
+        const maxMins = Math.max(...parts.map(p => this._parseWaitMins(p.waitTime)));
+        if (maxMins >= 45) return 'red';
+        if (maxMins >= 20) return 'yellow';
+        return 'green';
+    }
+
+    get generalBankingHealth()    { return this._queueHealth(this.generalBankingTopics); }
+    get investmentBankingHealth() { return this._queueHealth(this.investmentBankingTopics); }
+
+    get generalBankingDotClass() {
+        return `lobby-queue-dot lobby-queue-dot--${this.generalBankingHealth}`;
+    }
+    get investmentBankingDotClass() {
+        return `lobby-queue-dot lobby-queue-dot--${this.investmentBankingHealth}`;
+    }
+
+    /** Computed GB topics with per-row overdue class. */
+    get generalBankingTopicsView() {
+        return (this.generalBankingTopics || []).map(t => ({
+            ...t,
+            participants: (t.participants || []).map(p => ({
+                ...p,
+                cardClass: this._participantCardClass(p.waitTime),
+                waitTimeClass: this._isOverdue(p.waitTime)
+                    ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
+                    : 'lobby-appt__wait-time slds-m-left_xx-small',
+            })),
+        }));
+    }
+
+    /** Computed IB topics with per-row overdue class. */
+    get investmentBankingTopicsView() {
+        return (this.investmentBankingTopics || []).map(t => ({
+            ...t,
+            participants: (t.participants || []).map(p => ({
+                ...p,
+                cardClass: this._participantCardClass(p.waitTime),
+                waitTimeClass: this._isOverdue(p.waitTime)
+                    ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
+                    : 'lobby-appt__wait-time slds-m-left_xx-small',
+            })),
+        }));
+    }
+
+    /** Computed dynamic waitlists with health dot class and overdue per row. */
+    get dynamicWaitlistsView() {
+        return (this.dynamicWaitlists || []).map(w => ({
+            ...w,
+            dotClass: `lobby-queue-dot lobby-queue-dot--${this._queueHealth(w.topics)}`,
+            topics: (w.topics || []).map(t => ({
+                ...t,
+                participants: (t.participants || []).map(p => ({
+                    ...p,
+                    cardClass: this._participantCardClass(p.waitTime),
+                    waitTimeClass: this._isOverdue(p.waitTime)
+                        ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
+                        : 'lobby-appt__wait-time slds-m-left_xx-small',
+                })),
+            })),
+        }));
+    }
+
+    // ── Global search ────────────────────────────────────────────────────────
+
+    @track globalSearch = '';
+
+    handleGlobalSearchChange(event) {
+        this.globalSearch = event.target.value || '';
+    }
+
+    handleGlobalSearchClear() {
+        this.globalSearch = '';
+    }
+
+    get hasGlobalSearch() { return this.globalSearch.trim().length > 0; }
+
+    _filterTopicsBySearch(topics, q) {
+        if (!q) return topics;
+        const lower = q.toLowerCase();
+        return topics.map(t => ({
+            ...t,
+            participants: (t.participants || []).filter(p =>
+                (p.linkLabel || '').toLowerCase().includes(lower) ||
+                (p.topic || '').toLowerCase().includes(lower)
+            ),
+        })).filter(t => t.participants.length > 0);
+    }
+
+    get generalBankingTopicsFiltered() {
+        return this._filterTopicsBySearch(this.generalBankingTopicsView, this.globalSearch.trim());
+    }
+
+    get investmentBankingTopicsFiltered() {
+        return this._filterTopicsBySearch(this.investmentBankingTopicsView, this.globalSearch.trim());
+    }
+
+    get dynamicWaitlistsFiltered() {
+        const q = this.globalSearch.trim().toLowerCase();
+        if (!q) return this.dynamicWaitlistsView;
+        return this.dynamicWaitlistsView.map(w => ({
+            ...w,
+            topics: this._filterTopicsBySearch(w.topics, q),
+        })).filter(w => w.topics.some(t => t.participants.length > 0));
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
 
     // ────────────────────────────────────────────────────────────────────────
 
@@ -889,9 +1039,30 @@ export default class LobbyManagement extends LightningElement {
 
     /** Returns dynamicWaitlists enriched with flat participant list */
     get enrichedDynamicWaitlists() {
+        const q = this.globalSearch.trim().toLowerCase();
         return this.dynamicWaitlists.map(w => {
-            // Only show topic sections that have at least one participant
-            const topics = (w.topics && w.topics.length ? w.topics : []).filter(t => t.participants.length > 0);
+            // Only show topic sections that have at least one participant, with optional search filter
+            let topics = (w.topics && w.topics.length ? w.topics : []).filter(t => t.participants.length > 0);
+            if (q) {
+                topics = topics.map(t => ({
+                    ...t,
+                    participants: t.participants.filter(p =>
+                        (p.linkLabel || '').toLowerCase().includes(q) ||
+                        (p.topic || '').toLowerCase().includes(q)
+                    ),
+                })).filter(t => t.participants.length > 0);
+            }
+            // Add overdue class to each participant
+            topics = topics.map(t => ({
+                ...t,
+                participants: t.participants.map(p => ({
+                    ...p,
+                    cardClass: this._participantCardClass(p.waitTime),
+                    waitTimeClass: this._isOverdue(p.waitTime)
+                        ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
+                        : 'lobby-appt__wait-time slds-m-left_xx-small',
+                })),
+            }));
             const allParticipants = topics.flatMap(t => t.participants);
             const total = allParticipants.length;
             return {
@@ -899,6 +1070,7 @@ export default class LobbyManagement extends LightningElement {
                 topics,
                 allParticipants,
                 hasParticipants: total > 0,
+                dotClass: `lobby-queue-dot lobby-queue-dot--${this._queueHealth(w.topics)}`,
                 metaLeft: `Showing ${total} of ${total} Items • Updated just now`,
                 metaRight: 'Total Appointment Duration: 0 hr 0 min',
             };
