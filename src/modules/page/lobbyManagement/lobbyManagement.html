@@ -1,5 +1,5 @@
 <template>
-    <div class="lobby-root">
+    <div class={rootClass}>
 
         <header class="lobby-header slds-p-vertical_small slds-p-horizontal_medium">
             <div class="lobby-header__inner slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-wrap slds-gutters_small">
@@ -68,6 +68,36 @@
                             title="Refresh"
                             onclick={handleRefresh}>
                         </lightning-button-icon>
+                        <lightning-button-icon
+                            icon-name="utility:chart"
+                            variant="border-filled"
+                            alternative-text="Peak Hours"
+                            title="Peak Hours Chart"
+                            class="slds-m-left_xx-small"
+                            onclick={handleTogglePeakChart}>
+                        </lightning-button-icon>
+                        <lightning-button-icon
+                            icon-name="utility:summary"
+                            variant="border-filled"
+                            alternative-text="Daily Summary"
+                            title="Daily Summary"
+                            class="slds-m-left_xx-small"
+                            onclick={handleToggleDailySummary}>
+                        </lightning-button-icon>
+                        <lightning-button-icon
+                            icon-name="utility:download"
+                            variant="border-filled"
+                            alternative-text="Export CSV"
+                            title="Export to CSV"
+                            class="slds-m-left_xx-small"
+                            onclick={handleExport}>
+                        </lightning-button-icon>
+                        <lightning-button
+                            label={compactViewLabel}
+                            variant="neutral"
+                            class="slds-m-left_xx-small"
+                            onclick={handleToggleCompactView}>
+                        </lightning-button>
                     </div>
                 </div>
             </div>
@@ -1285,6 +1315,7 @@
                     <li role="menuitem" class="lobby-row-menu__item" data-action="last"  data-id={activeMenuRowId} onclick={handleParticipantActionRequest}>Move to last in the waitlist</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleToggleVip}>Toggle VIP Priority</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleToggleNotes}>Add / View Notes</li>
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleTransferRequest}>Transfer to Another Queue</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantNoShow}>Mark as No-Show</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantRemoveResource}>Remove Preferred Resource</li>
                 </ul>
@@ -1415,5 +1446,97 @@
                 </button>
             </div>
         </template>
+
+        <!-- ── Peak Hours Chart panel ── -->
+        <template lwc:if={showPeakChart}>
+            <div class="lobby-panel-overlay" onclick={handleTogglePeakChart}></div>
+            <div class="lobby-panel lobby-panel--chart">
+                <div class="lobby-panel__header">
+                    <span class="lobby-panel__title">Peak Hours — Today</span>
+                    <button class="lobby-panel__close" onclick={handleTogglePeakChart} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                    </button>
+                </div>
+                <div class="lobby-peak-chart">
+                    <div class="lobby-peak-chart__bars">
+                        <template for:each={peakHoursBars} for:item="bar">
+                            <div key={bar.hour} class="lobby-peak-chart__col">
+                                <div class="lobby-peak-chart__bar-wrap">
+                                    <span class="lobby-peak-chart__count">{bar.label}</span>
+                                    <div class={bar.barClass} style={bar.barStyle}></div>
+                                </div>
+                                <div class="lobby-peak-chart__hour">{bar.hour}</div>
+                            </div>
+                        </template>
+                    </div>
+                    <p class="lobby-peak-chart__caption">Check-ins per hour for today</p>
+                </div>
+            </div>
+        </template>
+
+        <!-- ── Daily Summary panel ── -->
+        <template lwc:if={showDailySummary}>
+            <div class="lobby-panel-overlay" onclick={handleToggleDailySummary}></div>
+            <div class="lobby-panel lobby-panel--summary">
+                <div class="lobby-panel__header">
+                    <span class="lobby-panel__title">Daily Summary</span>
+                    <button class="lobby-panel__close" onclick={handleToggleDailySummary} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                    </button>
+                </div>
+                <div class="lobby-summary-grid">
+                    <div class="lobby-summary-stat">
+                        <div class="lobby-summary-stat__value">{dailySummaryTotalServed}</div>
+                        <div class="lobby-summary-stat__label">Total Served Today</div>
+                    </div>
+                    <div class="lobby-summary-stat">
+                        <div class="lobby-summary-stat__value">{metricTotalCheckedIn}</div>
+                        <div class="lobby-summary-stat__label">Currently in Queue</div>
+                    </div>
+                    <div class="lobby-summary-stat">
+                        <div class="lobby-summary-stat__value lobby-summary-stat__value--orange">{dailySummaryAvgWait}</div>
+                        <div class="lobby-summary-stat__label">Avg Wait Time</div>
+                    </div>
+                    <div class="lobby-summary-stat">
+                        <div class="lobby-summary-stat__value lobby-summary-stat__value--red">{dailySummaryNoShows}</div>
+                        <div class="lobby-summary-stat__label">No-Shows Today</div>
+                    </div>
+                    <div class="lobby-summary-stat">
+                        <div class="lobby-summary-stat__value">{metricActiveWaitlists}</div>
+                        <div class="lobby-summary-stat__label">Active Waitlists</div>
+                    </div>
+                    <div class="lobby-summary-stat">
+                        <div class="lobby-summary-stat__value">{metricUpcoming}</div>
+                        <div class="lobby-summary-stat__label">Upcoming Appointments</div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- ── Transfer Modal ── -->
+        <template lwc:if={showTransferModal}>
+            <div class="lobby-modal-backdrop"></div>
+            <div class="lobby-modal lobby-modal--small" role="dialog" aria-modal="true">
+                <div class="lobby-modal__header">
+                    <h2 class="lobby-modal__title">Transfer to Another Queue</h2>
+                </div>
+                <div class="lobby-modal__body">
+                    <lightning-combobox
+                        label="Select target queue"
+                        value={transferTargetQueue}
+                        options={transferQueueOptions}
+                        onchange={handleTransferTargetChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="lobby-modal__footer">
+                    <lightning-button label="Cancel" onclick={handleTransferCancel}></lightning-button>
+                    <lightning-button label="Transfer" variant="brand" onclick={handleTransferConfirm}></lightning-button>
+                </div>
+                <button class="lobby-modal__close" onclick={handleTransferCancel} aria-label="Close">
+                    <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                </button>
+            </div>
+        </template>
+
     </div>
 </template>

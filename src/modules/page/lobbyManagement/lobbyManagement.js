@@ -1592,6 +1592,164 @@ export default class LobbyManagement extends LightningElement {
         }
     }
 
+    // ── Batch 3: Transfer, Daily Summary, Compact view, Peak hours, Export ──
+
+    // Transfer between queues
+    @track showTransferModal = false;
+    @track transferParticipantId = null;
+    @track transferTargetQueue = '';
+
+    get transferQueueOptions() {
+        const opts = [
+            { label: 'General Banking', value: 'gb' },
+            { label: 'Investment Banking', value: 'ib' },
+        ];
+        (this.dynamicWaitlists || []).forEach(w => opts.push({ label: w.name, value: w.id }));
+        return opts;
+    }
+
+    handleTransferRequest(event) {
+        this.transferParticipantId = event.currentTarget.dataset.id;
+        this.transferTargetQueue = '';
+        this.showTransferModal = true;
+        this.activeMenuRowId = null;
+    }
+
+    handleTransferTargetChange(event) {
+        this.transferTargetQueue = event.detail.value;
+    }
+
+    handleTransferConfirm() {
+        const id = this.transferParticipantId;
+        const target = this.transferTargetQueue;
+        if (!id || !target) return;
+
+        // Find and remove participant from all topics
+        let participant = null;
+        const remover = (rows) => rows.filter(p => { if (p.id === id) { participant = p; return false; } return true; });
+        const topicRemover = (topics) => topics.map(t => ({ ...t, participants: remover(t.participants || []) }));
+
+        this.generalBankingTopics    = sortLobbyTopicsByCountDesc(topicRemover(this.generalBankingTopics));
+        this.investmentBankingTopics = sortLobbyTopicsByCountDesc(topicRemover(this.investmentBankingTopics));
+        this.dynamicWaitlists = this.dynamicWaitlists.map(w => ({ ...w, topics: topicRemover(w.topics || []) }));
+
+        if (!participant) { this.showTransferModal = false; return; }
+
+        // Add to target
+        const newParticipant = { ...participant, id: `${participant.id}-t${Date.now()}` };
+        if (target === 'gb') {
+            const topics = this.generalBankingTopics.length ? this.generalBankingTopics : [];
+            if (topics.length) {
+                this.generalBankingTopics = sortLobbyTopicsByCountDesc(topics.map((t, i) => i === 0 ? { ...t, participants: [...t.participants, newParticipant] } : t));
+            }
+        } else if (target === 'ib') {
+            const topics = this.investmentBankingTopics;
+            if (topics.length) {
+                this.investmentBankingTopics = sortLobbyTopicsByCountDesc(topics.map((t, i) => i === 0 ? { ...t, participants: [...t.participants, newParticipant] } : t));
+            }
+        } else {
+            this.dynamicWaitlists = this.dynamicWaitlists.map(w => {
+                if (w.id !== target) return w;
+                const topics = w.topics && w.topics.length ? w.topics : [{ id: `${w.id}-default`, label: w.name + ' (0)', participants: [] }];
+                return { ...w, topics: topics.map((t, i) => i === 0 ? { ...t, participants: [...t.participants, newParticipant] } : t) };
+            });
+        }
+
+        this.showTransferModal = false;
+        this._showToast(`${participant.linkLabel} transferred successfully.`);
+    }
+
+    handleTransferCancel() {
+        this.showTransferModal = false;
+    }
+
+    // Daily summary
+    @track showDailySummary = false;
+
+    get dailySummaryTotalServed() {
+        return (this.currentAppointments || []).filter(a => a.checkedIn).length + this._allWaitlistParticipants().length;
+    }
+
+    get dailySummaryNoShows() { return 2; } // demo static value
+
+    get dailySummaryAvgWait() { return this.metricAvgWait; }
+
+    handleToggleDailySummary() {
+        this.showDailySummary = !this.showDailySummary;
+    }
+
+    // Compact view toggle
+    @track compactView = false;
+
+    handleToggleCompactView() {
+        this.compactView = !this.compactView;
+    }
+
+    get compactViewLabel() { return this.compactView ? 'Full View' : 'Compact View'; }
+
+    get rootClass() {
+        return this.compactView ? 'lobby-root lobby-root--compact' : 'lobby-root';
+    }
+
+    // Peak hours chart data (simulated hourly check-ins)
+    get peakHoursData() {
+        return [
+            { hour: '8AM',  count: 3,  label: '3' },
+            { hour: '9AM',  count: 8,  label: '8' },
+            { hour: '10AM', count: 12, label: '12' },
+            { hour: '11AM', count: 7,  label: '7' },
+            { hour: '12PM', count: 5,  label: '5' },
+            { hour: '1PM',  count: 9,  label: '9' },
+            { hour: '2PM',  count: 6,  label: '6' },
+            { hour: '3PM',  count: 4,  label: '4' },
+        ];
+    }
+
+    get peakHoursMax() {
+        return Math.max(...this.peakHoursData.map(d => d.count));
+    }
+
+    get peakHoursBars() {
+        const max = this.peakHoursMax;
+        const chartH = 80;
+        return this.peakHoursData.map(d => {
+            const h = Math.round((d.count / max) * chartH);
+            const isPeak = d.count === max;
+            return {
+                ...d,
+                barHeight: h,
+                barStyle: `height:${h}px;`,
+                isPeak,
+                barClass: isPeak
+                    ? 'lobby-peak-chart__bar lobby-peak-chart__bar--peak'
+                    : 'lobby-peak-chart__bar',
+            };
+        });
+    }
+
+    @track showPeakChart = false;
+
+    handleTogglePeakChart() {
+        this.showPeakChart = !this.showPeakChart;
+    }
+
+    // Export / Print
+    handleExport() {
+        const parts = this._allWaitlistParticipants();
+        const rows = [['Name', 'Topic', 'Check-In Time', 'Wait Time']];
+        parts.forEach(p => rows.push([p.linkLabel || '', p.topic || '', p.checkInTime || '', p.waitTime || '']));
+        const csv = rows.map(r => r.map(c => `"${(c || '').replace(/"/g, '""')}"`).join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `lobby-queue-${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+
     handleCheckin(event) {
         const id = event.currentTarget?.dataset?.id;
         if (!id) return;
