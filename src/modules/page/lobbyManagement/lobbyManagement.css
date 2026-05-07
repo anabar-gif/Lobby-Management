@@ -1725,7 +1725,7 @@
 
 /* Peak Hours chart */
 .lobby-peak-chart {
-    padding: 1.5rem;
+    padding: 2rem 1.5rem 1.5rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -1738,10 +1738,12 @@
     display: flex;
     align-items: flex-end;
     gap: 0.625rem;
-    height: 120px;
+    height: 140px;
     border-bottom: 2px solid #e5e5e5;
     margin-bottom: 0.625rem;
     width: 100%;
+    padding-top: 1.5rem;
+    box-sizing: border-box;
 }
 
 .lobby-peak-chart__col {
@@ -1758,7 +1760,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    height: 110px;
+    height: 120px;
     gap: 0.2rem;
     width: 100%;
 }
