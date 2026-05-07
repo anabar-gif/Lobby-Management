@@ -1551,10 +1551,16 @@
             <div class="lobby-panel-overlay" onclick={handleTogglePeakChart}></div>
             <div class="lobby-panel lobby-panel--chart">
                 <div class="lobby-panel__header">
-                    <span class="lobby-panel__title">Peak Hours — Today</span>
+                    <span class="lobby-panel__title">Check-in Activity</span>
                     <button class="lobby-panel__close" onclick={handleTogglePeakChart} aria-label="Close">
                         <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
                     </button>
+                </div>
+                <!-- Period tabs -->
+                <div class="lobby-chart-tabs">
+                    <button class={peakPeriodDailyClass}   onclick={handlePeakPeriodDaily}>Daily</button>
+                    <button class={peakPeriodWeeklyClass}  onclick={handlePeakPeriodWeekly}>Weekly</button>
+                    <button class={peakPeriodMonthlyClass} onclick={handlePeakPeriodMonthly}>Monthly</button>
                 </div>
                 <div class="lobby-peak-chart">
                     <div class="lobby-peak-chart__bars">
@@ -1568,7 +1574,7 @@
                             </div>
                         </template>
                     </div>
-                    <p class="lobby-peak-chart__caption">Check-ins per hour for today</p>
+                    <p class="lobby-peak-chart__caption">{peakChartCaption}</p>
                 </div>
             </div>
         </template>

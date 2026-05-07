@@ -1827,35 +1827,72 @@ export default class LobbyManagement extends LightningElement {
         return this.compactView ? 'lobby-root lobby-root--compact' : 'lobby-root';
     }
 
-    // Peak hours chart data (simulated hourly check-ins)
-    get peakHoursData() {
+    // Peak hours chart — period filter
+    @track peakPeriod = 'daily';
+
+    get peakPeriodIsDaily()   { return this.peakPeriod === 'daily'; }
+    get peakPeriodIsWeekly()  { return this.peakPeriod === 'weekly'; }
+    get peakPeriodIsMonthly() { return this.peakPeriod === 'monthly'; }
+
+    get peakPeriodDailyClass()   { return 'lobby-chart-tab' + (this.peakPeriodIsDaily   ? ' lobby-chart-tab--active' : ''); }
+    get peakPeriodWeeklyClass()  { return 'lobby-chart-tab' + (this.peakPeriodIsWeekly  ? ' lobby-chart-tab--active' : ''); }
+    get peakPeriodMonthlyClass() { return 'lobby-chart-tab' + (this.peakPeriodIsMonthly ? ' lobby-chart-tab--active' : ''); }
+
+    get peakChartCaption() {
+        if (this.peakPeriod === 'weekly')  return 'Check-ins per day — last 7 days';
+        if (this.peakPeriod === 'monthly') return 'Check-ins per week — last 4 weeks';
+        return 'Check-ins per hour for today';
+    }
+
+    handlePeakPeriodDaily()   { this.peakPeriod = 'daily'; }
+    handlePeakPeriodWeekly()  { this.peakPeriod = 'weekly'; }
+    handlePeakPeriodMonthly() { this.peakPeriod = 'monthly'; }
+
+    // Simulated datasets per period
+    _peakDataByPeriod() {
+        if (this.peakPeriod === 'weekly') {
+            return [
+                { hour: 'Mon', count: 28 },
+                { hour: 'Tue', count: 35 },
+                { hour: 'Wed', count: 42 },
+                { hour: 'Thu', count: 54 },
+                { hour: 'Fri', count: 61 },
+                { hour: 'Sat', count: 19 },
+                { hour: 'Sun', count: 11 },
+            ];
+        }
+        if (this.peakPeriod === 'monthly') {
+            return [
+                { hour: 'Wk 1', count: 187 },
+                { hour: 'Wk 2', count: 214 },
+                { hour: 'Wk 3', count: 198 },
+                { hour: 'Wk 4', count: 231 },
+            ];
+        }
+        // daily (hourly)
         return [
-            { hour: '8AM',  count: 3,  label: '3' },
-            { hour: '9AM',  count: 8,  label: '8' },
-            { hour: '10AM', count: 12, label: '12' },
-            { hour: '11AM', count: 7,  label: '7' },
-            { hour: '12PM', count: 5,  label: '5' },
-            { hour: '1PM',  count: 9,  label: '9' },
-            { hour: '2PM',  count: 6,  label: '6' },
-            { hour: '3PM',  count: 4,  label: '4' },
+            { hour: '8AM',  count: 3  },
+            { hour: '9AM',  count: 8  },
+            { hour: '10AM', count: 12 },
+            { hour: '11AM', count: 7  },
+            { hour: '12PM', count: 5  },
+            { hour: '1PM',  count: 9  },
+            { hour: '2PM',  count: 6  },
+            { hour: '3PM',  count: 4  },
         ];
     }
 
-    get peakHoursMax() {
-        return Math.max(...this.peakHoursData.map(d => d.count));
-    }
-
     get peakHoursBars() {
-        const max = this.peakHoursMax;
+        const data = this._peakDataByPeriod();
+        const max = Math.max(...data.map(d => d.count));
         const chartH = 80;
-        return this.peakHoursData.map(d => {
-            const h = Math.round((d.count / max) * chartH);
+        return data.map(d => {
+            const h = Math.max(4, Math.round((d.count / max) * chartH));
             const isPeak = d.count === max;
             return {
                 ...d,
-                barHeight: h,
+                label: String(d.count),
                 barStyle: `height:${h}px;`,
-                isPeak,
                 barClass: isPeak
                     ? 'lobby-peak-chart__bar lobby-peak-chart__bar--peak'
                     : 'lobby-peak-chart__bar',
