@@ -359,21 +359,96 @@ export default class LobbyManagement extends LightningElement {
         })).filter(t => t.participants.length > 0);
     }
 
+    // ── Tile filter ──────────────────────────────────────────────────────────
+
+    @track activeTileFilter = '';
+
+    get activeTileFilterLabel() {
+        const labels = {
+            vip:      'VIP Participants',
+            overdue:  'Overdue (>45 min)',
+            capacity: 'Queues at Capacity',
+        };
+        return labels[this.activeTileFilter] || '';
+    }
+
+    get hasTileFilter() { return !!this.activeTileFilter; }
+
+    handleTileClick(event) {
+        const filter = event.currentTarget.dataset.filter;
+        if (!filter || filter === 'none') return;
+        this.activeTileFilter = this.activeTileFilter === filter ? '' : filter;
+    }
+
+    handleClearTileFilter() {
+        this.activeTileFilter = '';
+    }
+
+    _tileFilterPredicate(p) {
+        switch (this.activeTileFilter) {
+            case 'vip':     return !!p.isVip;
+            case 'overdue': return this._parseWaitMins(p.waitTime) > 45;
+            default:        return true;
+        }
+    }
+
+    _applyTileFilter(topics) {
+        if (!this.activeTileFilter || this.activeTileFilter === 'capacity') return topics;
+        return topics.map(t => ({
+            ...t,
+            participants: (t.participants || []).filter(p => this._tileFilterPredicate(p)),
+        })).filter(t => t.participants.length > 0);
+    }
+
+    _isTileFilterActive(filterKey) {
+        return this.activeTileFilter === filterKey;
+    }
+
+    get tileFilterClassCheckedIn()   { return this._tileFilterActive('checkedin') ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassServed()      { return this._tileFilterActive('served') ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassUpcoming()    { return this._tileFilterActive('upcoming') ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassAvgWait()     { return 'lobby-metric-card'; }
+    get tileFilterClassLongest()     { return 'lobby-metric-card'; }
+    get tileFilterClassWaitlists()   { return 'lobby-metric-card'; }
+    get tileFilterClassVip()         { return this.activeTileFilter === 'vip'      ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassOverdue()     { return this.activeTileFilter === 'overdue'  ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassNoShows()     { return 'lobby-metric-card'; }
+    get tileFilterClassCapacity()    { return this.activeTileFilter === 'capacity' ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassTransferred() { return 'lobby-metric-card'; }
+    get tileFilterClassAvgService()  { return 'lobby-metric-card'; }
+
+    _tileFilterActive(key) { return this.activeTileFilter === key; }
+
+    // Whether a queue should be shown when "capacity" filter is on
+    _queuePassesCapacityFilter(health) {
+        if (this.activeTileFilter !== 'capacity') return true;
+        return health === 'red';
+    }
+
     get generalBankingTopicsFiltered() {
-        return this._filterTopicsBySearch(this.generalBankingTopicsView, this.globalSearch.trim());
+        if (this.activeTileFilter === 'capacity' && this.generalBankingHealth !== 'red') return [];
+        return this._applyTileFilter(
+            this._filterTopicsBySearch(this.generalBankingTopicsView, this.globalSearch.trim())
+        );
     }
 
     get investmentBankingTopicsFiltered() {
-        return this._filterTopicsBySearch(this.investmentBankingTopicsView, this.globalSearch.trim());
+        if (this.activeTileFilter === 'capacity' && this.investmentBankingHealth !== 'red') return [];
+        return this._applyTileFilter(
+            this._filterTopicsBySearch(this.investmentBankingTopicsView, this.globalSearch.trim())
+        );
     }
 
     get dynamicWaitlistsFiltered() {
         const q = this.globalSearch.trim().toLowerCase();
-        if (!q) return this.dynamicWaitlistsView;
-        return this.dynamicWaitlistsView.map(w => ({
-            ...w,
-            topics: this._filterTopicsBySearch(w.topics, q),
-        })).filter(w => w.topics.some(t => t.participants.length > 0));
+        let result = this.dynamicWaitlistsView;
+        if (q) {
+            result = result.map(w => ({
+                ...w,
+                topics: this._filterTopicsBySearch(w.topics, q),
+            })).filter(w => w.topics.some(t => t.participants.length > 0));
+        }
+        return result;
     }
 
     // ── Batch 2: Avatars, VIP, Notes, Auto-refresh, Resource filter ─────────
@@ -1202,7 +1277,11 @@ export default class LobbyManagement extends LightningElement {
     get enrichedDynamicWaitlists() {
         const q = this.globalSearch.trim().toLowerCase();
         return this.dynamicWaitlists.map(w => {
-            // Only show topic sections that have at least one participant, with optional search filter
+            const health = this._queueHealth(w.topics);
+            // Capacity filter: skip queues not at capacity
+            if (this.activeTileFilter === 'capacity' && health !== 'red') {
+                return { ...w, topics: [], allParticipants: [], hasParticipants: false, dotClass: `lobby-queue-dot lobby-queue-dot--${health}`, metaLeft: '', metaRight: '' };
+            }
             let topics = (w.topics && w.topics.length ? w.topics : []).filter(t => t.participants.length > 0);
             if (q) {
                 topics = topics.map(t => ({
@@ -1218,6 +1297,8 @@ export default class LobbyManagement extends LightningElement {
                 ...t,
                 participants: t.participants.map(p => this._enrichParticipant(p)),
             })));
+            // Apply tile filter (VIP / overdue)
+            topics = this._applyTileFilter(topics);
             const allParticipants = topics.flatMap(t => t.participants);
             const total = allParticipants.length;
             return {
@@ -1225,7 +1306,7 @@ export default class LobbyManagement extends LightningElement {
                 topics,
                 allParticipants,
                 hasParticipants: total > 0,
-                dotClass: `lobby-queue-dot lobby-queue-dot--${this._queueHealth(w.topics)}`,
+                dotClass: `lobby-queue-dot lobby-queue-dot--${health}`,
                 metaLeft: `Showing ${total} of ${total} Items • Updated just now`,
                 metaRight: 'Total Appointment Duration: 0 hr 0 min',
             };

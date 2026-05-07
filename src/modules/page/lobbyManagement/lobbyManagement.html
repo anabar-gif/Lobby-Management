@@ -107,8 +107,8 @@
         <div class="lobby-metrics slds-p-horizontal_medium slds-p-top_medium slds-p-bottom_small">
             <div class="lobby-metrics__grid">
 
-                <!-- 1. Total Checked In -->
-                <div class="lobby-metric-card">
+                <!-- 1. Total Checked In — informational -->
+                <div class="lobby-metric-card" title="Total participants currently checked in">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
                         <lightning-icon icon-name="utility:people" size="small" alternative-text="Checked In"></lightning-icon>
                     </div>
@@ -118,8 +118,8 @@
                     </div>
                 </div>
 
-                <!-- 2. Currently Being Served -->
-                <div class="lobby-metric-card">
+                <!-- 2. Currently Being Served — informational -->
+                <div class="lobby-metric-card" title="Currently being served">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--green">
                         <lightning-icon icon-name="utility:user" size="small" alternative-text="In Service"></lightning-icon>
                     </div>
@@ -129,8 +129,8 @@
                     </div>
                 </div>
 
-                <!-- 3. Upcoming Appointments -->
-                <div class="lobby-metric-card">
+                <!-- 3. Upcoming Appointments — informational -->
+                <div class="lobby-metric-card" title="Upcoming appointments">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--indigo">
                         <lightning-icon icon-name="utility:event" size="small" alternative-text="Upcoming"></lightning-icon>
                     </div>
@@ -140,8 +140,8 @@
                     </div>
                 </div>
 
-                <!-- 4. Average Wait Time -->
-                <div class="lobby-metric-card">
+                <!-- 4. Average Wait Time — informational -->
+                <div class="lobby-metric-card" title="Average wait time across all queues">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange">
                         <lightning-icon icon-name="utility:clock" size="small" alternative-text="Avg Wait"></lightning-icon>
                     </div>
@@ -151,8 +151,8 @@
                     </div>
                 </div>
 
-                <!-- 5. Longest Wait -->
-                <div class="lobby-metric-card">
+                <!-- 5. Longest Wait — informational -->
+                <div class="lobby-metric-card" title="Longest individual wait time">
                     <div class={metricLongestWaitIconClass}>
                         <lightning-icon icon-name="utility:warning" size="small" alternative-text="Longest Wait"></lightning-icon>
                     </div>
@@ -162,8 +162,8 @@
                     </div>
                 </div>
 
-                <!-- 6. Active Waitlists -->
-                <div class="lobby-metric-card">
+                <!-- 6. Active Waitlists — informational -->
+                <div class="lobby-metric-card" title="Number of active waitlists">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--teal">
                         <lightning-icon icon-name="utility:list" size="small" alternative-text="Active Waitlists"></lightning-icon>
                     </div>
@@ -173,8 +173,13 @@
                     </div>
                 </div>
 
-                <!-- 7. VIP Participants -->
-                <div class="lobby-metric-card">
+                <!-- 7. VIP Participants — FILTERABLE -->
+                <div class={tileFilterClassVip}
+                     data-filter="vip"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show only VIP participants">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--indigo">
                         <lightning-icon icon-name="utility:ribbon" size="small" alternative-text="VIP"></lightning-icon>
                     </div>
@@ -182,10 +187,16 @@
                         <div class="lobby-metric-card__value">{metricVipCount}</div>
                         <div class="lobby-metric-card__label">VIP Participants</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 8. Overdue Now -->
-                <div class="lobby-metric-card">
+                <!-- 8. Overdue — FILTERABLE -->
+                <div class={tileFilterClassOverdue}
+                     data-filter="overdue"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show only overdue participants">
                     <div class={metricOverdueClass}>
                         <lightning-icon icon-name="utility:error" size="small" alternative-text="Overdue"></lightning-icon>
                     </div>
@@ -193,10 +204,11 @@
                         <div class={metricOverdueValueClass}>{metricOverdueCount}</div>
                         <div class="lobby-metric-card__label">Overdue (&gt;45 min)</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 9. No-Shows Today -->
-                <div class="lobby-metric-card">
+                <!-- 9. No-Shows Today — informational -->
+                <div class="lobby-metric-card" title="No-shows recorded today">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red">
                         <lightning-icon icon-name="utility:ban" size="small" alternative-text="No-Shows"></lightning-icon>
                     </div>
@@ -206,8 +218,13 @@
                     </div>
                 </div>
 
-                <!-- 10. Queues at Capacity -->
-                <div class="lobby-metric-card">
+                <!-- 10. Queues at Capacity — FILTERABLE -->
+                <div class={tileFilterClassCapacity}
+                     data-filter="capacity"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show only queues at capacity">
                     <div class={metricQueuesAtCapacityClass}>
                         <lightning-icon icon-name="utility:priority" size="small" alternative-text="At Capacity"></lightning-icon>
                     </div>
@@ -215,10 +232,11 @@
                         <div class="lobby-metric-card__value">{metricQueuesAtCapacity}</div>
                         <div class="lobby-metric-card__label">Queues at Capacity</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 11. Transferred Today -->
-                <div class="lobby-metric-card">
+                <!-- 11. Transferred Today — informational -->
+                <div class="lobby-metric-card" title="Transfers completed today">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
                         <lightning-icon icon-name="utility:forward" size="small" alternative-text="Transferred"></lightning-icon>
                     </div>
@@ -228,8 +246,8 @@
                     </div>
                 </div>
 
-                <!-- 12. Avg Service Time -->
-                <div class="lobby-metric-card">
+                <!-- 12. Avg Service Time — informational -->
+                <div class="lobby-metric-card" title="Average service time">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange">
                         <lightning-icon icon-name="utility:timer" size="small" alternative-text="Service Time"></lightning-icon>
                     </div>
@@ -240,6 +258,21 @@
                 </div>
 
             </div>
+
+            <!-- Active filter pill -->
+            <template lwc:if={hasTileFilter}>
+                <div class="lobby-tile-filter-bar slds-m-top_x-small">
+                    <span class="lobby-tile-filter-pill">
+                        <lightning-icon icon-name="utility:filter" size="xx-small" alternative-text="Filter" class="slds-m-right_xx-small"></lightning-icon>
+                        Filtering by: <strong>{activeTileFilterLabel}</strong>
+                    </span>
+                    <button class="lobby-tile-filter-clear" onclick={handleClearTileFilter}>
+                        <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Clear"></lightning-icon>
+                        Clear filter
+                    </button>
+                </div>
+            </template>
+
         </div>
 
         <!-- ── Global search bar ── -->

@@ -203,6 +203,87 @@
     text-overflow: ellipsis;
 }
 
+/* Clickable / filterable tile styles */
+.lobby-metric-card[role="button"] {
+    cursor: pointer;
+    position: relative;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.lobby-metric-card[role="button"]:hover {
+    box-shadow: 0 0 0 2px #1a56db33;
+    border-color: #1a56db66;
+    background: #f0f5ff;
+}
+
+.lobby-metric-card--active {
+    border-color: #1a56db !important;
+    background: #e8f0fe !important;
+    box-shadow: 0 0 0 2px #1a56db44 !important;
+}
+
+.lobby-metric-card--active .lobby-metric-card__label {
+    color: #1a56db;
+}
+
+.lobby-metric-card__filter-hint {
+    display: none;
+    position: absolute;
+    top: 0.25rem;
+    right: 0.375rem;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    color: #1a56db;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.lobby-metric-card[role="button"]:hover .lobby-metric-card__filter-hint,
+.lobby-metric-card--active .lobby-metric-card__filter-hint {
+    display: block;
+}
+
+/* Filter pill bar */
+.lobby-tile-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.lobby-tile-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #1a56db;
+    background: #e8f0fe;
+    border: 1px solid #1a56db44;
+    border-radius: 1rem;
+    padding: 0.1875rem 0.625rem;
+    font-weight: 500;
+}
+
+.lobby-tile-filter-clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #706e6b;
+    background: none;
+    border: 1px solid #e5e5e5;
+    border-radius: 1rem;
+    padding: 0.1875rem 0.625rem;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+
+.lobby-tile-filter-clear:hover {
+    background: #fee2e2;
+    color: #dc2626;
+    border-color: #fca5a5;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────── */
 
 .lobby-header {
