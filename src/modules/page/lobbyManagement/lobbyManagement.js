@@ -53,6 +53,8 @@ export default class LobbyManagement extends LightningElement {
 
         // Live wait time ticker — increments every 60 seconds
         this._waitTimerInterval = setInterval(() => this._tickWaitTimes(), 60000);
+        // Auto-refresh label updater
+        this._startAutoRefresh();
 
         // Seed from waitlists already created before navigating here
         this._mergeFromStore(getWaitlists());
@@ -84,6 +86,7 @@ export default class LobbyManagement extends LightningElement {
         document.removeEventListener('click', this._handleDocClick, true);
         if (this._unsubscribeStore) this._unsubscribeStore();
         if (this._waitTimerInterval) clearInterval(this._waitTimerInterval);
+        if (this._autoRefreshInterval) clearInterval(this._autoRefreshInterval);
     }
 
     @track selectedBranch = 'Market St Branch';
@@ -238,32 +241,24 @@ export default class LobbyManagement extends LightningElement {
         return `lobby-queue-dot lobby-queue-dot--${this.investmentBankingHealth}`;
     }
 
-    /** Computed GB topics with per-row overdue class. */
+    /** Computed GB topics with per-row enrichment (avatar, VIP, overdue). */
     get generalBankingTopicsView() {
-        return (this.generalBankingTopics || []).map(t => ({
-            ...t,
-            participants: (t.participants || []).map(p => ({
-                ...p,
-                cardClass: this._participantCardClass(p.waitTime),
-                waitTimeClass: this._isOverdue(p.waitTime)
-                    ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
-                    : 'lobby-appt__wait-time slds-m-left_xx-small',
-            })),
-        }));
+        return this._filterTopicsByResource(
+            (this.generalBankingTopics || []).map(t => ({
+                ...t,
+                participants: (t.participants || []).map(p => this._enrichParticipant(p)),
+            }))
+        );
     }
 
-    /** Computed IB topics with per-row overdue class. */
+    /** Computed IB topics with per-row enrichment. */
     get investmentBankingTopicsView() {
-        return (this.investmentBankingTopics || []).map(t => ({
-            ...t,
-            participants: (t.participants || []).map(p => ({
-                ...p,
-                cardClass: this._participantCardClass(p.waitTime),
-                waitTimeClass: this._isOverdue(p.waitTime)
-                    ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
-                    : 'lobby-appt__wait-time slds-m-left_xx-small',
-            })),
-        }));
+        return this._filterTopicsByResource(
+            (this.investmentBankingTopics || []).map(t => ({
+                ...t,
+                participants: (t.participants || []).map(p => this._enrichParticipant(p)),
+            }))
+        );
     }
 
     /** Computed dynamic waitlists with health dot class and overdue per row. */
@@ -325,6 +320,118 @@ export default class LobbyManagement extends LightningElement {
             ...w,
             topics: this._filterTopicsBySearch(w.topics, q),
         })).filter(w => w.topics.some(t => t.participants.length > 0));
+    }
+
+    // ── Batch 2: Avatars, VIP, Notes, Auto-refresh, Resource filter ─────────
+
+    /** Returns 1-2 letter initials from a name string. */
+    _initials(name) {
+        if (!name) return '?';
+        const parts = name.trim().split(/\s+/);
+        if (parts.length === 1) return parts[0][0].toUpperCase();
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    /** Returns a stable background color for initials avatar based on name. */
+    _avatarColor(name) {
+        const colors = ['#1a56db','#0d9488','#7c3aed','#c05621','#2e844a','#c23934','#dd7a01'];
+        let hash = 0;
+        for (let i = 0; i < (name || '').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+        return colors[Math.abs(hash) % colors.length];
+    }
+
+    // Auto-refresh
+    @track _lastRefreshedLabel = 'Updated just now';
+    _autoRefreshInterval = null;
+    _lastRefreshTime = Date.now();
+
+    _startAutoRefresh() {
+        this._autoRefreshInterval = setInterval(() => {
+            const diffMin = Math.round((Date.now() - this._lastRefreshTime) / 60000);
+            this._lastRefreshedLabel = diffMin < 1 ? 'Updated just now' : `Updated ${diffMin} min ago`;
+        }, 30000);
+    }
+
+    _doRefresh() {
+        this._lastRefreshTime = Date.now();
+        this._lastRefreshedLabel = 'Updated just now';
+    }
+
+    get lastRefreshedLabel() { return this._lastRefreshedLabel; }
+
+    // VIP toggle
+    handleToggleVip(event) {
+        const id = event.currentTarget.dataset.id;
+        this._toggleParticipantFlag(id, 'isVip');
+        this.activeMenuRowId = null;
+    }
+
+    // Notes toggle
+    handleToggleNotes(event) {
+        const id = event.currentTarget.dataset.id;
+        this._toggleParticipantFlag(id, 'showNotes');
+        this.activeMenuRowId = null;
+    }
+
+    handleNotesInput(event) {
+        const id = event.currentTarget.dataset.id;
+        const val = event.target.value;
+        this._setParticipantField(id, 'notes', val);
+    }
+
+    _toggleParticipantFlag(id, flag) {
+        const toggle = (parts) => parts.map(p => p.id === id ? { ...p, [flag]: !p[flag] } : p);
+        const topicToggle = (topics) => topics.map(t => ({ ...t, participants: toggle(t.participants || []) }));
+        this.generalBankingTopics    = topicToggle(this.generalBankingTopics);
+        this.investmentBankingTopics = topicToggle(this.investmentBankingTopics);
+        this.dynamicWaitlists = this.dynamicWaitlists.map(w => ({ ...w, topics: topicToggle(w.topics || []) }));
+    }
+
+    _setParticipantField(id, field, value) {
+        const setter = (parts) => parts.map(p => p.id === id ? { ...p, [field]: value } : p);
+        const topicSetter = (topics) => topics.map(t => ({ ...t, participants: setter(t.participants || []) }));
+        this.generalBankingTopics    = topicSetter(this.generalBankingTopics);
+        this.investmentBankingTopics = topicSetter(this.investmentBankingTopics);
+        this.dynamicWaitlists = this.dynamicWaitlists.map(w => ({ ...w, topics: topicSetter(w.topics || []) }));
+    }
+
+    // Resource filter
+    @track filterByResource = '';
+
+    get resourceFilterOptions() {
+        return [
+            { label: 'All Resources', value: '' },
+            ...this.checkinResourceOptions.filter(o => o.value !== ''),
+        ];
+    }
+
+    handleResourceFilterChange(event) {
+        this.filterByResource = event.detail.value;
+    }
+
+    _filterTopicsByResource(topics) {
+        const r = this.filterByResource;
+        if (!r) return topics;
+        return topics.map(t => ({
+            ...t,
+            participants: (t.participants || []).filter(p => (p.topic || '').toLowerCase().includes(
+                (this.checkinResourceOptions.find(o => o.value === r)?.label || '').toLowerCase()
+            )),
+        })).filter(t => t.participants.length > 0);
+    }
+
+    /** Enriches a participant with avatar initials, color, VIP class, and notes. */
+    _enrichParticipant(p) {
+        const color = this._avatarColor(p.linkLabel);
+        return {
+            ...p,
+            initials: this._initials(p.linkLabel),
+            avatarStyle: `background-color:${color};`,
+            cardClass: this._participantCardClass(p.waitTime) + (p.isVip ? ' lobby-queue-participant--vip' : ''),
+            waitTimeClass: this._isOverdue(p.waitTime)
+                ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
+                : 'lobby-appt__wait-time slds-m-left_xx-small',
+        };
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -608,7 +715,7 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleRefresh() {
-        // Demo: hook for reload
+        this._doRefresh();
     }
 
     // ── Participant grouped combobox ──
@@ -1052,17 +1159,11 @@ export default class LobbyManagement extends LightningElement {
                     ),
                 })).filter(t => t.participants.length > 0);
             }
-            // Add overdue class to each participant
-            topics = topics.map(t => ({
+            // Enrich participants (avatar, VIP, overdue)
+            topics = this._filterTopicsByResource(topics.map(t => ({
                 ...t,
-                participants: t.participants.map(p => ({
-                    ...p,
-                    cardClass: this._participantCardClass(p.waitTime),
-                    waitTimeClass: this._isOverdue(p.waitTime)
-                        ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
-                        : 'lobby-appt__wait-time slds-m-left_xx-small',
-                })),
-            }));
+                participants: t.participants.map(p => this._enrichParticipant(p)),
+            })));
             const allParticipants = topics.flatMap(t => t.participants);
             const total = allParticipants.length;
             return {

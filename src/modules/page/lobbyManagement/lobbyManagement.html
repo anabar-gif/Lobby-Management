@@ -48,6 +48,18 @@
                                 onchange={handleWaitlistFilterChange}>
                             </lightning-combobox>
                         </div>
+                        <div class="slds-grid slds-grid_vertical-align-center slds-m-right_x-small slds-m-bottom_xx-small slds-medium-m-bottom_none">
+                            <span class="lobby-toolbar__label slds-p-right_x-small">Resource</span>
+                            <lightning-combobox
+                                name="resourceFilter"
+                                label="Resource filter"
+                                variant="label-hidden"
+                                value={filterByResource}
+                                placeholder="All Resources"
+                                options={resourceFilterOptions}
+                                onchange={handleResourceFilterChange}>
+                            </lightning-combobox>
+                        </div>
                         <lightning-button-icon
                             class="lobby-toolbar__refresh"
                             icon-name="utility:refresh"
@@ -391,16 +403,19 @@
                                         <template for:each={topic.participants} for:item="row">
                                             <div key={row.id} class={row.cardClass}>
                                                 <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                    <div class="lobby-queue-participant__identity">
+                                                    <div class="lobby-participant-avatar" style={row.avatarStyle}>
+                                                        {row.initials}
+                                                    </div>
+                                                    <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                         <div class="lobby-queue-participant__title-row">
                                                             <span class="lobby-queue-participant__title slds-truncate">
-                                                                <span
-                                                                    class="lobby-queue-participant__link">{row.linkLabel}</span>
+                                                                <span class="lobby-queue-participant__link">{row.linkLabel}</span>
                                                             </span>
+                                                            <template lwc:if={row.isVip}>
+                                                                <span class="lobby-vip-badge">⭐ VIP</span>
+                                                            </template>
                                                         </div>
-                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">
-                                                            {row.topic}
-                                                        </div>
+                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
                                                     </div>
                                                     <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
                                                         <div class="lobby-row-menu-wrap">
@@ -415,16 +430,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <template lwc:if={row.showNotes}>
+                                                    <div class="lobby-notes-field slds-p-horizontal_small slds-p-bottom_x-small">
+                                                        <textarea class="lobby-notes-field__input" placeholder="Add a note…" data-id={row.id} oninput={handleNotesInput}>{row.notes}</textarea>
+                                                    </div>
+                                                </template>
                                                 <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
                                                         <span class="lobby-appt__checked-in-badge">Check In Time: {row.checkInTime}</span>
                                                         <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                            <lightning-icon
-                                                                class="lobby-appt__wait-clock slds-m-right_xx-small"
-                                                                icon-name="utility:clock"
-                                                                size="x-small"
-                                                                alternative-text="">
-                                                            </lightning-icon>
+                                                            <lightning-icon class="lobby-appt__wait-clock slds-m-right_xx-small" icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
                                                             <span class="lobby-appt__wait-label">Wait Time:</span>
                                                             <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                         </div>
@@ -682,16 +697,15 @@
                                         <template for:each={topic.participants} for:item="row">
                                             <div key={row.id} class={row.cardClass}>
                                                 <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                    <div class="lobby-queue-participant__identity">
+                                                    <div class="lobby-participant-avatar" style={row.avatarStyle}>{row.initials}</div>
+                                                    <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                         <div class="lobby-queue-participant__title-row">
                                                             <span class="lobby-queue-participant__title slds-truncate">
-                                                                <span
-                                                                    class="lobby-queue-participant__link">{row.linkLabel}</span>
+                                                                <span class="lobby-queue-participant__link">{row.linkLabel}</span>
                                                             </span>
+                                                            <template lwc:if={row.isVip}><span class="lobby-vip-badge">⭐ VIP</span></template>
                                                         </div>
-                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">
-                                                            {row.topic}
-                                                        </div>
+                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
                                                     </div>
                                                     <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
                                                         <div class="lobby-row-menu-wrap">
@@ -706,16 +720,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <template lwc:if={row.showNotes}>
+                                                    <div class="lobby-notes-field slds-p-horizontal_small slds-p-bottom_x-small">
+                                                        <textarea class="lobby-notes-field__input" placeholder="Add a note…" data-id={row.id} oninput={handleNotesInput}>{row.notes}</textarea>
+                                                    </div>
+                                                </template>
                                                 <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
                                                         <span class="lobby-appt__checked-in-badge">Check In Time: {row.checkInTime}</span>
                                                         <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                            <lightning-icon
-                                                                class="lobby-appt__wait-clock slds-m-right_xx-small"
-                                                                icon-name="utility:clock"
-                                                                size="x-small"
-                                                                alternative-text="">
-                                                            </lightning-icon>
+                                                            <lightning-icon class="lobby-appt__wait-clock slds-m-right_xx-small" icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
                                                             <span class="lobby-appt__wait-label">Wait Time:</span>
                                                             <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                         </div>
@@ -969,11 +983,13 @@
                                                 <template for:each={topic.participants} for:item="row">
                                                     <div key={row.id} class={row.cardClass}>
                                                         <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                            <div class="lobby-queue-participant__identity">
+                                                            <div class="lobby-participant-avatar" style={row.avatarStyle}>{row.initials}</div>
+                                                            <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                                 <div class="lobby-queue-participant__title-row">
                                                                     <span class="lobby-queue-participant__title slds-truncate">
                                                                         <span class="lobby-queue-participant__link">{row.linkLabel}</span>
                                                                     </span>
+                                                                    <template lwc:if={row.isVip}><span class="lobby-vip-badge">⭐ VIP</span></template>
                                                                 </div>
                                                                 <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
                                                             </div>
@@ -990,6 +1006,11 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <template lwc:if={row.showNotes}>
+                                                            <div class="lobby-notes-field slds-p-horizontal_small slds-p-bottom_x-small">
+                                                                <textarea class="lobby-notes-field__input" placeholder="Add a note…" data-id={row.id} oninput={handleNotesInput}>{row.notes}</textarea>
+                                                            </div>
+                                                        </template>
                                                         <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
                                                             <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
                                                                 <span class="lobby-appt__checked-in-badge">Check In Time: {row.checkInTime}</span>
@@ -1262,6 +1283,8 @@
                 <ul role="menu">
                     <li role="menuitem" class="lobby-row-menu__item" data-action="first" data-id={activeMenuRowId} onclick={handleParticipantActionRequest}>Move to first in the waitlist</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-action="last"  data-id={activeMenuRowId} onclick={handleParticipantActionRequest}>Move to last in the waitlist</li>
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleToggleVip}>Toggle VIP Priority</li>
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleToggleNotes}>Add / View Notes</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantNoShow}>Mark as No-Show</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantRemoveResource}>Remove Preferred Resource</li>
                 </ul>
