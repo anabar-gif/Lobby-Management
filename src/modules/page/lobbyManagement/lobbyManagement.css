@@ -1596,23 +1596,25 @@
 .lobby-panel-overlay {
     position: fixed;
     inset: 0;
-    background: transparent;
-    z-index: 8000;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 8999;
 }
 
 .lobby-panel {
     position: fixed;
     top: 0;
     right: 0;
-    height: 100%;
-    width: 340px;
+    height: 100vh;
+    width: 400px;
+    max-width: 90vw;
     background: var(--slds-g-color-surface-1, #fff);
     border-left: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
-    box-shadow: -4px 0 16px rgba(0,0,0,0.12);
-    z-index: 8001;
+    box-shadow: -6px 0 24px rgba(0,0,0,0.15);
+    z-index: 9000;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .lobby-panel__header {
@@ -1641,17 +1643,20 @@
 
 /* Peak Hours chart */
 .lobby-peak-chart {
-    padding: 1.25rem;
+    padding: 1.5rem;
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .lobby-peak-chart__bars {
     display: flex;
     align-items: flex-end;
-    gap: 0.5rem;
-    height: 100px;
+    gap: 0.625rem;
+    height: 120px;
     border-bottom: 2px solid #e5e5e5;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.625rem;
+    width: 100%;
 }
 
 .lobby-peak-chart__col {
@@ -1660,6 +1665,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.25rem;
+    min-width: 0;
 }
 
 .lobby-peak-chart__bar-wrap {
@@ -1667,39 +1673,43 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    height: 90px;
+    height: 110px;
     gap: 0.2rem;
+    width: 100%;
 }
 
 .lobby-peak-chart__count {
-    font-size: 0.625rem;
-    font-weight: 600;
+    font-size: 0.6875rem;
+    font-weight: 700;
     color: var(--slds-g-color-on-surface-2, #444);
+    line-height: 1;
 }
 
 .lobby-peak-chart__bar {
-    width: 100%;
+    width: 70%;
     min-height: 4px;
-    border-radius: 3px 3px 0 0;
+    border-radius: 4px 4px 0 0;
     background: #1a56db;
     transition: height 0.3s ease;
 }
 
 .lobby-peak-chart__bar--peak {
     background: #c23934;
+    width: 80%;
 }
 
 .lobby-peak-chart__hour {
     font-size: 0.625rem;
     color: var(--slds-g-color-on-surface-3, #706e6b);
     text-align: center;
+    white-space: nowrap;
 }
 
 .lobby-peak-chart__caption {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--slds-g-color-on-surface-3, #706e6b);
     text-align: center;
-    margin-top: 0.75rem;
+    margin-top: 1rem;
 }
 
 /* Daily Summary */
