@@ -51,14 +51,13 @@ export default class LobbyManagement extends LightningElement {
         };
         document.addEventListener('click', this._handleDocClick, true);
 
-        // Close any open menu when the page scrolls
+        // Close any open menu when anything on the page scrolls.
+        // capture:true catches scroll from ALL descendants (including .app-main) without needing a direct ref.
         this._handleScroll = () => {
             if (this.activeMenuRowId)  this.activeMenuRowId  = null;
             if (this.activeApptMenuId) this.activeApptMenuId = null;
         };
-        // Attach to both the app scroll container and window (covers all scroll sources)
-        document.querySelector('.app-main')?.addEventListener('scroll', this._handleScroll, { passive: true });
-        window.addEventListener('scroll', this._handleScroll, { passive: true });
+        document.addEventListener('scroll', this._handleScroll, { passive: true, capture: true });
 
         // Live wait time ticker — increments every 60 seconds
         this._waitTimerInterval = setInterval(() => this._tickWaitTimes(), 60000);
@@ -94,8 +93,7 @@ export default class LobbyManagement extends LightningElement {
     disconnectedCallback() {
         document.removeEventListener('click', this._handleDocClick, true);
         if (this._handleScroll) {
-            document.querySelector('.app-main')?.removeEventListener('scroll', this._handleScroll);
-            window.removeEventListener('scroll', this._handleScroll);
+            document.removeEventListener('scroll', this._handleScroll, { capture: true });
         }
         if (this._unsubscribeStore) this._unsubscribeStore();
         if (this._waitTimerInterval) clearInterval(this._waitTimerInterval);
