@@ -106,6 +106,46 @@
     background: #fffbf5 !important;
 }
 
+/* ── Drag and drop ─────────────────────────────────────────────────────────── */
+
+.lobby-drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 24px;
+    margin-right: 0.25rem;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    pointer-events: none; /* let events pass through to the card */
+}
+
+.lobby-drag-handle__grip {
+    width: 10px;
+    height: 16px;
+    fill: var(--slds-g-color-neutral-base-50, #b0adab);
+    display: block;
+}
+
+.lobby-queue-participant:hover .lobby-drag-handle {
+    opacity: 1;
+}
+
+.lobby-queue-participant--drag-over {
+    border-top: 2px solid var(--slds-g-color-brand-base-50, #0176d3) !important;
+    background: #eaf4ff !important;
+    box-shadow: 0 -1px 0 0 var(--slds-g-color-brand-base-50, #0176d3);
+}
+
+.lobby-queue-participant[draggable="true"] {
+    cursor: grab;
+}
+
+.lobby-queue-participant[draggable="true"]:active {
+    cursor: grabbing;
+}
+
 .lobby-notes-field {
     background: #f9f9f9;
     border-top: 1px solid #e5e5e5;

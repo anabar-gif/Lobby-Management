@@ -539,8 +539,25 @@
                                 <template for:each={generalBankingTopicsFiltered} for:item="topic">
                                     <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
                                         <template for:each={topic.participants} for:item="row">
-                                            <div key={row.id} class={row.cardClass}>
+                                            <div key={row.id}
+                                                class={row.cardClass}
+                                                draggable="true"
+                                                data-id={row.id}
+                                                data-topic-id={topic.id}
+                                                data-section="gb"
+                                                ondragstart={handleDragStart}
+                                                ondragover={handleDragOver}
+                                                ondragleave={handleDragLeave}
+                                                ondrop={handleDrop}
+                                                ondragend={handleDragEnd}>
                                                 <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lobby-drag-handle" title="Drag to reorder" aria-hidden="true">
+                                                        <svg class="lobby-drag-handle__grip" viewBox="0 0 10 16" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/>
+                                                            <circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/>
+                                                            <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
+                                                        </svg>
+                                                    </div>
                                                     <div class="lobby-participant-avatar" style={row.avatarStyle}>
                                                         {row.initials}
                                                     </div>
@@ -834,8 +851,25 @@
                                 <template for:each={investmentBankingTopicsFiltered} for:item="topic">
                                     <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
                                         <template for:each={topic.participants} for:item="row">
-                                            <div key={row.id} class={row.cardClass}>
+                                            <div key={row.id}
+                                                class={row.cardClass}
+                                                draggable="true"
+                                                data-id={row.id}
+                                                data-topic-id={topic.id}
+                                                data-section="ib"
+                                                ondragstart={handleDragStart}
+                                                ondragover={handleDragOver}
+                                                ondragleave={handleDragLeave}
+                                                ondrop={handleDrop}
+                                                ondragend={handleDragEnd}>
                                                 <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lobby-drag-handle" title="Drag to reorder" aria-hidden="true">
+                                                        <svg class="lobby-drag-handle__grip" viewBox="0 0 10 16" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/>
+                                                            <circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/>
+                                                            <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
+                                                        </svg>
+                                                    </div>
                                                     <div class="lobby-participant-avatar" style={row.avatarStyle}>{row.initials}</div>
                                                     <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                         <div class="lobby-queue-participant__title-row">
@@ -1121,8 +1155,26 @@
                                         <template for:each={wl.topics} for:item="topic">
                                             <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
                                                 <template for:each={topic.participants} for:item="row">
-                                                    <div key={row.id} class={row.cardClass}>
+                                                    <div key={row.id}
+                                                        class={row.cardClass}
+                                                        draggable="true"
+                                                        data-id={row.id}
+                                                        data-topic-id={topic.id}
+                                                        data-section="dyn"
+                                                        data-wl-id={wl.id}
+                                                        ondragstart={handleDragStart}
+                                                        ondragover={handleDragOver}
+                                                        ondragleave={handleDragLeave}
+                                                        ondrop={handleDrop}
+                                                        ondragend={handleDragEnd}>
                                                         <div class="lobby-queue-participant__head slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                            <div class="lobby-drag-handle" title="Drag to reorder" aria-hidden="true">
+                                                                <svg class="lobby-drag-handle__grip" viewBox="0 0 10 16" xmlns="http://www.w3.org/2000/svg">
+                                                                    <circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/>
+                                                                    <circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/>
+                                                                    <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
+                                                                </svg>
+                                                            </div>
                                                             <div class="lobby-participant-avatar" style={row.avatarStyle}>{row.initials}</div>
                                                             <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                                 <div class="lobby-queue-participant__title-row">

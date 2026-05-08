@@ -336,13 +336,16 @@ export default class LobbyManagement extends LightningElement {
             dotClass: `lobby-queue-dot lobby-queue-dot--${this._queueHealth(w.topics)}`,
             topics: (w.topics || []).map(t => ({
                 ...t,
-                participants: (t.participants || []).map(p => ({
-                    ...p,
-                    cardClass: this._participantCardClass(p.waitTime),
-                    waitTimeClass: this._isOverdue(p.waitTime)
-                        ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
-                        : 'lobby-appt__wait-time slds-m-left_xx-small',
-                })),
+                participants: (t.participants || []).map(p => {
+                    const dragOver = this.dragOverId === p.id ? ' lobby-queue-participant--drag-over' : '';
+                    return {
+                        ...p,
+                        cardClass: this._participantCardClass(p.waitTime) + dragOver,
+                        waitTimeClass: this._isOverdue(p.waitTime)
+                            ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
+                            : 'lobby-appt__wait-time slds-m-left_xx-small',
+                    };
+                }),
             })),
         }));
     }
@@ -566,11 +569,12 @@ export default class LobbyManagement extends LightningElement {
     /** Enriches a participant with avatar initials, color, VIP class, and notes. */
     _enrichParticipant(p) {
         const color = this._avatarColor(p.linkLabel);
+        const dragOver = this.dragOverId === p.id ? ' lobby-queue-participant--drag-over' : '';
         return {
             ...p,
             initials: this._initials(p.linkLabel),
             avatarStyle: `background-color:${color};`,
-            cardClass: this._participantCardClass(p.waitTime) + (p.isVip ? ' lobby-queue-participant--vip' : ''),
+            cardClass: this._participantCardClass(p.waitTime) + (p.isVip ? ' lobby-queue-participant--vip' : '') + dragOver,
             waitTimeClass: this._isOverdue(p.waitTime)
                 ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
                 : 'lobby-appt__wait-time slds-m-left_xx-small',
@@ -1555,6 +1559,149 @@ export default class LobbyManagement extends LightningElement {
     handleInvestmentAccordionToggle(event) {
         const open = event.detail.openSections;
         this.investmentBankingOpenSection = Array.isArray(open) ? open[0] ?? '' : open ?? '';
+    }
+
+    // ── Drag and drop reordering ──────────────────────────────────────────────
+
+    _dragState = null; // { id, topicId, section, wlId }
+
+    @track dragOverId = null; // participant id being hovered over
+
+    // Finds the nearest participant card element (data-id) from an event target,
+    // piercing LWC's shadow retargeting by walking composedPath().
+    _cardFromEvent(event) {
+        const path = event.composedPath ? event.composedPath() : [event.target];
+        for (const el of path) {
+            if (el && el.dataset && el.dataset.id && el.dataset.section) return el;
+        }
+        return null;
+    }
+
+    handleDragStart(event) {
+        const el = this._cardFromEvent(event) || event.currentTarget;
+        if (!el || !el.dataset.id) return;
+        this._dragState = {
+            id:      el.dataset.id,
+            topicId: el.dataset.topicId,
+            section: el.dataset.section,
+            wlId:    el.dataset.wlId || null,
+        };
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', el.dataset.id);
+    }
+
+    handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+        const el = this._cardFromEvent(event) || event.currentTarget;
+        const targetId = el && el.dataset ? el.dataset.id : null;
+        if (targetId && this.dragOverId !== targetId) this.dragOverId = targetId;
+    }
+
+    handleDragLeave(event) {
+        const el = this._cardFromEvent(event) || event.currentTarget;
+        const id = el && el.dataset ? el.dataset.id : null;
+        if (!id || this.dragOverId !== id) return;
+        // Check if still within the card's bounding box to avoid flickering when
+        // moving over child elements (composedPath may not include shadow children)
+        if (el.getBoundingClientRect) {
+            const r = el.getBoundingClientRect();
+            const x = event.clientX, y = event.clientY;
+            if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return;
+        }
+        this.dragOverId = null;
+    }
+
+    handleDrop(event) {
+        event.preventDefault();
+        const el = this._cardFromEvent(event) || event.currentTarget;
+        const targetId      = el && el.dataset ? el.dataset.id : null;
+        const targetTopic   = el && el.dataset ? el.dataset.topicId : null;
+        const targetSection = el && el.dataset ? el.dataset.section : null;
+        const targetWlId    = el && el.dataset ? (el.dataset.wlId || null) : null;
+        this.dragOverId = null;
+        if (!this._dragState || !targetId || this._dragState.id === targetId) {
+            this._dragState = null;
+            return;
+        }
+        this._reorderParticipants(this._dragState, { id: targetId, topicId: targetTopic, section: targetSection, wlId: targetWlId });
+        this._dragState = null;
+    }
+
+    handleDragEnd() {
+        this.dragOverId = null;
+        this._dragState = null;
+    }
+
+    _reorderParticipants(from, to) {
+        // Reorder within same topic
+        const reorder = (topics) => topics.map(t => {
+            const isFromTopic = t.id === from.topicId;
+            const isToTopic   = t.id === to.topicId;
+            if (!isFromTopic && !isToTopic) return t;
+
+            let parts = [...(t.participants || [])];
+            // Remove dragged item if it's in this topic
+            let dragged = null;
+            if (isFromTopic) {
+                dragged = parts.find(p => p.id === from.id);
+                parts = parts.filter(p => p.id !== from.id);
+            }
+            // Insert before target if it's in this topic
+            if (isToTopic && dragged) {
+                const toIdx = parts.findIndex(p => p.id === to.id);
+                if (toIdx === -1) {
+                    parts.push(dragged);
+                } else {
+                    parts.splice(toIdx, 0, dragged);
+                }
+            } else if (isToTopic && !dragged) {
+                // cross-topic: dragged was removed from another topic, we need to get it
+                // handled below
+            }
+            return { ...t, participants: parts };
+        });
+
+        // Cross-topic: find dragged participant first from the source topic
+        const getDragged = (topics) => {
+            for (const t of topics) {
+                if (t.id === from.topicId) {
+                    return t.participants.find(p => p.id === from.id);
+                }
+            }
+            return null;
+        };
+
+        const reorderCross = (topics) => {
+            const dragged = getDragged(topics);
+            if (!dragged) return topics;
+            return topics.map(t => {
+                if (t.id === from.topicId) {
+                    return { ...t, participants: t.participants.filter(p => p.id !== from.id) };
+                }
+                if (t.id === to.topicId) {
+                    const parts = [...(t.participants || [])];
+                    const toIdx = parts.findIndex(p => p.id === to.id);
+                    if (toIdx === -1) parts.push(dragged);
+                    else parts.splice(toIdx, 0, dragged);
+                    return { ...t, participants: parts };
+                }
+                return t;
+            });
+        };
+
+        const isCross = from.topicId !== to.topicId;
+        const fn = isCross ? reorderCross : reorder;
+
+        if (from.section === 'gb') {
+            this.generalBankingTopics = fn(this.generalBankingTopics);
+        } else if (from.section === 'ib') {
+            this.investmentBankingTopics = fn(this.investmentBankingTopics);
+        } else if (from.section === 'dyn' && from.wlId) {
+            this.dynamicWaitlists = this.dynamicWaitlists.map(w =>
+                w.id === from.wlId ? { ...w, topics: fn(w.topics || []) } : w
+            );
+        }
     }
 
     // ── Participant row action dropdown ──
