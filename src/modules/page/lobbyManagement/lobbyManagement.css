@@ -387,6 +387,13 @@
     --slds-c-icon-color-foreground-default: #0d7a5f;
 }
 
+/* Invisible spacer — matches label height so columns stay top-aligned */
+.lobby-section-label-spacer {
+    height: 28px;
+    margin-bottom: 0.5rem;
+    visibility: hidden;
+}
+
 /* Column background tints — very subtle */
 .lobby-card--scheduled {
     background-color: #f7f9ff !important;

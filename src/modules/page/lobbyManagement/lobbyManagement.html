@@ -787,6 +787,7 @@
                 </lightning-layout-item>
 
                 <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                    <div class="lobby-section-label-spacer"></div>
                     <article class="lobby-card lobby-card--waitlist slds-card">
                         <div class="slds-card__header slds-grid lobby-queue-card__header">
                             <header class="slds-media slds-media_center slds-has-flexi-truncate slds-col">
@@ -1071,6 +1072,7 @@
                 <!-- Dynamic waitlists created from Waitlist Management -->
                 <template for:each={enrichedDynamicWaitlists} for:item="wl">
                     <lightning-layout-item key={wl.id} size="12" large-device-size="4" padding="horizontal-small">
+                        <div class="lobby-section-label-spacer"></div>
                         <article class="lobby-card lobby-card--waitlist slds-card">
                             <!-- Header -->
                             <div class="slds-card__header slds-grid lobby-queue-card__header">
