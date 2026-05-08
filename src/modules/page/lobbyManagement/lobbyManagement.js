@@ -46,8 +46,10 @@ export default class LobbyManagement extends LightningElement {
         this._handleDocClick = (e) => {
             const insideRowMenu  = e.target.closest?.('.lobby-row-menu-wrap') || e.target.closest?.('.lobby-row-menu__dropdown');
             const insideApptMenu = e.target.closest?.('.lobby-appt__menu-btn') || e.target.closest?.('.lobby-row-menu__dropdown');
+            const closing = (this.activeMenuRowId && !insideRowMenu) || (this.activeApptMenuId && !insideApptMenu);
             if (this.activeMenuRowId  && !insideRowMenu)  this.activeMenuRowId  = null;
             if (this.activeApptMenuId && !insideApptMenu) this.activeApptMenuId = null;
+            if (closing) this._stopMenuTracking();
         };
         document.addEventListener('click', this._handleDocClick, true);
 
@@ -95,6 +97,7 @@ export default class LobbyManagement extends LightningElement {
         if (this._handleScroll) {
             document.removeEventListener('scroll', this._handleScroll, { capture: true });
         }
+        this._stopMenuTracking();
         if (this._unsubscribeStore) this._unsubscribeStore();
         if (this._waitTimerInterval) clearInterval(this._waitTimerInterval);
         if (this._autoRefreshInterval) clearInterval(this._autoRefreshInterval);
@@ -1558,19 +1561,46 @@ export default class LobbyManagement extends LightningElement {
 
     _closeActiveMenu() {
         this.activeMenuRowId = null;
+        this.activeApptMenuId = null;
+        this._stopMenuTracking();
     }
 
     @track activeMenuRowId = null;
     @track menuDropdownStyle = '';
+    _menuAnchorEl = null;
+    _menuRafId = null;
+
+    _startMenuTracking(anchorEl, styleKey) {
+        this._menuAnchorEl = anchorEl;
+        this._menuStyleKey = styleKey;
+        const update = () => {
+            if (!this._menuAnchorEl) return;
+            const rect = this._menuAnchorEl.getBoundingClientRect();
+            const style = `top:${rect.bottom + 4}px;right:${window.innerWidth - rect.right}px;`;
+            if (styleKey === 'row') this.menuDropdownStyle = style;
+            else this.apptMenuDropdownStyle = style;
+            this._menuRafId = requestAnimationFrame(update);
+        };
+        this._menuRafId = requestAnimationFrame(update);
+    }
+
+    _stopMenuTracking() {
+        if (this._menuRafId) {
+            cancelAnimationFrame(this._menuRafId);
+            this._menuRafId = null;
+        }
+        this._menuAnchorEl = null;
+    }
 
     handleQueueParticipantMenu(event) {
         const id = event.currentTarget.dataset.id;
         if (this.activeMenuRowId === id) {
             this.activeMenuRowId = null;
+            this._stopMenuTracking();
             return;
         }
-        this.menuDropdownStyle = '';
         this.activeMenuRowId = id;
+        this._startMenuTracking(event.currentTarget, 'row');
     }
 
     handleParticipantMenuClose() {
@@ -1971,10 +2001,11 @@ export default class LobbyManagement extends LightningElement {
         const id = event.currentTarget.dataset.id;
         if (this.activeApptMenuId === id) {
             this.activeApptMenuId = null;
+            this._stopMenuTracking();
             return;
         }
-        this.apptMenuDropdownStyle = '';
         this.activeApptMenuId = id;
+        this._startMenuTracking(event.currentTarget, 'appt');
     }
 
     _findAppt(id) {

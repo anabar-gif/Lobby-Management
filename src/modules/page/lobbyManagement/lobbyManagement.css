@@ -1162,9 +1162,7 @@
 }
 
 .lobby-row-menu__dropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
+    position: fixed;
     z-index: 9999;
     min-width: 16rem;
     background: var(--slds-g-color-surface-1, #fff);
