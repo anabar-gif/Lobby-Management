@@ -1569,8 +1569,7 @@ export default class LobbyManagement extends LightningElement {
             this.activeMenuRowId = null;
             return;
         }
-        const rect = event.currentTarget.getBoundingClientRect();
-        this.menuDropdownStyle = `top:${rect.bottom + 4}px;right:${window.innerWidth - rect.right}px;`;
+        this.menuDropdownStyle = '';
         this.activeMenuRowId = id;
     }
 
@@ -1974,8 +1973,7 @@ export default class LobbyManagement extends LightningElement {
             this.activeApptMenuId = null;
             return;
         }
-        const rect = event.currentTarget.getBoundingClientRect();
-        this.apptMenuDropdownStyle = `top:${rect.bottom + 4}px;right:${window.innerWidth - rect.right}px;`;
+        this.apptMenuDropdownStyle = '';
         this.activeApptMenuId = id;
     }
 
