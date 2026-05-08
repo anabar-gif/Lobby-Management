@@ -110,7 +110,7 @@
                 <!-- 1. Total Checked In — informational -->
                 <div class="lobby-metric-card" title="Total participants currently checked in">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
-                        <lightning-icon icon-name="utility:people" size="xx-small" alternative-text="Checked In"></lightning-icon>
+                        <lightning-icon icon-name="utility:people" size="x-small" alternative-text="Checked In"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricTotalCheckedIn}</div>
@@ -121,7 +121,7 @@
                 <!-- 2. Currently Being Served — informational -->
                 <div class="lobby-metric-card" title="Currently being served">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--green">
-                        <lightning-icon icon-name="utility:user" size="xx-small" alternative-text="In Service"></lightning-icon>
+                        <lightning-icon icon-name="utility:user" size="x-small" alternative-text="In Service"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricCurrentlyServed}</div>
@@ -132,7 +132,7 @@
                 <!-- 3. Upcoming Appointments — informational -->
                 <div class="lobby-metric-card" title="Upcoming appointments">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--indigo">
-                        <lightning-icon icon-name="utility:event" size="xx-small" alternative-text="Upcoming"></lightning-icon>
+                        <lightning-icon icon-name="utility:event" size="x-small" alternative-text="Upcoming"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricUpcoming}</div>
@@ -143,7 +143,7 @@
                 <!-- 4. Average Wait Time — informational -->
                 <div class="lobby-metric-card" title="Average wait time across all queues">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange">
-                        <lightning-icon icon-name="utility:clock" size="xx-small" alternative-text="Avg Wait"></lightning-icon>
+                        <lightning-icon icon-name="utility:clock" size="x-small" alternative-text="Avg Wait"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value lobby-metric-card__value--small">{metricAvgWait}</div>
@@ -154,7 +154,7 @@
                 <!-- 5. Longest Wait — informational -->
                 <div class="lobby-metric-card" title="Longest individual wait time">
                     <div class={metricLongestWaitIconClass}>
-                        <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Longest Wait"></lightning-icon>
+                        <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Longest Wait"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class={metricLongestWaitValueClass}>{metricLongestWait}</div>
@@ -165,7 +165,7 @@
                 <!-- 6. Active Waitlists — informational -->
                 <div class="lobby-metric-card" title="Number of active waitlists">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--teal">
-                        <lightning-icon icon-name="utility:list" size="xx-small" alternative-text="Active Waitlists"></lightning-icon>
+                        <lightning-icon icon-name="utility:list" size="x-small" alternative-text="Active Waitlists"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricActiveWaitlists}</div>
@@ -181,7 +181,7 @@
                      tabindex="0"
                      title="Click to show only VIP participants">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--indigo">
-                        <lightning-icon icon-name="utility:ribbon" size="xx-small" alternative-text="VIP"></lightning-icon>
+                        <lightning-icon icon-name="utility:ribbon" size="x-small" alternative-text="VIP"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricVipCount}</div>
@@ -198,7 +198,7 @@
                      tabindex="0"
                      title="Click to show only overdue participants">
                     <div class={metricOverdueClass}>
-                        <lightning-icon icon-name="utility:error" size="xx-small" alternative-text="Overdue"></lightning-icon>
+                        <lightning-icon icon-name="utility:error" size="x-small" alternative-text="Overdue"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class={metricOverdueValueClass}>{metricOverdueCount}</div>
@@ -210,7 +210,7 @@
                 <!-- 9. No-Shows Today — informational -->
                 <div class="lobby-metric-card" title="No-shows recorded today">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red">
-                        <lightning-icon icon-name="utility:ban" size="xx-small" alternative-text="No-Shows"></lightning-icon>
+                        <lightning-icon icon-name="utility:ban" size="x-small" alternative-text="No-Shows"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricNoShowsToday}</div>
@@ -226,7 +226,7 @@
                      tabindex="0"
                      title="Click to show only queues at capacity">
                     <div class={metricQueuesAtCapacityClass}>
-                        <lightning-icon icon-name="utility:priority" size="xx-small" alternative-text="At Capacity"></lightning-icon>
+                        <lightning-icon icon-name="utility:priority" size="x-small" alternative-text="At Capacity"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricQueuesAtCapacity}</div>
@@ -238,7 +238,7 @@
                 <!-- 11. Transferred Today — informational -->
                 <div class="lobby-metric-card" title="Transfers completed today">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
-                        <lightning-icon icon-name="utility:forward" size="xx-small" alternative-text="Transferred"></lightning-icon>
+                        <lightning-icon icon-name="utility:forward" size="x-small" alternative-text="Transferred"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value">{metricTransferred}</div>
@@ -249,7 +249,7 @@
                 <!-- 12. Avg Service Time — informational -->
                 <div class="lobby-metric-card" title="Average service time">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange">
-                        <lightning-icon icon-name="utility:timer" size="xx-small" alternative-text="Service Time"></lightning-icon>
+                        <lightning-icon icon-name="utility:timer" size="x-small" alternative-text="Service Time"></lightning-icon>
                     </div>
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value lobby-metric-card__value--small">{metricAvgServiceTime}</div>
