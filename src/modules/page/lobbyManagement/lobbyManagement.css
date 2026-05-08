@@ -396,11 +396,11 @@
 
 /* Column background tints — very subtle */
 .lobby-card--scheduled {
-    background-color: #f7f9ff !important;
+    background-color: #fbfcff !important;
 }
 
 .lobby-card--waitlist {
-    background-color: #f5fdf9 !important;
+    background-color: #fafefb !important;
 }
 
 .lobby-layout {
