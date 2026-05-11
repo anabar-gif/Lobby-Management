@@ -1680,8 +1680,33 @@ export default class LobbyManagement extends LightningElement {
             this._dragState = null;
             return;
         }
-        this._reorderParticipants(this._dragState, { id: targetId, topicId: targetTopic, section: targetSection, wlId: targetWlId });
+        const from = this._dragState;
+        const to   = { id: targetId, topicId: targetTopic, section: targetSection, wlId: targetWlId };
         this._dragState = null;
+
+        // Show repositioning confirmation before committing the move
+        const allParticipants = this._allWaitlistParticipants();
+        const name    = allParticipants.find(p => p.id === from.id)?.linkLabel || 'This participant';
+        const pronoun = this._genderPronoun(name);
+
+        // Determine direction by comparing indices within the source topic
+        let direction = 'repositioned';
+        const sourceTopic = (() => {
+            if (from.section === 'gb') return this.generalBankingTopics.find(t => t.id === from.topicId);
+            if (from.section === 'ib') return this.investmentBankingTopics.find(t => t.id === from.topicId);
+            const wl = (this.dynamicWaitlists || []).find(w => w.id === from.wlId);
+            return wl ? (wl.topics || []).find(t => t.id === from.topicId) : null;
+        })();
+        if (sourceTopic && from.topicId === to.topicId) {
+            const parts = sourceTopic.participants || [];
+            const fromIdx = parts.findIndex(p => p.id === from.id);
+            const toIdx   = parts.findIndex(p => p.id === to.id);
+            direction = toIdx < fromIdx ? 'moved earlier in' : 'moved later in';
+        }
+
+        this._repoPendingDrag = { from, to };
+        this.repoConfirmMessage = `${name} will be ${direction} the waitlist. This may affect ${pronoun} wait time by approximately 55 minutes. Are you sure you want to continue?`;
+        this.showRepoConfirm = true;
     }
 
     handleDragEnd() {
@@ -1827,6 +1852,7 @@ export default class LobbyManagement extends LightningElement {
     @track repoConfirmMessage = '';
     _repoPendingId     = null;
     _repoPendingAction = null; // 'first' | 'last'
+    _repoPendingDrag   = null; // { from, to } for drag-and-drop repositioning
 
     /** Finds which section (General Banking / Investment Banking) a participant belongs to. */
     // Infer possessive pronoun from first name using a curated female-name list.
@@ -1900,9 +1926,22 @@ export default class LobbyManagement extends LightningElement {
         this.showRepoConfirm    = false;
         this._repoPendingId     = null;
         this._repoPendingAction = null;
+        this._repoPendingDrag   = null;
     }
 
     handleRepoConfirmYes() {
+        // Handle drag-and-drop repositioning
+        if (this._repoPendingDrag) {
+            const { from, to } = this._repoPendingDrag;
+            const allParticipants = this._allWaitlistParticipants();
+            const participantName = allParticipants.find(p => p.id === from.id)?.linkLabel || 'Participant';
+            this.showRepoConfirm  = false;
+            this._repoPendingDrag = null;
+            this._reorderParticipants(from, to);
+            this._showToast(`${participantName} successfully repositioned in the waitlist.`);
+            return;
+        }
+
         const id       = this._repoPendingId;
         const action   = this._repoPendingAction;
         // Capture section and name before the move mutates the topics arrays
