@@ -367,13 +367,33 @@ export default class LobbyManagement extends LightningElement {
     _filterTopicsBySearch(topics, q) {
         if (!q) return topics;
         const lower = q.toLowerCase();
-        return topics.map(t => ({
-            ...t,
-            participants: (t.participants || []).filter(p =>
-                (p.linkLabel || '').toLowerCase().includes(lower) ||
-                (p.topic || '').toLowerCase().includes(lower)
-            ),
-        })).filter(t => t.participants.length > 0);
+        return topics.map(t => {
+            // If the queue/topic group label itself matches, show all its participants
+            if ((t.label || '').toLowerCase().includes(lower)) return t;
+            return {
+                ...t,
+                participants: (t.participants || []).filter(p =>
+                    (p.linkLabel   || '').toLowerCase().includes(lower) ||
+                    (p.topic       || '').toLowerCase().includes(lower) ||
+                    (p.workItemId  || '').toLowerCase().includes(lower) ||
+                    (p.checkInTime || '').toLowerCase().includes(lower) ||
+                    (p.slot        || '').toLowerCase().includes(lower) ||
+                    (p.company     || '').toLowerCase().includes(lower) ||
+                    (p.email       || '').toLowerCase().includes(lower) ||
+                    (p.isVip && 'vip'.includes(lower))
+                ),
+            };
+        }).filter(t => t.participants.length > 0);
+    }
+
+    _apptMatchesSearch(appt, lower) {
+        if (!lower) return true;
+        return (
+            (appt.customerName    || '').toLowerCase().includes(lower) ||
+            (appt.subtitle        || '').toLowerCase().includes(lower) ||
+            (appt.serviceApptLabel|| '').toLowerCase().includes(lower) ||
+            (appt.slot            || '').toLowerCase().includes(lower)
+        );
     }
 
     // ── Tile filter ──────────────────────────────────────────────────────────
@@ -505,17 +525,20 @@ export default class LobbyManagement extends LightningElement {
     }
 
     get currentAppointmentsFiltered() {
-        if (this.activeTileFilter === 'served') {
-            return this.currentAppointmentsView.filter(a => a.checkedIn);
-        }
-        if (this.activeTileFilter === 'upcoming') return [];
-        return this.currentAppointmentsView;
+        const lower = this.globalSearch.trim().toLowerCase();
+        let list = this.currentAppointmentsView;
+        if (this.activeTileFilter === 'served')   list = list.filter(a => a.checkedIn);
+        if (this.activeTileFilter === 'upcoming')  return [];
+        if (lower) list = list.filter(a => this._apptMatchesSearch(a, lower));
+        return list;
     }
 
     get upcomingAppointmentsFiltered() {
-        if (this.activeTileFilter === 'upcoming') return this.upcomingAppointmentsView;
-        if (this.activeTileFilter === 'served') return [];
-        return this.upcomingAppointmentsView;
+        const lower = this.globalSearch.trim().toLowerCase();
+        let list = this.upcomingAppointmentsView;
+        if (this.activeTileFilter === 'served')   return [];
+        if (lower) list = list.filter(a => this._apptMatchesSearch(a, lower));
+        return list;
     }
 
     // ── Batch 2: Avatars, VIP, Notes, Auto-refresh, Resource filter ─────────
