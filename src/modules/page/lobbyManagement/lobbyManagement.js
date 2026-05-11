@@ -2392,7 +2392,7 @@ export default class LobbyManagement extends LightningElement {
         this._showToast(`Service Appointment for ${appt?.customerName || 'customer'} has been rescheduled.`);
     }
 
-    handleApptReschedule(event) {
+    handleApptModify(event) {
         const id = event.currentTarget.dataset.id;
         this.activeApptMenuId = null;
         this.rschedApptId     = id;
@@ -2402,13 +2402,6 @@ export default class LobbyManagement extends LightningElement {
         this._calSelectedDate = t;
         this._calSelectedSlotId = null;
         this.showRescheduleModal = true;
-    }
-
-    handleApptReassign(event) {
-        const id   = event.currentTarget.dataset.id;
-        const appt = this._findAppt(id);
-        this.activeApptMenuId = null;
-        this._showToast(`Service Resource for ${appt?.customerName || 'customer'} has been reassigned.`);
     }
 
     handleApptNoShow(event) {

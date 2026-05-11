@@ -1549,8 +1549,7 @@
         <template lwc:if={activeApptMenuId}>
             <div class="lobby-row-menu__dropdown" style={apptMenuDropdownStyle}>
                 <ul role="menu">
-                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeApptMenuId} onclick={handleApptReschedule}>Reschedule Service Appointment</li>
-                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeApptMenuId} onclick={handleApptReassign}>Reassign Service Resource</li>
+                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeApptMenuId} onclick={handleApptModify}>Modify Service Appointment</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeApptMenuId} onclick={handleApptNoShow}>Mark as No Show</li>
                 </ul>
             </div>
