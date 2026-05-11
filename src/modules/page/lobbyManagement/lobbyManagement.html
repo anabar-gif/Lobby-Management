@@ -107,8 +107,13 @@
         <div class="lobby-metrics slds-p-horizontal_medium slds-p-top_medium slds-p-bottom_small">
             <div class="lobby-metrics__grid">
 
-                <!-- 1. Total Checked In — informational -->
-                <div class="lobby-metric-card" title="Total participants currently checked in">
+                <!-- 1. Total Checked In — FILTERABLE -->
+                <div class={tileFilterClassCheckedIn}
+                     data-filter="checkedin"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show all checked-in participants">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
                         <lightning-icon icon-name="utility:people" size="x-small" alternative-text="Checked In"></lightning-icon>
                     </div>
@@ -116,10 +121,16 @@
                         <div class="lobby-metric-card__value">{metricTotalCheckedIn}</div>
                         <div class="lobby-metric-card__label">Total Checked In</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 2. Currently Being Served — informational -->
-                <div class="lobby-metric-card" title="Currently being served">
+                <!-- 2. Currently Being Served — FILTERABLE -->
+                <div class={tileFilterClassServed}
+                     data-filter="served"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show participants currently being served">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--green">
                         <lightning-icon icon-name="utility:user" size="x-small" alternative-text="In Service"></lightning-icon>
                     </div>
@@ -127,10 +138,16 @@
                         <div class="lobby-metric-card__value">{metricCurrentlyServed}</div>
                         <div class="lobby-metric-card__label">Currently Served</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 3. Upcoming Appointments — informational -->
-                <div class="lobby-metric-card" title="Upcoming appointments">
+                <!-- 3. Upcoming Appointments — FILTERABLE -->
+                <div class={tileFilterClassUpcoming}
+                     data-filter="upcoming"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show upcoming appointments">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--indigo">
                         <lightning-icon icon-name="utility:event" size="x-small" alternative-text="Upcoming"></lightning-icon>
                     </div>
@@ -138,10 +155,16 @@
                         <div class="lobby-metric-card__value">{metricUpcoming}</div>
                         <div class="lobby-metric-card__label">Upcoming Appointments</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 4. Average Wait Time — informational -->
-                <div class="lobby-metric-card" title="Average wait time across all queues">
+                <!-- 4. Average Wait Time — FILTERABLE -->
+                <div class={tileFilterClassAvgWait}
+                     data-filter="avgwait"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show participants waiting above average">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange">
                         <lightning-icon icon-name="utility:clock" size="x-small" alternative-text="Avg Wait"></lightning-icon>
                     </div>
@@ -149,10 +172,16 @@
                         <div class="lobby-metric-card__value lobby-metric-card__value--small">{metricAvgWait}</div>
                         <div class="lobby-metric-card__label">Avg Wait Time</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 5. Longest Wait — informational -->
-                <div class="lobby-metric-card" title="Longest individual wait time">
+                <!-- 5. Longest Wait — FILTERABLE -->
+                <div class={tileFilterClassLongest}
+                     data-filter="longest"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show participant with longest wait">
                     <div class={metricLongestWaitIconClass}>
                         <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Longest Wait"></lightning-icon>
                     </div>
@@ -160,10 +189,16 @@
                         <div class={metricLongestWaitValueClass}>{metricLongestWait}</div>
                         <div class="lobby-metric-card__label">Longest Wait</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 6. Active Waitlists — informational -->
-                <div class="lobby-metric-card" title="Number of active waitlists">
+                <!-- 6. Active Waitlists — FILTERABLE -->
+                <div class={tileFilterClassWaitlists}
+                     data-filter="waitlists"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show only active (non-empty) waitlists">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--teal">
                         <lightning-icon icon-name="utility:list" size="x-small" alternative-text="Active Waitlists"></lightning-icon>
                     </div>
@@ -171,6 +206,7 @@
                         <div class="lobby-metric-card__value">{metricActiveWaitlists}</div>
                         <div class="lobby-metric-card__label">Active Waitlists</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
                 <!-- 7. VIP Participants — FILTERABLE -->
@@ -207,8 +243,13 @@
                     <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 9. No-Shows Today — informational -->
-                <div class="lobby-metric-card" title="No-shows recorded today">
+                <!-- 9. No-Shows Today — FILTERABLE -->
+                <div class={tileFilterClassNoShows}
+                     data-filter="noshows"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show no-show participants">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red">
                         <lightning-icon icon-name="utility:ban" size="x-small" alternative-text="No-Shows"></lightning-icon>
                     </div>
@@ -216,6 +257,7 @@
                         <div class="lobby-metric-card__value">{metricNoShowsToday}</div>
                         <div class="lobby-metric-card__label">No-Shows Today</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
                 <!-- 10. Queues at Capacity — FILTERABLE -->
@@ -235,8 +277,13 @@
                     <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 11. Transferred Today — informational -->
-                <div class="lobby-metric-card" title="Transfers completed today">
+                <!-- 11. Transferred Today — FILTERABLE -->
+                <div class={tileFilterClassTransferred}
+                     data-filter="transferred"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show transferred participants">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
                         <lightning-icon icon-name="utility:forward" size="x-small" alternative-text="Transferred"></lightning-icon>
                     </div>
@@ -244,10 +291,16 @@
                         <div class="lobby-metric-card__value">{metricTransferred}</div>
                         <div class="lobby-metric-card__label">Transferred Today</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 12. Avg Service Time — informational -->
-                <div class="lobby-metric-card" title="Average service time">
+                <!-- 12. Avg Service Time — FILTERABLE -->
+                <div class={tileFilterClassAvgService}
+                     data-filter="avgservice"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show participants by service time">
                     <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--orange">
                         <lightning-icon icon-name="utility:timer" size="x-small" alternative-text="Service Time"></lightning-icon>
                     </div>
@@ -255,6 +308,7 @@
                         <div class="lobby-metric-card__value lobby-metric-card__value--small">{metricAvgServiceTime}</div>
                         <div class="lobby-metric-card__label">Avg Service Time</div>
                     </div>
+                    <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
             </div>
@@ -331,7 +385,7 @@
                                     <div class="lobby-section__label">Current</div>
                                     <div class="lobby-section__meta slds-m-top_xx-small">{currentSectionMetaLine}</div>
                                 </div>
-                                <template for:each={currentAppointmentsView} for:item="appt">
+                                <template for:each={currentAppointmentsFiltered} for:item="appt">
                                     <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
                                         <div class="lobby-appt__body slds-p-around_small">
                                             <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
@@ -410,7 +464,7 @@
                                     <div class="lobby-section__label">Upcoming</div>
                                     <div class="lobby-section__meta slds-m-top_xx-small">{upcomingSectionMetaLine}</div>
                                 </div>
-                                <template for:each={upcomingAppointmentsView} for:item="appt">
+                                <template for:each={upcomingAppointmentsFiltered} for:item="appt">
                                     <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
                                         <div class="lobby-appt__body slds-p-around_small">
                                             <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
@@ -676,6 +730,17 @@
                                         <div class="lobby-checkin-field">
                                             <label class="lobby-checkin-label" for="ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
                                             <input id="ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={ciEmailPh} value={ciEmail} oninput={handleCiEmailChange} />
+                                        </div>
+                                        <div class="lobby-checkin-field">
+                                            <div class="slds-form-element__control">
+                                                <span class="slds-checkbox">
+                                                    <input type="checkbox" id="ci-vip" name="ci-vip" checked={ciIsVip} onchange={handleCiVipChange} />
+                                                    <label class="slds-checkbox__label" for="ci-vip">
+                                                        <span class="slds-checkbox_faux"></span>
+                                                        <span class="slds-form-element__label lobby-checkin-label">VIP Status</span>
+                                                    </label>
+                                                </span>
+                                            </div>
                                         </div>
                                     </template>
                                     <!-- Participant grouped combobox (existing) -->
@@ -980,6 +1045,17 @@
                                         <div class="lobby-checkin-field">
                                             <label class="lobby-checkin-label" for="ib-ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
                                             <input id="ib-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={ibCiEmailPh} value={ibCiEmail} oninput={handleIbCiEmailChange} />
+                                        </div>
+                                        <div class="lobby-checkin-field">
+                                            <div class="slds-form-element__control">
+                                                <span class="slds-checkbox">
+                                                    <input type="checkbox" id="ib-ci-vip" name="ib-ci-vip" checked={ibCiIsVip} onchange={handleIbCiVipChange} />
+                                                    <label class="slds-checkbox__label" for="ib-ci-vip">
+                                                        <span class="slds-checkbox_faux"></span>
+                                                        <span class="slds-form-element__label lobby-checkin-label">VIP Status</span>
+                                                    </label>
+                                                </span>
+                                            </div>
                                         </div>
                                     </template>
                                     <!-- Participant grouped combobox (existing) -->
@@ -1330,6 +1406,17 @@
                                             <div class="lobby-checkin-field">
                                                 <label class="lobby-checkin-label" for="dyn-ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
                                                 <input id="dyn-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={dynCiEmailPh} value={dynCiEmail} oninput={handleDynCiEmailChange} />
+                                            </div>
+                                            <div class="lobby-checkin-field">
+                                                <div class="slds-form-element__control">
+                                                    <span class="slds-checkbox">
+                                                        <input type="checkbox" id="dyn-ci-vip" name="dyn-ci-vip" checked={dynCiIsVip} onchange={handleDynCiVipChange} />
+                                                        <label class="slds-checkbox__label" for="dyn-ci-vip">
+                                                            <span class="slds-checkbox_faux"></span>
+                                                            <span class="slds-form-element__label lobby-checkin-label">VIP Status</span>
+                                                        </label>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </template>
                                         <!-- Existing user search -->

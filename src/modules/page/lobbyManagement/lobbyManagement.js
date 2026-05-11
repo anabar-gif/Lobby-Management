@@ -382,9 +382,18 @@ export default class LobbyManagement extends LightningElement {
 
     get activeTileFilterLabel() {
         const labels = {
-            vip:      'VIP Participants',
-            overdue:  'Overdue (>45 min)',
-            capacity: 'Queues at Capacity',
+            checkedin:   'Total Checked In',
+            served:      'Currently Served',
+            upcoming:    'Upcoming Appointments',
+            avgwait:     'Avg Wait Time (above average)',
+            longest:     'Longest Wait',
+            waitlists:   'Active Waitlists',
+            vip:         'VIP Participants',
+            overdue:     'Overdue (>45 min)',
+            noshows:     'No-Shows Today',
+            capacity:    'Queues at Capacity',
+            transferred: 'Transferred Today',
+            avgservice:  'Avg Service Time',
         };
         return labels[this.activeTileFilter] || '';
     }
@@ -403,14 +412,33 @@ export default class LobbyManagement extends LightningElement {
 
     _tileFilterPredicate(p) {
         switch (this.activeTileFilter) {
-            case 'vip':     return !!p.isVip;
-            case 'overdue': return this._parseWaitMins(p.waitTime) > 45;
-            default:        return true;
+            case 'checkedin':   return true;
+            case 'served':      return false;
+            case 'upcoming':    return false;
+            case 'avgwait': {
+                const parts = this._allWaitlistParticipants();
+                if (!parts.length) return true;
+                const avg = parts.reduce((s, x) => s + this._parseWaitMins(x.waitTime), 0) / parts.length;
+                return this._parseWaitMins(p.waitTime) >= Math.round(avg);
+            }
+            case 'longest': {
+                const parts = this._allWaitlistParticipants();
+                if (!parts.length) return false;
+                const max = Math.max(...parts.map(x => this._parseWaitMins(x.waitTime)));
+                return this._parseWaitMins(p.waitTime) >= max - 5;
+            }
+            case 'waitlists':   return true;
+            case 'vip':         return !!p.isVip;
+            case 'overdue':     return this._parseWaitMins(p.waitTime) > 45;
+            case 'noshows':     return false;
+            case 'transferred': return false;
+            case 'avgservice':  return true;
+            default:            return true;
         }
     }
 
     _applyTileFilter(topics) {
-        if (!this.activeTileFilter || this.activeTileFilter === 'capacity') return topics;
+        if (!this.activeTileFilter || this.activeTileFilter === 'capacity' || this.activeTileFilter === 'waitlists') return topics;
         return topics.map(t => ({
             ...t,
             participants: (t.participants || []).filter(p => this._tileFilterPredicate(p)),
@@ -424,15 +452,15 @@ export default class LobbyManagement extends LightningElement {
     get tileFilterClassCheckedIn()   { return this._tileFilterActive('checkedin') ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
     get tileFilterClassServed()      { return this._tileFilterActive('served') ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
     get tileFilterClassUpcoming()    { return this._tileFilterActive('upcoming') ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
-    get tileFilterClassAvgWait()     { return 'lobby-metric-card'; }
-    get tileFilterClassLongest()     { return 'lobby-metric-card'; }
-    get tileFilterClassWaitlists()   { return 'lobby-metric-card'; }
-    get tileFilterClassVip()         { return this.activeTileFilter === 'vip'      ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
-    get tileFilterClassOverdue()     { return this.activeTileFilter === 'overdue'  ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
-    get tileFilterClassNoShows()     { return 'lobby-metric-card'; }
-    get tileFilterClassCapacity()    { return this.activeTileFilter === 'capacity' ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
-    get tileFilterClassTransferred() { return 'lobby-metric-card'; }
-    get tileFilterClassAvgService()  { return 'lobby-metric-card'; }
+    get tileFilterClassAvgWait()     { return this._tileFilterActive('avgwait')     ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassLongest()     { return this._tileFilterActive('longest')     ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassWaitlists()   { return this._tileFilterActive('waitlists')   ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassVip()         { return this._tileFilterActive('vip')         ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassOverdue()     { return this._tileFilterActive('overdue')     ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassNoShows()     { return this._tileFilterActive('noshows')     ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassCapacity()    { return this._tileFilterActive('capacity')    ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassTransferred() { return this._tileFilterActive('transferred') ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
+    get tileFilterClassAvgService()  { return this._tileFilterActive('avgservice')  ? 'lobby-metric-card lobby-metric-card--active' : 'lobby-metric-card'; }
 
     _tileFilterActive(key) { return this.activeTileFilter === key; }
 
@@ -465,7 +493,29 @@ export default class LobbyManagement extends LightningElement {
                 topics: this._filterTopicsBySearch(w.topics, q),
             })).filter(w => w.topics.some(t => t.participants.length > 0));
         }
+        if (this.activeTileFilter && this.activeTileFilter !== 'capacity' && this.activeTileFilter !== 'waitlists') {
+            result = result.map(w => ({
+                ...w,
+                topics: this._applyTileFilter(w.topics),
+            })).filter(w => w.topics.some(t => (t.participants || []).length > 0));
+        } else if (this.activeTileFilter === 'capacity') {
+            result = result.filter(w => this._queueHealth(w.topics) === 'red');
+        }
         return result;
+    }
+
+    get currentAppointmentsFiltered() {
+        if (this.activeTileFilter === 'served') {
+            return this.currentAppointmentsView.filter(a => a.checkedIn);
+        }
+        if (this.activeTileFilter === 'upcoming') return [];
+        return this.currentAppointmentsView;
+    }
+
+    get upcomingAppointmentsFiltered() {
+        if (this.activeTileFilter === 'upcoming') return this.upcomingAppointmentsView;
+        if (this.activeTileFilter === 'served') return [];
+        return this.upcomingAppointmentsView;
     }
 
     // ── Batch 2: Avatars, VIP, Notes, Auto-refresh, Resource filter ─────────
@@ -1018,6 +1068,7 @@ export default class LobbyManagement extends LightningElement {
     @track ciContact    = '';
     @track ciCompany    = '';
     @track ciEmail      = '';
+    @track ciIsVip      = false;
 
     get ciIsNewParticipant() { return this.ciGuestType === 'new'; }
     get ciPersonLabel()      { return this.ciGuestType === 'new' ? "guest's" : "participant's"; }
@@ -1038,6 +1089,7 @@ export default class LobbyManagement extends LightningElement {
     handleCiContactChange(event)   { this.ciContact   = event.target.value; }
     handleCiCompanyChange(event)   { this.ciCompany   = event.target.value; }
     handleCiEmailChange(event)     { this.ciEmail     = event.target.value; }
+    handleCiVipChange(event)       { this.ciIsVip     = event.target.checked; }
 
     // ── Investment Banking composer form state ──
     @track ibCiGuestType  = 'existing';
@@ -1049,6 +1101,7 @@ export default class LobbyManagement extends LightningElement {
     @track ibCiContact    = '';
     @track ibCiCompany    = '';
     @track ibCiEmail      = '';
+    @track ibCiIsVip      = false;
 
     get ibCiIsNewParticipant() { return this.ibCiGuestType === 'new'; }
     get ibCiPersonLabel()      { return this.ibCiGuestType === 'new' ? "guest's" : "participant's"; }
@@ -1069,6 +1122,7 @@ export default class LobbyManagement extends LightningElement {
     handleIbCiContactChange(event)   { this.ibCiContact   = event.target.value; }
     handleIbCiCompanyChange(event)   { this.ibCiCompany   = event.target.value; }
     handleIbCiEmailChange(event)     { this.ibCiEmail     = event.target.value; }
+    handleIbCiVipChange(event)       { this.ibCiIsVip     = event.target.checked; }
 
     // ── Shared work-item counter ──
     _wpCounter = 500;
@@ -1265,6 +1319,7 @@ export default class LobbyManagement extends LightningElement {
     @track dynCiContact    = '';
     @track dynCiCompany    = '';
     @track dynCiEmail      = '';
+    @track dynCiIsVip      = false;
     @track dynParticipantSearch = '';
     @track showDynParticipantDropdown = false;
     @track showDynParticipantTypeDropdown = false;
@@ -1373,6 +1428,7 @@ export default class LobbyManagement extends LightningElement {
     handleDynCiContactChange(event)   { this.dynCiContact   = event.target.value; }
     handleDynCiCompanyChange(event)   { this.dynCiCompany   = event.target.value; }
     handleDynCiEmailChange(event)     { this.dynCiEmail     = event.target.value; }
+    handleDynCiVipChange(event)       { this.dynCiIsVip     = event.target.checked; }
 
     handleDynParticipantTypeToggle() {
         this.showDynParticipantTypeDropdown = !this.showDynParticipantTypeDropdown;

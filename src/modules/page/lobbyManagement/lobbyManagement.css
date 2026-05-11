@@ -956,6 +956,10 @@
     margin-bottom: 0.25rem;
 }
 
+.slds-checkbox_faux {
+    margin-right: 0.5rem;
+}
+
 .lobby-checkin-required {
     color: var(--slds-g-color-error-base-50, #c23934);
     margin-left: 0;
