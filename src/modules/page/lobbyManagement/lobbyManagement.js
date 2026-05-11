@@ -2038,6 +2038,7 @@ export default class LobbyManagement extends LightningElement {
     @track showTransferModal = false;
     @track transferParticipantId = null;
     @track transferTargetQueue = '';
+    @track transferTargetTopic = '';
 
     get transferQueueOptions() {
         const opts = [
@@ -2048,21 +2049,53 @@ export default class LobbyManagement extends LightningElement {
         return opts;
     }
 
+    get transferTopicOptions() {
+        if (!this.transferTargetQueue) return [];
+        let topics = [];
+        if (this.transferTargetQueue === 'gb') {
+            topics = this.generalBankingTopics;
+        } else if (this.transferTargetQueue === 'ib') {
+            topics = this.investmentBankingTopics;
+        } else {
+            const wl = (this.dynamicWaitlists || []).find(w => w.id === this.transferTargetQueue);
+            topics = wl ? (wl.topics || []) : [];
+        }
+        return topics.map(t => ({
+            label: t.label.replace(/\s*\(\d+\)$/, ''),
+            value: t.id,
+        }));
+    }
+
+    get transferTopicPickerVisible() {
+        return this.transferTargetQueue && this.transferTopicOptions.length > 0;
+    }
+
+    get transferConfirmDisabled() {
+        return !this.transferTargetQueue || !this.transferTargetTopic;
+    }
+
     handleTransferRequest(event) {
         this.transferParticipantId = event.currentTarget.dataset.id;
         this.transferTargetQueue = '';
+        this.transferTargetTopic = '';
         this.showTransferModal = true;
         this.activeMenuRowId = null;
     }
 
     handleTransferTargetChange(event) {
         this.transferTargetQueue = event.detail.value;
+        this.transferTargetTopic = '';
+    }
+
+    handleTransferTopicChange(event) {
+        this.transferTargetTopic = event.detail.value;
     }
 
     handleTransferConfirm() {
-        const id = this.transferParticipantId;
-        const target = this.transferTargetQueue;
-        if (!id || !target) return;
+        const id      = this.transferParticipantId;
+        const queue   = this.transferTargetQueue;
+        const topicId = this.transferTargetTopic;
+        if (!id || !queue || !topicId) return;
 
         // Find and remove participant from all topics
         let participant = null;
@@ -2075,33 +2108,33 @@ export default class LobbyManagement extends LightningElement {
 
         if (!participant) { this.showTransferModal = false; return; }
 
-        // Add to target
+        // Add to the chosen topic
         const newParticipant = { ...participant, id: `${participant.id}-t${Date.now()}` };
-        if (target === 'gb') {
-            const topics = this.generalBankingTopics.length ? this.generalBankingTopics : [];
-            if (topics.length) {
-                this.generalBankingTopics = sortLobbyTopicsByCountDesc(topics.map((t, i) => i === 0 ? { ...t, participants: [...t.participants, newParticipant] } : t));
-            }
-        } else if (target === 'ib') {
-            const topics = this.investmentBankingTopics;
-            if (topics.length) {
-                this.investmentBankingTopics = sortLobbyTopicsByCountDesc(topics.map((t, i) => i === 0 ? { ...t, participants: [...t.participants, newParticipant] } : t));
-            }
+        const insertIntoTopic = (topics) => sortLobbyTopicsByCountDesc(
+            topics.map(t => t.id === topicId ? { ...t, participants: [...(t.participants || []), newParticipant] } : t)
+        );
+
+        if (queue === 'gb') {
+            this.generalBankingTopics = insertIntoTopic(this.generalBankingTopics);
+        } else if (queue === 'ib') {
+            this.investmentBankingTopics = insertIntoTopic(this.investmentBankingTopics);
         } else {
-            this.dynamicWaitlists = this.dynamicWaitlists.map(w => {
-                if (w.id !== target) return w;
-                const topics = w.topics && w.topics.length ? w.topics : [{ id: `${w.id}-default`, label: w.name + ' (0)', participants: [] }];
-                return { ...w, topics: topics.map((t, i) => i === 0 ? { ...t, participants: [...t.participants, newParticipant] } : t) };
-            });
+            this.dynamicWaitlists = this.dynamicWaitlists.map(w =>
+                w.id === queue ? { ...w, topics: insertIntoTopic(w.topics || []) } : w
+            );
         }
 
         this._transferredCount += 1;
         this.showTransferModal = false;
+        this.transferTargetQueue = '';
+        this.transferTargetTopic = '';
         this._showToast(`${participant.linkLabel} transferred successfully.`);
     }
 
     handleTransferCancel() {
         this.showTransferModal = false;
+        this.transferTargetQueue = '';
+        this.transferTargetTopic = '';
     }
 
     // Daily summary

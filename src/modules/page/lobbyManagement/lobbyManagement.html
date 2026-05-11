@@ -1774,15 +1774,27 @@
                 </div>
                 <div class="lobby-modal__body">
                     <lightning-combobox
-                        label="Select target queue"
+                        label="Select Waitlist"
                         value={transferTargetQueue}
                         options={transferQueueOptions}
+                        placeholder="Choose a waitlist..."
                         onchange={handleTransferTargetChange}>
                     </lightning-combobox>
+                    <template lwc:if={transferTopicPickerVisible}>
+                        <div class="slds-m-top_small">
+                            <lightning-combobox
+                                label="Select Work Topic"
+                                value={transferTargetTopic}
+                                options={transferTopicOptions}
+                                placeholder="Choose a work topic..."
+                                onchange={handleTransferTopicChange}>
+                            </lightning-combobox>
+                        </div>
+                    </template>
                 </div>
                 <div class="lobby-modal__footer">
                     <lightning-button label="Cancel" onclick={handleTransferCancel}></lightning-button>
-                    <lightning-button label="Transfer" variant="brand" onclick={handleTransferConfirm}></lightning-button>
+                    <lightning-button label="Transfer" variant="brand" disabled={transferConfirmDisabled} onclick={handleTransferConfirm}></lightning-button>
                 </div>
                 <button class="lobby-modal__close" onclick={handleTransferCancel} aria-label="Close">
                     <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
