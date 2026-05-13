@@ -864,10 +864,6 @@
     line-height: 1.4;
 }
 
-.lobby-queue-participant__resource--preferred {
-    color: #7c3aed;
-    font-weight: 500;
-}
 
 .lobby-queue-participant__times {
     padding: var(--slds-g-spacing-3, 0.75rem) var(--slds-g-spacing-4, 1rem) var(--slds-g-spacing-4, 1rem);

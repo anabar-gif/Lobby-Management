@@ -644,9 +644,8 @@ export default class LobbyManagement extends LightningElement {
     _nextServiceNumber() { return `G-${this._serviceCounter++}`; }
 
     _assignedResourcePool = ['Rachel Adams', 'Jamie Lee', 'Morgan Blake', 'Sarah Mitchell', 'David Park', 'Lisa Chen', 'Marcus Webb', 'Nina Torres'];
-    _autoAssignResource(preferredResource) {
-        const pool = this._assignedResourcePool.filter(r => r !== preferredResource);
-        return pool[Math.floor(Math.random() * pool.length)];
+    _autoAssignResource() {
+        return this._assignedResourcePool[Math.floor(Math.random() * this._assignedResourcePool.length)];
     }
 
     _enrichParticipant(p) {
@@ -660,8 +659,7 @@ export default class LobbyManagement extends LightningElement {
             waitTimeClass: this._isOverdue(p.waitTime)
                 ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
                 : 'lobby-appt__wait-time slds-m-left_xx-small',
-            showPreferredResource: !!p.preferredResource,
-            showAssignedResource:  !!p.assignedResource,
+            showAssignedResource: !!p.assignedResource,
         };
     }
 
@@ -770,8 +768,7 @@ export default class LobbyManagement extends LightningElement {
                     serviceNumber: 'G-1126',
                     phone: '+1 (415) 555-0182',
                     topic: 'Checking Account',
-                    preferredResource: 'Anthony Young',
-                    assignedResource: 'Jamie Lee',
+                    assignedResource: 'Anthony Young',
                     slot: '8:30 am - 9:00 am',
                     checkInTime: '08:45 AM',
                     waitTime: '00 : 12 mins.'
@@ -803,8 +800,7 @@ export default class LobbyManagement extends LightningElement {
                     serviceNumber: 'G-1128',
                     email: 'jordan.chen@example.com',
                     topic: 'Portfolio Review',
-                    preferredResource: 'Anthony Young',
-                    assignedResource: 'Morgan Blake',
+                    assignedResource: 'Anthony Young',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:15 AM',
                     waitTime: '00 : 35 mins.'
@@ -836,8 +832,7 @@ export default class LobbyManagement extends LightningElement {
                     serviceNumber: 'G-1130',
                     phone: '+1 (408) 555-0774',
                     topic: 'Branch Services',
-                    preferredResource: 'Anthony Young',
-                    assignedResource: 'Rachel Adams',
+                    assignedResource: 'Anthony Young',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:15 AM',
                     waitTime: '00 : 22 mins.'
@@ -885,8 +880,7 @@ export default class LobbyManagement extends LightningElement {
                     serviceNumber: 'I-2041',
                     phone: '+1 (628) 555-0819',
                     topic: 'Investment Planning',
-                    preferredResource: 'Anthony Young',
-                    assignedResource: 'Rachel Adams',
+                    assignedResource: 'Anthony Young',
                     slot: '11:00 am - 11:30 am',
                     checkInTime: '11:13 AM',
                     waitTime: '04 : 14 mins.'
@@ -1283,8 +1277,7 @@ export default class LobbyManagement extends LightningElement {
             serviceNumber:    this._nextServiceNumber(),
             email:            this.ciEmail?.trim() || null,
             topic:            topicLabel,
-            preferredResource: resourceLabel || null,
-            assignedResource:  this._autoAssignResource(resourceLabel),
+            assignedResource: resourceLabel || this._autoAssignResource(),
             slot:             this._nowSlot(),
             checkInTime,
             waitTime:         this._calcWaitTime(peopleAhead),
@@ -1345,8 +1338,7 @@ export default class LobbyManagement extends LightningElement {
             serviceNumber:    this._nextServiceNumber(),
             email:            this.ibCiEmail?.trim() || null,
             topic:            topicLabel,
-            preferredResource: resourceLabel || null,
-            assignedResource:  this._autoAssignResource(resourceLabel),
+            assignedResource: resourceLabel || this._autoAssignResource(),
             slot:             this._nowSlot(),
             checkInTime,
             waitTime:         this._calcWaitTime(ibPeopleAhead),
@@ -1568,8 +1560,7 @@ export default class LobbyManagement extends LightningElement {
                 serviceNumber:    this._nextServiceNumber(),
                 email:            this.dynCiEmail?.trim() || null,
                 topic:            topicLabel,
-                preferredResource: resourceLabel || null,
-                assignedResource:  this._autoAssignResource(resourceLabel),
+                assignedResource: resourceLabel || this._autoAssignResource(),
                 slot:             this._nowSlot(),
                 checkInTime:      this._nowTime(),
                 waitTime:         this._calcWaitTime(dynPeopleAhead),
