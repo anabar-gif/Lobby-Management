@@ -1489,7 +1489,6 @@
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleToggleNotes}>Add / View Notes</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleTransferRequest}>Transfer to Another Queue</li>
                     <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantNoShow}>Mark as No-Show</li>
-                    <li role="menuitem" class="lobby-row-menu__item" data-id={activeMenuRowId} onclick={handleParticipantRemoveResource}>Remove Preferred Resource</li>
                 </ul>
             </div>
         </template>
@@ -1694,37 +1693,39 @@
         <!-- ── Transfer Modal ── -->
         <template lwc:if={showTransferModal}>
             <div class="lobby-modal-backdrop"></div>
-            <div class="lobby-modal lobby-modal--small" role="dialog" aria-modal="true">
-                <div class="lobby-modal__header">
-                    <h2 class="lobby-modal__title">Transfer to Another Queue</h2>
+            <div class="lobby-modal-container">
+                <div class="lobby-modal lobby-modal--small" role="dialog" aria-modal="true">
+                    <div class="lobby-modal__header">
+                        <h2 class="lobby-modal__title">Transfer to Another Queue</h2>
+                    </div>
+                    <div class="lobby-modal__body">
+                        <lightning-combobox
+                            label="Select Waitlist"
+                            value={transferTargetQueue}
+                            options={transferQueueOptions}
+                            placeholder="Choose a waitlist..."
+                            onchange={handleTransferTargetChange}>
+                        </lightning-combobox>
+                        <template lwc:if={transferTopicPickerVisible}>
+                            <div class="slds-m-top_small">
+                                <lightning-combobox
+                                    label="Select Work Topic"
+                                    value={transferTargetTopic}
+                                    options={transferTopicOptions}
+                                    placeholder="Choose a work topic..."
+                                    onchange={handleTransferTopicChange}>
+                                </lightning-combobox>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="lobby-modal__footer">
+                        <lightning-button label="Cancel" onclick={handleTransferCancel}></lightning-button>
+                        <lightning-button label="Transfer" variant="brand" disabled={transferConfirmDisabled} onclick={handleTransferConfirm}></lightning-button>
+                    </div>
+                    <button class="lobby-modal__close" onclick={handleTransferCancel} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                    </button>
                 </div>
-                <div class="lobby-modal__body">
-                    <lightning-combobox
-                        label="Select Waitlist"
-                        value={transferTargetQueue}
-                        options={transferQueueOptions}
-                        placeholder="Choose a waitlist..."
-                        onchange={handleTransferTargetChange}>
-                    </lightning-combobox>
-                    <template lwc:if={transferTopicPickerVisible}>
-                        <div class="slds-m-top_small">
-                            <lightning-combobox
-                                label="Select Work Topic"
-                                value={transferTargetTopic}
-                                options={transferTopicOptions}
-                                placeholder="Choose a work topic..."
-                                onchange={handleTransferTopicChange}>
-                            </lightning-combobox>
-                        </div>
-                    </template>
-                </div>
-                <div class="lobby-modal__footer">
-                    <lightning-button label="Cancel" onclick={handleTransferCancel}></lightning-button>
-                    <lightning-button label="Transfer" variant="brand" disabled={transferConfirmDisabled} onclick={handleTransferConfirm}></lightning-button>
-                </div>
-                <button class="lobby-modal__close" onclick={handleTransferCancel} aria-label="Close">
-                    <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
-                </button>
             </div>
         </template>
 
