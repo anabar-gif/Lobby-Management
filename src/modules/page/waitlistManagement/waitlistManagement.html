@@ -205,31 +205,37 @@
 
                 <!-- Work Types -->
                 <div class="wl-creator__field-group">
-                    <div class="wl-creator__chip-header">
-                        <label class="wl-creator__label">Work Types</label>
-                        <div class="wl-creator__add-wrap">
-                            <button class="wl-creator__add-btn" onclick={handleWorkTypeToggle} aria-label="Add work type">
-                                <lightning-icon icon-name="utility:add" size="x-small" alternative-text=""></lightning-icon>
-                                <span>Add</span>
-                            </button>
-                            <template lwc:if={showWorkTypeDropdown}>
-                                <div class="wl-creator__chip-dropdown">
-                                    <template for:each={availableWorkTypes} for:item="wt">
-                                        <button
-                                            key={wt.value}
-                                            class="wl-creator__chip-option"
-                                            data-value={wt.value}
-                                            data-label={wt.label}
-                                            onclick={handleAddWorkType}>
-                                            {wt.label}
-                                        </button>
-                                    </template>
-                                    <template lwc:if={noAvailableWorkTypes}>
-                                        <div class="wl-creator__chip-option wl-creator__chip-option--empty">All work types added</div>
-                                    </template>
-                                </div>
-                            </template>
+                    <label class="wl-creator__label">Work Type</label>
+                    <div class="wl-creator__search-wrap" data-field="worktype" onclick={handleSearchWrapClick}>
+                        <div class="wl-creator__search-input-row">
+                            <lightning-icon icon-name="utility:search" size="x-small" class="wl-creator__search-icon" alternative-text="Search"></lightning-icon>
+                            <input
+                                type="text"
+                                class="wl-creator__search-input"
+                                placeholder="All work types"
+                                value={wtSearch}
+                                oninput={handleWtSearch}
+                                onfocus={handleWtFocus}
+                                autocomplete="off" />
+                            <lightning-icon icon-name="utility:chevrondown" size="x-small" class="wl-creator__search-chevron" alternative-text=""></lightning-icon>
                         </div>
+                        <template lwc:if={showWorkTypeDropdown}>
+                            <div class="wl-creator__search-dropdown">
+                                <template lwc:if={hasRecentWorkTypes}>
+                                    <div class="wl-creator__search-group-header">Recently Scheduled</div>
+                                    <template for:each={recentWorkTypes} for:item="wt">
+                                        <button key={wt.value} class="wl-creator__search-option" data-value={wt.value} data-label={wt.label} onclick={handleAddWorkType}>{wt.label}</button>
+                                    </template>
+                                </template>
+                                <div class="wl-creator__search-group-header">All Work Types</div>
+                                <template for:each={filteredWorkTypes} for:item="wt">
+                                    <button key={wt.value} class="wl-creator__search-option" data-value={wt.value} data-label={wt.label} onclick={handleAddWorkType}>{wt.label}</button>
+                                </template>
+                                <template lwc:if={noFilteredWorkTypes}>
+                                    <div class="wl-creator__search-option wl-creator__search-option--empty">No work types found</div>
+                                </template>
+                            </div>
+                        </template>
                     </div>
                     <div class="wl-creator__chip-list">
                         <template for:each={creator.workTypes} for:item="wt">
@@ -241,40 +247,48 @@
                                 </button>
                             </span>
                         </template>
-                        <template lwc:if={noWorkTypes}>
-                            <span class="wl-creator__chip-placeholder">No work types selected</span>
-                        </template>
                     </div>
                 </div>
 
                 <!-- Service Resources -->
                 <div class="wl-creator__field-group">
-                    <div class="wl-creator__chip-header">
-                        <label class="wl-creator__label">Service Resources</label>
-                        <div class="wl-creator__add-wrap">
-                            <button class="wl-creator__add-btn" onclick={handleResourceToggle} aria-label="Add resource">
-                                <lightning-icon icon-name="utility:add" size="x-small" alternative-text=""></lightning-icon>
-                                <span>Add</span>
-                            </button>
-                            <template lwc:if={showResourceDropdown}>
-                                <div class="wl-creator__chip-dropdown">
-                                    <template for:each={availableResources} for:item="r">
-                                        <button
-                                            key={r.value}
-                                            class="wl-creator__chip-option"
-                                            data-value={r.value}
-                                            data-label={r.label}
-                                            onclick={handleAddResource}>
-                                            <lightning-icon icon-name="standard:service_resource" size="x-small" class="wl-creator__chip-option-icon" alternative-text=""></lightning-icon>
+                    <label class="wl-creator__label">Service Resources</label>
+                    <div class="wl-creator__search-wrap" data-field="resource" onclick={handleSearchWrapClick}>
+                        <div class="wl-creator__search-input-row">
+                            <lightning-icon icon-name="utility:search" size="x-small" class="wl-creator__search-icon" alternative-text="Search"></lightning-icon>
+                            <input
+                                type="text"
+                                class="wl-creator__search-input"
+                                placeholder="All resources"
+                                value={resSearch}
+                                oninput={handleResSearch}
+                                onfocus={handleResFocus}
+                                autocomplete="off" />
+                            <lightning-icon icon-name="utility:chevrondown" size="x-small" class="wl-creator__search-chevron" alternative-text=""></lightning-icon>
+                        </div>
+                        <template lwc:if={showResourceDropdown}>
+                            <div class="wl-creator__search-dropdown">
+                                <template lwc:if={hasRecentResources}>
+                                    <div class="wl-creator__search-group-header">Recently Used</div>
+                                    <template for:each={recentResources} for:item="r">
+                                        <button key={r.value} class="wl-creator__search-option" data-value={r.value} data-label={r.label} onclick={handleAddResource}>
+                                            <lightning-icon icon-name="standard:service_resource" size="x-small" class="wl-creator__search-option-icon" alternative-text=""></lightning-icon>
                                             {r.label}
                                         </button>
                                     </template>
-                                    <template lwc:if={noAvailableResources}>
-                                        <div class="wl-creator__chip-option wl-creator__chip-option--empty">All resources added</div>
-                                    </template>
-                                </div>
-                            </template>
-                        </div>
+                                </template>
+                                <div class="wl-creator__search-group-header">All Resources</div>
+                                <template for:each={filteredResources} for:item="r">
+                                    <button key={r.value} class="wl-creator__search-option" data-value={r.value} data-label={r.label} onclick={handleAddResource}>
+                                        <lightning-icon icon-name="standard:service_resource" size="x-small" class="wl-creator__search-option-icon" alternative-text=""></lightning-icon>
+                                        {r.label}
+                                    </button>
+                                </template>
+                                <template lwc:if={noFilteredResources}>
+                                    <div class="wl-creator__search-option wl-creator__search-option--empty">No resources found</div>
+                                </template>
+                            </div>
+                        </template>
                     </div>
                     <div class="wl-creator__chip-list">
                         <template for:each={creator.resources} for:item="r">
@@ -285,9 +299,6 @@
                                     <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Remove"></lightning-icon>
                                 </button>
                             </span>
-                        </template>
-                        <template lwc:if={noResources}>
-                            <span class="wl-creator__chip-placeholder">No resources selected</span>
                         </template>
                     </div>
                 </div>

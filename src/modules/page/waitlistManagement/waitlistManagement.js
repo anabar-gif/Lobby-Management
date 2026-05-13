@@ -141,6 +141,8 @@ export default class WaitlistManagement extends LightningElement {
     @track showTerritoryDropdown = false;
     @track showWorkTypeDropdown  = false;
     @track showResourceDropdown  = false;
+    @track wtSearch              = '';
+    @track resSearch             = '';
     @track nameError            = false;
     @track territoryError       = false;
 
@@ -203,31 +205,45 @@ export default class WaitlistManagement extends LightningElement {
         return this.filteredTerritories.length === 0;
     }
 
-    get availableWorkTypes() {
+    // Work Types — grouped & searchable
+    get recentWorkTypes() {
         const selected = new Set(this.creator.workTypes.map((w) => w.value));
-        return ALL_WORK_TYPES.filter((w) => !selected.has(w.value));
+        return ALL_WORK_TYPES.slice(0, 3).filter((w) => !selected.has(w.value));
     }
+    get hasRecentWorkTypes() { return this.recentWorkTypes.length > 0; }
 
-    get noAvailableWorkTypes() {
-        return this.availableWorkTypes.length === 0;
+    get filteredWorkTypes() {
+        const selected = new Set(this.creator.workTypes.map((w) => w.value));
+        const recent   = new Set(this.recentWorkTypes.map((w) => w.value));
+        const term     = (this.wtSearch || '').toLowerCase();
+        return ALL_WORK_TYPES
+            .filter((w) => !selected.has(w.value) && !recent.has(w.value))
+            .filter((w) => !term || w.label.toLowerCase().includes(term));
     }
-
-    get noWorkTypes() {
-        return this.creator.workTypes.length === 0;
+    get noFilteredWorkTypes() {
+        return this.filteredWorkTypes.length === 0 && !this.hasRecentWorkTypes;
     }
+    get noWorkTypes() { return this.creator.workTypes.length === 0; }
 
-    get availableResources() {
+    // Service Resources — grouped & searchable
+    get recentResources() {
         const selected = new Set(this.creator.resources.map((r) => r.value));
-        return ALL_RESOURCES.filter((r) => !selected.has(r.value));
+        return ALL_RESOURCES.slice(0, 2).filter((r) => !selected.has(r.value));
     }
+    get hasRecentResources() { return this.recentResources.length > 0; }
 
-    get noAvailableResources() {
-        return this.availableResources.length === 0;
+    get filteredResources() {
+        const selected = new Set(this.creator.resources.map((r) => r.value));
+        const recent   = new Set(this.recentResources.map((r) => r.value));
+        const term     = (this.resSearch || '').toLowerCase();
+        return ALL_RESOURCES
+            .filter((r) => !selected.has(r.value) && !recent.has(r.value))
+            .filter((r) => !term || r.label.toLowerCase().includes(term));
     }
-
-    get noResources() {
-        return this.creator.resources.length === 0;
+    get noFilteredResources() {
+        return this.filteredResources.length === 0 && !this.hasRecentResources;
     }
+    get noResources() { return this.creator.resources.length === 0; }
 
     get activeToggleClass() {
         return `wl-creator__toggle${this.creator.active ? ' wl-creator__toggle--on' : ''}`;
@@ -255,12 +271,12 @@ export default class WaitlistManagement extends LightningElement {
                 this.showTerritoryDropdown = false;
             }
             // close work-type dropdown
-            const wtWrap = this.template.querySelectorAll('.wl-creator__add-wrap')[0];
+            const wtWrap = this.template.querySelector('.wl-creator__search-wrap[data-field="worktype"]');
             if (wtWrap && !wtWrap.contains(e.target) && !path.includes(wtWrap)) {
                 this.showWorkTypeDropdown = false;
             }
             // close resource dropdown
-            const resWrap = this.template.querySelectorAll('.wl-creator__add-wrap')[1];
+            const resWrap = this.template.querySelector('.wl-creator__search-wrap[data-field="resource"]');
             if (resWrap && !resWrap.contains(e.target) && !path.includes(resWrap)) {
                 this.showResourceDropdown = false;
             }
@@ -344,17 +360,24 @@ export default class WaitlistManagement extends LightningElement {
     }
 
     // ── Work Types ─────────────────────────────────────────────
-    handleWorkTypeToggle(event) {
+    handleSearchWrapClick(event) { event.stopPropagation(); }
+
+    handleWtFocus(event) {
         event.stopPropagation();
-        this.showWorkTypeDropdown = !this.showWorkTypeDropdown;
+        this.showWorkTypeDropdown = true;
         this.showResourceDropdown = false;
+    }
+    handleWtSearch(event) {
+        this.wtSearch = event.target.value;
+        this.showWorkTypeDropdown = true;
     }
 
     handleAddWorkType(event) {
         event.stopPropagation();
         const value = event.currentTarget.dataset.value;
         const label = event.currentTarget.dataset.label;
-        this.creator = { ...this.creator, workTypes: [...this.creator.workTypes, { value, label }] };
+        this.creator  = { ...this.creator, workTypes: [...this.creator.workTypes, { value, label }] };
+        this.wtSearch = '';
         this.showWorkTypeDropdown = false;
     }
 
@@ -364,17 +387,22 @@ export default class WaitlistManagement extends LightningElement {
     }
 
     // ── Service Resources ──────────────────────────────────────
-    handleResourceToggle(event) {
+    handleResFocus(event) {
         event.stopPropagation();
-        this.showResourceDropdown = !this.showResourceDropdown;
+        this.showResourceDropdown = true;
         this.showWorkTypeDropdown = false;
+    }
+    handleResSearch(event) {
+        this.resSearch = event.target.value;
+        this.showResourceDropdown = true;
     }
 
     handleAddResource(event) {
         event.stopPropagation();
         const value = event.currentTarget.dataset.value;
         const label = event.currentTarget.dataset.label;
-        this.creator = { ...this.creator, resources: [...this.creator.resources, { value, label }] };
+        this.creator   = { ...this.creator, resources: [...this.creator.resources, { value, label }] };
+        this.resSearch = '';
         this.showResourceDropdown = false;
     }
 

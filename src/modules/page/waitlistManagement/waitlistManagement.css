@@ -435,51 +435,83 @@
 }
 
 /* Chip header row (label + add button) */
-.wl-creator__chip-header {
+/* ── Searchable combobox (Work Types & Service Resources) ─────────── */
+.wl-creator__search-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.wl-creator__search-input-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid var(--slds-g-color-border-base-4, #c9c9c9);
+    border-radius: 0.25rem;
+    padding: 0 0.75rem;
+    height: 2.25rem;
+    background: var(--slds-g-color-surface-1, #fff);
+    cursor: text;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.wl-creator__add-wrap {
-    position: relative;
+.wl-creator__search-input-row:focus-within {
+    border-color: #0176d3;
+    box-shadow: 0 0 0 1px #0176d3;
+    outline: none;
 }
 
-.wl-creator__add-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+.wl-creator__search-icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground-default: #706e6b;
+}
+
+.wl-creator__search-chevron {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground-default: #706e6b;
+    margin-left: auto;
+}
+
+.wl-creator__search-input {
+    flex: 1;
+    border: none;
+    outline: none;
     background: transparent;
-    border: 1px solid var(--slds-g-color-brand-base-50, #0176d3);
-    border-radius: 1rem;
-    color: var(--slds-g-color-brand-base-50, #0176d3);
-    font-size: var(--slds-g-font-scale-neg-2, 0.75rem);
-    font-weight: var(--slds-g-font-weight-6, 600);
-    padding: 0.2rem 0.625rem 0.2rem 0.4rem;
-    cursor: pointer;
-    transition: background 0.15s;
+    font-size: 0.875rem;
+    color: var(--slds-g-color-neutral-base-10, #181818);
+    min-width: 0;
 }
 
-.wl-creator__add-btn:hover {
-    background: rgba(1, 118, 211, 0.06);
+.wl-creator__search-input::placeholder {
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
 }
 
-/* Add dropdown */
-.wl-creator__chip-dropdown {
+/* Dropdown panel */
+.wl-creator__search-dropdown {
     position: absolute;
-    top: calc(100% + 4px);
+    top: calc(100% + 2px);
+    left: 0;
     right: 0;
     z-index: 9000;
     background: var(--slds-g-color-surface-1, #fff);
     border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
-    border-radius: var(--slds-g-radius-border-2, 0.25rem);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    min-width: 14rem;
-    max-height: 12rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    max-height: 16rem;
     overflow-y: auto;
 }
 
-.wl-creator__chip-option {
+/* Group headers (e.g. "Recently Scheduled", "All Work Types") */
+.wl-creator__search-group-header {
+    padding: 0.5rem 0.75rem 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--slds-g-color-neutral-base-50, #706e6b);
+}
+
+/* Option rows */
+.wl-creator__search-option {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -489,24 +521,30 @@
     border: none;
     text-align: left;
     cursor: pointer;
-    font-size: var(--slds-g-font-scale-neg-1, 0.875rem);
+    font-size: 0.875rem;
+    font-weight: 600;
     color: var(--slds-g-color-neutral-base-10, #181818);
     transition: background 0.1s;
 }
 
-.wl-creator__chip-option:hover {
-    background: var(--slds-g-color-neutral-base-97, #f8f8f8);
+.wl-creator__search-option:hover {
+    background: var(--slds-g-color-neutral-base-97, #f3f3f3);
 }
 
-.wl-creator__chip-option--empty {
+.wl-creator__search-option--empty {
     color: var(--slds-g-color-neutral-base-50, #706e6b);
     cursor: default;
     font-style: italic;
+    font-weight: 400;
 }
 
-.wl-creator__chip-option-icon {
+.wl-creator__search-option-icon {
     flex-shrink: 0;
 }
+
+/* Keep old chip-header and add-btn hidden (not used but safe fallback) */
+.wl-creator__chip-header { display: none; }
+.wl-creator__add-wrap    { display: none; }
 
 /* Chip list */
 .wl-creator__chip-list {
