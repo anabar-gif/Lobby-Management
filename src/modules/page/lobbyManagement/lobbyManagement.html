@@ -141,23 +141,6 @@
                     <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
 
-                <!-- 3. Upcoming Appointments — FILTERABLE -->
-                <div class={tileFilterClassUpcoming}
-                     data-filter="upcoming"
-                     onclick={handleTileClick}
-                     role="button"
-                     tabindex="0"
-                     title="Click to show upcoming appointments">
-                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--indigo">
-                        <lightning-icon icon-name="utility:event" size="x-small" alternative-text="Upcoming"></lightning-icon>
-                    </div>
-                    <div class="lobby-metric-card__body">
-                        <div class="lobby-metric-card__value">{metricUpcoming}</div>
-                        <div class="lobby-metric-card__label">Upcoming Appointments</div>
-                    </div>
-                    <div class="lobby-metric-card__filter-hint">Filter</div>
-                </div>
-
                 <!-- 4. Average Wait Time — FILTERABLE -->
                 <div class={tileFilterClassAvgWait}
                      data-filter="avgwait"
@@ -171,40 +154,6 @@
                     <div class="lobby-metric-card__body">
                         <div class="lobby-metric-card__value lobby-metric-card__value--small">{metricAvgWait}</div>
                         <div class="lobby-metric-card__label">Avg Wait Time</div>
-                    </div>
-                    <div class="lobby-metric-card__filter-hint">Filter</div>
-                </div>
-
-                <!-- 5. Longest Wait — FILTERABLE -->
-                <div class={tileFilterClassLongest}
-                     data-filter="longest"
-                     onclick={handleTileClick}
-                     role="button"
-                     tabindex="0"
-                     title="Click to show participant with longest wait">
-                    <div class={metricLongestWaitIconClass}>
-                        <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Longest Wait"></lightning-icon>
-                    </div>
-                    <div class="lobby-metric-card__body">
-                        <div class={metricLongestWaitValueClass}>{metricLongestWait}</div>
-                        <div class="lobby-metric-card__label">Longest Wait</div>
-                    </div>
-                    <div class="lobby-metric-card__filter-hint">Filter</div>
-                </div>
-
-                <!-- 6. Active Waitlists — FILTERABLE -->
-                <div class={tileFilterClassWaitlists}
-                     data-filter="waitlists"
-                     onclick={handleTileClick}
-                     role="button"
-                     tabindex="0"
-                     title="Click to show only active (non-empty) waitlists">
-                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--teal">
-                        <lightning-icon icon-name="utility:list" size="x-small" alternative-text="Active Waitlists"></lightning-icon>
-                    </div>
-                    <div class="lobby-metric-card__body">
-                        <div class="lobby-metric-card__value">{metricActiveWaitlists}</div>
-                        <div class="lobby-metric-card__label">Active Waitlists</div>
                     </div>
                     <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
@@ -239,57 +188,6 @@
                     <div class="lobby-metric-card__body">
                         <div class={metricOverdueValueClass}>{metricOverdueCount}</div>
                         <div class="lobby-metric-card__label">Overdue (&gt;45 min)</div>
-                    </div>
-                    <div class="lobby-metric-card__filter-hint">Filter</div>
-                </div>
-
-                <!-- 9. No-Shows Today — FILTERABLE -->
-                <div class={tileFilterClassNoShows}
-                     data-filter="noshows"
-                     onclick={handleTileClick}
-                     role="button"
-                     tabindex="0"
-                     title="Click to show no-show participants">
-                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--red">
-                        <lightning-icon icon-name="utility:ban" size="x-small" alternative-text="No-Shows"></lightning-icon>
-                    </div>
-                    <div class="lobby-metric-card__body">
-                        <div class="lobby-metric-card__value">{metricNoShowsToday}</div>
-                        <div class="lobby-metric-card__label">No-Shows Today</div>
-                    </div>
-                    <div class="lobby-metric-card__filter-hint">Filter</div>
-                </div>
-
-                <!-- 10. Queues at Capacity — FILTERABLE -->
-                <div class={tileFilterClassCapacity}
-                     data-filter="capacity"
-                     onclick={handleTileClick}
-                     role="button"
-                     tabindex="0"
-                     title="Click to show only queues at capacity">
-                    <div class={metricQueuesAtCapacityClass}>
-                        <lightning-icon icon-name="utility:priority" size="x-small" alternative-text="At Capacity"></lightning-icon>
-                    </div>
-                    <div class="lobby-metric-card__body">
-                        <div class="lobby-metric-card__value">{metricQueuesAtCapacity}</div>
-                        <div class="lobby-metric-card__label">Queues at Capacity</div>
-                    </div>
-                    <div class="lobby-metric-card__filter-hint">Filter</div>
-                </div>
-
-                <!-- 11. Transferred Today — FILTERABLE -->
-                <div class={tileFilterClassTransferred}
-                     data-filter="transferred"
-                     onclick={handleTileClick}
-                     role="button"
-                     tabindex="0"
-                     title="Click to show transferred participants">
-                    <div class="lobby-metric-card__icon-wrap lobby-metric-card__icon-wrap--blue">
-                        <lightning-icon icon-name="utility:forward" size="x-small" alternative-text="Transferred"></lightning-icon>
-                    </div>
-                    <div class="lobby-metric-card__body">
-                        <div class="lobby-metric-card__value">{metricTransferred}</div>
-                        <div class="lobby-metric-card__label">Transferred Today</div>
                     </div>
                     <div class="lobby-metric-card__filter-hint">Filter</div>
                 </div>
