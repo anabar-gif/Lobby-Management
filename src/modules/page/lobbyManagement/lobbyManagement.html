@@ -216,19 +216,6 @@
 
             </div>
 
-            <!-- Active filter pill -->
-            <template lwc:if={hasTileFilter}>
-                <div class="lobby-tile-filter-bar slds-m-top_x-small">
-                    <span class="lobby-tile-filter-pill">
-                        <lightning-icon icon-name="utility:filter" size="xx-small" alternative-text="Filter" class="slds-m-right_xx-small"></lightning-icon>
-                        Filtering by: <strong>{activeTileFilterLabel}</strong>
-                    </span>
-                    <button class="lobby-tile-filter-clear" onclick={handleClearTileFilter}>
-                        <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Clear"></lightning-icon>
-                        Clear filter
-                    </button>
-                </div>
-            </template>
 
         </div>
 
