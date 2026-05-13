@@ -273,9 +273,6 @@
 }
 
 /* Tighter gap between adjacent Work Type / Service Resources fields */
-.wl-creator__field-group--tight {
-    margin-top: -0.75rem;
-}
 
 /* Field group */
 .wl-creator__field-group {
