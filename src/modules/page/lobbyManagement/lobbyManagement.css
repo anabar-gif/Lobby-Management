@@ -191,42 +191,19 @@
 .lobby-metrics {
     background-color: #032d60;
     border-bottom: none;
-    padding: 0 !important;
+    padding: 0.625rem 1rem !important;
 }
 
+/* Flex row, left-aligned, tiles wrap on small screens */
 .lobby-metrics__grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-}
-
-@media (max-width: 1100px) {
-    .lobby-metrics__grid { grid-template-columns: repeat(4, 1fr); }
-}
-@media (max-width: 680px) {
-    .lobby-metrics__grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-.lobby-metric-card {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    gap: 0.125rem;
-    background: transparent;
-    border: none;
-    border-right: 1px solid rgba(255,255,255,0.15);
-    border-radius: 0;
-    padding: 1rem 0.75rem;
-    min-width: 0;
-    text-align: center;
+    gap: 0.25rem;
 }
 
-.lobby-metric-card:last-child {
-    border-right: none;
-}
-
-/* Hide coloured icon circles — not needed in dark band */
-.lobby-metric-card__icon-wrap { display: none; }
+/* Hide coloured icon circles — not used in dark band */
+.lobby-metric-card__icon-wrap,
 .lobby-metric-card__icon-wrap--blue,
 .lobby-metric-card__icon-wrap--green,
 .lobby-metric-card__icon-wrap--indigo,
@@ -234,17 +211,32 @@
 .lobby-metric-card__icon-wrap--red,
 .lobby-metric-card__icon-wrap--teal { display: none; }
 
+.lobby-metric-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.375rem 1rem;
+    min-width: 0;
+    text-align: left;
+}
+
+/* Label sits ABOVE the number */
 .lobby-metric-card__body {
     min-width: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column-reverse;
+    align-items: flex-start;
 }
 
 .lobby-metric-card__value {
-    font-size: 1.75rem;
+    font-size: 1.625rem;
     font-weight: 700;
-    line-height: 1;
+    line-height: 1.1;
     color: #ffffff;
     white-space: nowrap;
 }
@@ -257,8 +249,9 @@
 
 .lobby-metric-card__label {
     font-size: 0.6875rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 0.25rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 0.125rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -272,17 +265,13 @@
 }
 
 .lobby-metric-card[role="button"]:hover {
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: none;
-    border-color: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.12);
 }
 
-/* Active tile: white pill on dark background */
+/* Active tile: white rounded card */
 .lobby-metric-card--active {
     background: #ffffff !important;
-    border-color: rgba(255,255,255,0.15) !important;
     box-shadow: none !important;
-    border-radius: 0.375rem;
 }
 
 .lobby-metric-card--active .lobby-metric-card__value {
@@ -290,33 +279,14 @@
 }
 
 .lobby-metric-card--active .lobby-metric-card__label {
-    color: #032d60;
+    color: rgba(3, 45, 96, 0.65);
 }
 
 .lobby-metric-card--active .lobby-metric-card__value--red {
     color: #dc2626;
 }
 
-.lobby-metric-card__filter-hint {
-    display: none;
-    position: absolute;
-    top: 0.25rem;
-    right: 0.375rem;
-    font-size: 0.5625rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-}
-
-.lobby-metric-card[role="button"]:hover .lobby-metric-card__filter-hint,
-.lobby-metric-card--active .lobby-metric-card__filter-hint {
-    display: block;
-}
-
-.lobby-metric-card--active .lobby-metric-card__filter-hint {
-    color: #032d60;
-}
+.lobby-metric-card__filter-hint { display: none; }
 
 /* Filter pill bar */
 .lobby-tile-filter-bar {
@@ -1826,8 +1796,8 @@
 .lobby-root--compact .lobby-appt                   { margin-bottom: 0.375rem !important; }
 .lobby-root--compact .lobby-service-number-badge    { min-width: 2.25rem; font-size: 0.6rem; padding: 0.2rem 0.3rem; }
 .lobby-root--compact .lobby-queue-participant       { margin-top: 0.25rem !important; }
-.lobby-root--compact .lobby-metric-card            { padding: 0.625rem 0.5rem; }
-.lobby-root--compact .lobby-metric-card__value     { font-size: 1.25rem; }
+.lobby-root--compact .lobby-metric-card            { padding: 0.25rem 0.625rem; }
+.lobby-root--compact .lobby-metric-card__value     { font-size: 1.125rem; }
 
 /* Side panels (chart + summary) */
 .lobby-panel-overlay {
