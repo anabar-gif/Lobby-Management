@@ -510,9 +510,7 @@
                                                             <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                         </svg>
                                                     </div>
-                                                    <div class="lobby-participant-avatar" style={row.avatarStyle}>
-                                                        {row.initials}
-                                                    </div>
+                                                    <div class="lobby-service-number-badge">{row.serviceNumber}</div>
                                                     <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                         <div class="lobby-queue-participant__title-row">
                                                             <span class="lobby-queue-participant__title slds-truncate">
@@ -522,7 +520,22 @@
                                                                 <span class="lobby-vip-badge">⭐ VIP</span>
                                                             </template>
                                                         </div>
-                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
+                                                        <template lwc:if={row.email}>
+                                                            <div class="lobby-queue-participant__contact slds-m-top_xx-small"><lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email" class="lobby-contact-icon"></lightning-icon> {row.email}</div>
+                                                        </template>
+                                                        <template lwc:if={row.phone}>
+                                                            <div class="lobby-queue-participant__contact slds-m-top_xx-small">📞 {row.phone}</div>
+                                                        </template>
+                                                        <template lwc:if={row.showPreferredResource}>
+                                                            <div class="lobby-queue-participant__resource lobby-queue-participant__resource--preferred slds-m-top_xx-small">
+                                                                Preferred Resource — {row.preferredResource}
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:if={row.showAssignedResource}>
+                                                            <div class="lobby-queue-participant__resource slds-m-top_xx-small">
+                                                                Assigned Resource — {row.assignedResource}
+                                                            </div>
+                                                        </template>
                                                     </div>
                                                     <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
                                                         <div class="lobby-row-menu-wrap">
@@ -588,7 +601,7 @@
                                                             <input type="radio" id="ci-existing" name="ci-guest-type" value="existing" checked={ciIsExisting} onchange={handleCiGuestTypeChange} />
                                                             <label class="slds-radio__label" for="ci-existing">
                                                                 <span class="slds-radio_faux"></span>
-                                                                <span class="slds-form-element__label">Existing User</span>
+                                                                <span class="slds-form-element__label">Existing Customer</span>
                                                             </label>
                                                         </span>
                                                     </div>
@@ -645,7 +658,7 @@
                                     <template lwc:else>
                                     <div class="lobby-checkin-field lobby-participant-field">
                                         <label class="lobby-checkin-label">
-                                            <abbr class="lobby-checkin-required" title="required">*</abbr> User
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Customer
                                         </label>
                                         <div class="lobby-grouped-combobox">
                                             <!-- Type selector -->
@@ -716,11 +729,11 @@
                                     <!-- Work Topic -->
                                     <div class="lobby-checkin-field">
                                         <label class="lobby-checkin-label" for="ci-topic">
-                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Work Topic
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Service Required
                                         </label>
                                         <lightning-combobox
                                             id="ci-topic"
-                                            label="Work Topic"
+                                            label="Service Required"
                                             variant="label-hidden"
                                             value={ciTopic}
                                             options={checkinTopicOptions}
@@ -833,7 +846,7 @@
                                                             <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                         </svg>
                                                     </div>
-                                                    <div class="lobby-participant-avatar" style={row.avatarStyle}>{row.initials}</div>
+                                                    <div class="lobby-service-number-badge">{row.serviceNumber}</div>
                                                     <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                         <div class="lobby-queue-participant__title-row">
                                                             <span class="lobby-queue-participant__title slds-truncate">
@@ -841,7 +854,22 @@
                                                             </span>
                                                             <template lwc:if={row.isVip}><span class="lobby-vip-badge">⭐ VIP</span></template>
                                                         </div>
-                                                        <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
+                                                        <template lwc:if={row.email}>
+                                                            <div class="lobby-queue-participant__contact slds-m-top_xx-small"><lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email" class="lobby-contact-icon"></lightning-icon> {row.email}</div>
+                                                        </template>
+                                                        <template lwc:if={row.phone}>
+                                                            <div class="lobby-queue-participant__contact slds-m-top_xx-small">📞 {row.phone}</div>
+                                                        </template>
+                                                        <template lwc:if={row.showPreferredResource}>
+                                                            <div class="lobby-queue-participant__resource lobby-queue-participant__resource--preferred slds-m-top_xx-small">
+                                                                Preferred Resource — {row.preferredResource}
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:if={row.showAssignedResource}>
+                                                            <div class="lobby-queue-participant__resource slds-m-top_xx-small">
+                                                                Assigned Resource — {row.assignedResource}
+                                                            </div>
+                                                        </template>
                                                     </div>
                                                     <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
                                                         <div class="lobby-row-menu-wrap">
@@ -903,7 +931,7 @@
                                                             <input type="radio" id="ib-ci-existing" name="ib-ci-guest-type" value="existing" checked={ibCiIsExisting} onchange={handleIbCiGuestTypeChange} />
                                                             <label class="slds-radio__label" for="ib-ci-existing">
                                                                 <span class="slds-radio_faux"></span>
-                                                                <span class="slds-form-element__label">Existing User</span>
+                                                                <span class="slds-form-element__label">Existing Customer</span>
                                                             </label>
                                                         </span>
                                                     </div>
@@ -960,7 +988,7 @@
                                     <template lwc:else>
                                     <div class="lobby-checkin-field lobby-participant-field">
                                         <label class="lobby-checkin-label">
-                                            <abbr class="lobby-checkin-required" title="required">*</abbr> User
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Customer
                                         </label>
                                         <div class="lobby-grouped-combobox">
                                             <!-- Type selector -->
@@ -1030,11 +1058,11 @@
                                     </template>
                                     <div class="lobby-checkin-field">
                                         <label class="lobby-checkin-label" for="ib-ci-topic">
-                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Work Topic
+                                            <abbr class="lobby-checkin-required" title="required">*</abbr> Service Required
                                         </label>
                                         <lightning-combobox
                                             id="ib-ci-topic"
-                                            label="Work Topic"
+                                            label="Service Required"
                                             variant="label-hidden"
                                             value={ibCiTopic}
                                             options={ibCheckinTopicOptions}
@@ -1149,7 +1177,7 @@
                                                                     <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                                 </svg>
                                                             </div>
-                                                            <div class="lobby-participant-avatar" style={row.avatarStyle}>{row.initials}</div>
+                                                            <div class="lobby-service-number-badge">{row.serviceNumber}</div>
                                                             <div class="lobby-queue-participant__identity slds-m-left_x-small">
                                                                 <div class="lobby-queue-participant__title-row">
                                                                     <span class="lobby-queue-participant__title slds-truncate">
@@ -1157,9 +1185,24 @@
                                                                     </span>
                                                                     <template lwc:if={row.isVip}><span class="lobby-vip-badge">⭐ VIP</span></template>
                                                                 </div>
-                                                                <div class="lobby-queue-participant__topic slds-truncate slds-m-top_xx-small">{row.topic}</div>
+                                                                <template lwc:if={row.email}>
+                                                                    <div class="lobby-queue-participant__contact slds-m-top_xx-small"><lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email" class="lobby-contact-icon"></lightning-icon> {row.email}</div>
+                                                                </template>
+                                                                <template lwc:if={row.phone}>
+                                                                    <div class="lobby-queue-participant__contact slds-m-top_xx-small">📞 {row.phone}</div>
+                                                                </template>
+                                                                <template lwc:if={row.showPreferredResource}>
+                                                                    <div class="lobby-queue-participant__resource lobby-queue-participant__resource--preferred slds-m-top_xx-small">
+                                                                        Preferred Resource — {row.preferredResource}
+                                                                    </div>
+                                                                </template>
+                                                                <template lwc:if={row.showAssignedResource}>
+                                                                    <div class="lobby-queue-participant__resource slds-m-top_xx-small">
+                                                                        Assigned Resource — {row.assignedResource}
+                                                                    </div>
+                                                                </template>
                                                             </div>
-                                                            <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
+                                                    <div class="slds-no-flex slds-m-left_x-small lobby-queue-participant__actions">
                                                                 <div class="lobby-row-menu-wrap">
                                                                     <lightning-button-icon
                                                                         icon-name="utility:down"
@@ -1264,7 +1307,7 @@
                                                                 <input type="radio" id="dyn-ci-existing" name="dyn-ci-guest-type" value="existing" checked={dynCiIsExisting} onchange={handleDynCiGuestTypeChange} />
                                                                 <label class="slds-radio__label" for="dyn-ci-existing">
                                                                     <span class="slds-radio_faux"></span>
-                                                                    <span class="slds-form-element__label">Existing User</span>
+                                                                    <span class="slds-form-element__label">Existing Customer</span>
                                                                 </label>
                                                             </span>
                                                         </div>
@@ -1321,7 +1364,7 @@
                                         <template lwc:else>
                                             <div class="lobby-checkin-field lobby-participant-field">
                                                 <label class="lobby-checkin-label">
-                                                    <abbr class="lobby-checkin-required" title="required">*</abbr> User
+                                                    <abbr class="lobby-checkin-required" title="required">*</abbr> Customer
                                                 </label>
                                                 <div class="lobby-grouped-combobox">
                                                     <div class="lobby-grouped-combobox__type-wrap">
@@ -1390,11 +1433,11 @@
                                         <!-- Work Topic -->
                                         <div class="lobby-checkin-field">
                                             <label class="lobby-checkin-label" for="dyn-ci-topic">
-                                                <abbr class="lobby-checkin-required" title="required">*</abbr> Work Topic
+                                                <abbr class="lobby-checkin-required" title="required">*</abbr> Service Required
                                             </label>
                                             <lightning-combobox
                                                 id="dyn-ci-topic"
-                                                label="Work Topic"
+                                                label="Service Required"
                                                 variant="label-hidden"
                                                 value={dynCiTopic}
                                                 options={dynCheckinTopicOptions}

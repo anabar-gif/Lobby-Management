@@ -640,6 +640,15 @@ export default class LobbyManagement extends LightningElement {
     }
 
     /** Enriches a participant with avatar initials, color, VIP class, and notes. */
+    _serviceCounter = 1133;
+    _nextServiceNumber() { return `G-${this._serviceCounter++}`; }
+
+    _assignedResourcePool = ['Rachel Adams', 'Jamie Lee', 'Morgan Blake', 'Sarah Mitchell', 'David Park', 'Lisa Chen', 'Marcus Webb', 'Nina Torres'];
+    _autoAssignResource(preferredResource) {
+        const pool = this._assignedResourcePool.filter(r => r !== preferredResource);
+        return pool[Math.floor(Math.random() * pool.length)];
+    }
+
     _enrichParticipant(p) {
         const color = this._avatarColor(p.linkLabel);
         const dragOver = this.dragOverId === p.id ? ' lobby-queue-participant--drag-over' : '';
@@ -651,6 +660,8 @@ export default class LobbyManagement extends LightningElement {
             waitTimeClass: this._isOverdue(p.waitTime)
                 ? 'lobby-appt__wait-time lobby-appt__wait-time--overdue slds-m-left_xx-small'
                 : 'lobby-appt__wait-time slds-m-left_xx-small',
+            showPreferredResource: !!p.preferredResource,
+            showAssignedResource:  !!p.assignedResource,
         };
     }
 
@@ -756,7 +767,11 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '1.',
                     workItemId: 'WP-0101',
                     linkLabel: 'Alex Rivera',
-                    topic: 'Checking Account • Jamie Lee',
+                    serviceNumber: 'G-1126',
+                    phone: '+1 (415) 555-0182',
+                    topic: 'Checking Account',
+                    preferredResource: 'Anthony Young',
+                    assignedResource: 'Jamie Lee',
                     slot: '8:30 am - 9:00 am',
                     checkInTime: '08:45 AM',
                     waitTime: '00 : 12 mins.'
@@ -766,7 +781,10 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '2.',
                     workItemId: 'WP-0102',
                     linkLabel: 'Sam Patel',
-                    topic: 'Savings Account • Jamie Lee',
+                    serviceNumber: 'G-1127',
+                    phone: '+1 (415) 555-0247',
+                    topic: 'Savings Account',
+                    assignedResource: 'Sarah Mitchell',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:02 AM',
                     waitTime: '00 : 22 mins.'
@@ -782,7 +800,11 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '1.',
                     workItemId: 'WP-0201',
                     linkLabel: 'Jordan Chen',
-                    topic: 'Portfolio Review • Morgan Blake',
+                    serviceNumber: 'G-1128',
+                    email: 'jordan.chen@example.com',
+                    topic: 'Portfolio Review',
+                    preferredResource: 'Anthony Young',
+                    assignedResource: 'Morgan Blake',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:15 AM',
                     waitTime: '00 : 35 mins.'
@@ -792,7 +814,10 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '2.',
                     workItemId: 'WP-0202',
                     linkLabel: 'Taylor Brooks',
-                    topic: 'Trust Services • Morgan Blake',
+                    serviceNumber: 'G-1129',
+                    phone: '+1 (650) 555-0391',
+                    topic: 'Trust Services',
+                    assignedResource: 'David Park',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:28 AM',
                     waitTime: '00 : 48 mins.'
@@ -801,14 +826,18 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'general-banking-queue',
-            label: 'General Banking (3)',
+            label: 'Branch Services (3)',
             participants: [
                 {
                     id: 'gb-gb1',
                     ordinal: '1.',
                     workItemId: 'WP-132',
                     linkLabel: 'Julia Green',
-                    topic: 'General Banking',
+                    serviceNumber: 'G-1130',
+                    phone: '+1 (408) 555-0774',
+                    topic: 'Branch Services',
+                    preferredResource: 'Anthony Young',
+                    assignedResource: 'Rachel Adams',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:15 AM',
                     waitTime: '00 : 22 mins.'
@@ -818,7 +847,10 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '2.',
                     workItemId: 'WP-134',
                     linkLabel: 'James Won',
-                    topic: 'General Banking • Rachel Adams',
+                    serviceNumber: 'G-1131',
+                    email: 'james.won@example.com',
+                    topic: 'Branch Services',
+                    assignedResource: 'Lisa Chen',
                     slot: '9:00 am - 9:30 am',
                     checkInTime: '09:20 AM',
                     waitTime: '01 : 25 mins.'
@@ -826,12 +858,15 @@ export default class LobbyManagement extends LightningElement {
                 {
                     id: 'gb-gb3',
                     ordinal: '3.',
-                    workItemId: 'WP-134',
-                    linkLabel: 'James Won',
-                    topic: 'General Banking • Rachel Adams',
-                    slot: '9:00 am - 9:30 am',
-                    checkInTime: '09:20 AM',
-                    waitTime: '01 : 25 mins.'
+                    workItemId: 'WP-135',
+                    linkLabel: 'Maria Santos',
+                    serviceNumber: 'G-1132',
+                    phone: '+1 (510) 555-0563',
+                    topic: 'Branch Services',
+                    assignedResource: 'Marcus Webb',
+                    slot: '9:30 am - 10:00 am',
+                    checkInTime: '09:32 AM',
+                    waitTime: '01 : 05 mins.'
                 }
             ]
         }
@@ -847,7 +882,11 @@ export default class LobbyManagement extends LightningElement {
                     ordinal: '1.',
                     workItemId: 'WP-0215',
                     linkLabel: 'Julia Green',
+                    serviceNumber: 'I-2041',
+                    phone: '+1 (628) 555-0819',
                     topic: 'Investment Planning',
+                    preferredResource: 'Anthony Young',
+                    assignedResource: 'Rachel Adams',
                     slot: '11:00 am - 11:30 am',
                     checkInTime: '11:13 AM',
                     waitTime: '04 : 14 mins.'
@@ -1056,7 +1095,7 @@ export default class LobbyManagement extends LightningElement {
 
     get checkinTopicOptions() {
         return [
-            { label: 'General Banking',   value: 'general-banking' },
+            { label: 'Branch Services',    value: 'general-banking' },
             { label: 'Savings Account',   value: 'savings-account' },
             { label: 'Business Checking', value: 'business-checking' },
             { label: 'Personal Banking',  value: 'personal-banking' },
@@ -1211,6 +1250,7 @@ export default class LobbyManagement extends LightningElement {
 
     /** Map a resource value to its display name. */
     _resourceValueToLabel(resourceValue) {
+        if (!resourceValue) return '';
         const opt = this.checkinResourceOptions.find(o => o.value === resourceValue);
         return opt ? opt.label : '';
     }
@@ -1236,14 +1276,18 @@ export default class LobbyManagement extends LightningElement {
         const peopleAhead = matchingSection ? matchingSection.participants.length : 0;
 
         const newRow = {
-            id:          `gb-new-${Date.now()}`,
-            ordinal:     '1.',
-            workItemId:  this._nextWpId(),
-            linkLabel:   participantName,
-            topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
-            slot:        this._nowSlot(),
+            id:               `gb-new-${Date.now()}`,
+            ordinal:          '1.',
+            workItemId:       this._nextWpId(),
+            linkLabel:        participantName,
+            serviceNumber:    this._nextServiceNumber(),
+            email:            this.ciEmail?.trim() || null,
+            topic:            topicLabel,
+            preferredResource: resourceLabel || null,
+            assignedResource:  this._autoAssignResource(resourceLabel),
+            slot:             this._nowSlot(),
             checkInTime,
-            waitTime:    this._calcWaitTime(peopleAhead),
+            waitTime:         this._calcWaitTime(peopleAhead),
         };
 
         // Deep-copy topics, append new row into the matching section, re-number ordinals
@@ -1294,14 +1338,18 @@ export default class LobbyManagement extends LightningElement {
         const ibPeopleAhead = ibSection ? ibSection.participants.length : 0;
 
         const newRow = {
-            id:          `ib-new-${Date.now()}`,
-            ordinal:     '1.',
-            workItemId:  this._nextWpId(),
-            linkLabel:   participantName,
-            topic:       `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
-            slot:        this._nowSlot(),
+            id:               `ib-new-${Date.now()}`,
+            ordinal:          '1.',
+            workItemId:       this._nextWpId(),
+            linkLabel:        participantName,
+            serviceNumber:    this._nextServiceNumber(),
+            email:            this.ibCiEmail?.trim() || null,
+            topic:            topicLabel,
+            preferredResource: resourceLabel || null,
+            assignedResource:  this._autoAssignResource(resourceLabel),
+            slot:             this._nowSlot(),
             checkInTime,
-            waitTime:    this._calcWaitTime(ibPeopleAhead),
+            waitTime:         this._calcWaitTime(ibPeopleAhead),
         };
 
         const updated = this.investmentBankingTopics.map(t => {
@@ -1513,14 +1561,18 @@ export default class LobbyManagement extends LightningElement {
             const dynPeopleAhead = dynSection ? dynSection.participants.length : 0;
 
             const newRow = {
-                id:         `dyn-new-${Date.now()}`,
-                ordinal:    '1.',
-                workItemId: this._nextWpId(),
-                linkLabel:  participantName,
-                topic:      `${topicLabel}${resourceLabel ? ' • ' + resourceLabel : ''}`,
-                slot:       this._nowSlot(),
-                checkInTime: this._nowTime(),
-                waitTime:   this._calcWaitTime(dynPeopleAhead),
+                id:               `dyn-new-${Date.now()}`,
+                ordinal:          '1.',
+                workItemId:       this._nextWpId(),
+                linkLabel:        participantName,
+                serviceNumber:    this._nextServiceNumber(),
+                email:            this.dynCiEmail?.trim() || null,
+                topic:            topicLabel,
+                preferredResource: resourceLabel || null,
+                assignedResource:  this._autoAssignResource(resourceLabel),
+                slot:             this._nowSlot(),
+                checkInTime:      this._nowTime(),
+                waitTime:         this._calcWaitTime(dynPeopleAhead),
             };
 
             let matched = false;

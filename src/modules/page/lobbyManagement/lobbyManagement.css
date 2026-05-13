@@ -87,6 +87,24 @@
     letter-spacing: 0.02em;
 }
 
+.lobby-service-number-badge {
+    flex-shrink: 0;
+    min-width: 2.75rem;
+    padding: 0.25rem 0.4rem;
+    border-radius: 0.375rem;
+    background: #e8f4fd;
+    border: 1px solid #b0d4f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #0176d3;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-align: center;
+}
+
 .lobby-vip-badge {
     display: inline-flex;
     align-items: center;
@@ -825,6 +843,30 @@
     font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
     line-height: 1.25rem;
     color: var(--slds-g-color-on-surface-3, #706e6b);
+}
+
+.lobby-queue-participant__contact {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+    color: #706e6b;
+}
+
+.lobby-contact-icon {
+    --slds-c-icon-color-foreground: #706e6b;
+    flex-shrink: 0;
+}
+
+.lobby-queue-participant__resource {
+    font-size: 0.75rem;
+    color: var(--slds-g-color-on-surface-3, #706e6b);
+    line-height: 1.4;
+}
+
+.lobby-queue-participant__resource--preferred {
+    color: #7c3aed;
+    font-weight: 500;
 }
 
 .lobby-queue-participant__times {
@@ -1757,7 +1799,7 @@
 .lobby-root--compact .lobby-queue-participant__head { padding: 0.375rem 0.5rem; }
 .lobby-root--compact .lobby-appt__footer           { padding: 0.25rem 0.5rem; }
 .lobby-root--compact .lobby-appt                   { margin-bottom: 0.375rem !important; }
-.lobby-root--compact .lobby-participant-avatar      { width: 1.5rem; height: 1.5rem; font-size: 0.5625rem; }
+.lobby-root--compact .lobby-service-number-badge    { min-width: 2.25rem; font-size: 0.6rem; padding: 0.2rem 0.3rem; }
 .lobby-root--compact .lobby-queue-participant       { margin-top: 0.25rem !important; }
 .lobby-root--compact .lobby-metric-card            { padding: 0.5rem 0.625rem; }
 .lobby-root--compact .lobby-metric-card__value     { font-size: 1.125rem; }
