@@ -569,29 +569,32 @@
     font-style: italic;
 }
 
-/* Individual chip */
+/* Individual chip — SLDS 2 Pill spec */
 .wl-creator__chip {
+    box-sizing: border-box;
     display: inline-flex;
+    flex-direction: row;
     align-items: center;
-    gap: 0.375rem;
-    padding: 0.25rem 0.375rem 0.25rem 0.625rem;
-    background: var(--slds-g-color-brand-base-95, #e8f4fd);
-    border: 1px solid var(--slds-g-color-brand-base-80, #b0d4f1);
-    border-radius: 1rem;
-    font-size: var(--slds-g-font-scale-neg-2, 0.75rem);
-    font-weight: var(--slds-g-font-weight-6, 600);
-    color: var(--slds-g-color-brand-base-30, #014486);
+    padding: 4px 4px 4px 8px;
+    gap: 4px;
+    height: 26px;
+    background: #FFFFFF;
+    border: 1px solid #5C5C5C;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #001E5B;
     max-width: 100%;
 }
 
 .wl-creator__chip--resource {
-    background: #f0f4ff;
-    border-color: #c5d5f5;
-    color: #1a3a8c;
+    /* resource chips share the same SLDS 2 pill style */
 }
 
 .wl-creator__chip-icon {
     flex-shrink: 0;
+    --slds-c-icon-color-foreground-default: #0250D9;
 }
 
 .wl-creator__chip-remove {
@@ -600,14 +603,19 @@
     cursor: pointer;
     padding: 0;
     display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    opacity: 0.6;
-    transition: opacity 0.15s;
+    width: 14px;
+    height: 14px;
+    border-radius: 8px;
     flex-shrink: 0;
+    transition: background 0.15s;
+    --slds-c-icon-color-foreground-default: #0250D9;
 }
 
 .wl-creator__chip-remove:hover {
-    opacity: 1;
+    background: rgba(2, 80, 217, 0.1);
 }
 
 /* Toggle rows */
