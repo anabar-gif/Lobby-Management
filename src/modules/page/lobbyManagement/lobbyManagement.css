@@ -188,64 +188,77 @@
 
 /* ── Metric summary bar ─────────────────────────────────────────────────── */
 
+/* ── KPI band ─────────────────────────────────────────────────────────────── */
 .lobby-metrics {
     background-color: #022AC0;
     border-bottom: none;
-    padding: 0.5rem 1rem 0.625rem !important;
-    min-height: 200px;
+    padding: 20px 32px !important;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    min-height: 200px;
+    box-sizing: border-box;
 }
 
-/* Top row: filter dropdowns pushed to the right */
+/* Top row: filters right-aligned, space-between with left side reserved for future tabs */
 .lobby-metrics__filters {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.375rem;
+    gap: 16px;
+    align-self: stretch;
+    height: 36px;
 }
 
 .lobby-metrics__filter-group {
     display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
-    gap: 0.5rem;
+    gap: 12px;
+    height: 36px;
 }
 
 .lobby-metrics__filter-label {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 400;
+    color: #ffffff;
     white-space: nowrap;
+    text-align: right;
 }
 
-/* Style comboboxes to look native on blue background */
+/* Pill-shaped comboboxes on blue background */
 .lobby-metrics__filter-group lightning-combobox {
     --slds-c-input-color-background: transparent;
-    --slds-c-input-color-border: rgba(255, 255, 255, 0.5);
-    --slds-c-input-color-border-focus: rgba(255, 255, 255, 0.9);
+    --slds-c-input-color-border: #A8CBFF;
+    --slds-c-input-color-border-focus: #ffffff;
     --slds-c-input-text-color: #ffffff;
     --slds-c-select-color-background: #022AC0;
 }
 
-.lobby-metrics__filter-group .slds-select,
-.lobby-metrics__filter-group .slds-combobox__form-element {
-    background: transparent;
-    border-color: rgba(255, 255, 255, 0.5);
-    color: #ffffff;
-    border-radius: 1rem;
+.lobby-metrics__filter-group .slds-combobox__form-element,
+.lobby-metrics__filter-group .slds-input {
+    background: transparent !important;
+    border: 1px solid #A8CBFF !important;
+    border-radius: 100px !important;
+    color: #ffffff !important;
+    height: 36px !important;
+    font-size: 13px !important;
+    font-weight: 590 !important;
+    padding: 0 16px !important;
 }
 
-/* Flex row, left-aligned, tiles wrap on small screens */
+/* KPI tiles row */
 .lobby-metrics__grid {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 0.25rem;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
 }
 
-/* Hide coloured icon circles — not used in dark band */
+/* Hide coloured icon circles */
 .lobby-metric-card__icon-wrap,
 .lobby-metric-card__icon-wrap--blue,
 .lobby-metric-card__icon-wrap--green,
@@ -254,67 +267,77 @@
 .lobby-metric-card__icon-wrap--red,
 .lobby-metric-card__icon-wrap--teal { display: none; }
 
+/* Individual tile: no background by default (blends into panel) */
 .lobby-metric-card {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
-    gap: 0;
+    padding: 16px 20px;
+    gap: 12px;
     background: transparent;
     border: none;
-    border-radius: 0.375rem;
-    padding: 0.375rem 1rem;
+    border-radius: 10px;
     min-width: 0;
-    text-align: left;
+    height: 108px;
+    box-sizing: border-box;
+    transition: background 0.15s ease;
 }
 
-/* Label sits ABOVE the number */
+/* Label on top, value below — flex-direction: column, gap handled by card */
 .lobby-metric-card__body {
     min-width: 0;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
 }
 
-.lobby-metric-card__value {
-    font-size: 1.625rem;
-    font-weight: 700;
-    line-height: 1.1;
+/* Label: 13px regular */
+.lobby-metric-card__label {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.011em;
     color: #ffffff;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    order: 0;
+}
+
+/* Value: 32px light */
+.lobby-metric-card__value {
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 40px;
+    letter-spacing: 0.006em;
+    color: #ffffff;
+    white-space: nowrap;
+    order: 1;
 }
 .lobby-metric-card__value--small {
-    font-size: 1.25rem;
+    font-size: 24px;
 }
 .lobby-metric-card__value--red {
     color: #fca5a5;
 }
 
-.lobby-metric-card__label {
-    font-size: 0.6875rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.65);
-    margin-bottom: 0.125rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Clickable / filterable tile styles */
+/* Clickable tile */
 .lobby-metric-card[role="button"] {
     cursor: pointer;
     position: relative;
-    transition: background 0.15s ease;
 }
 
 .lobby-metric-card[role="button"]:hover {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.12);
 }
 
-/* Active tile: dark navy rounded card on bright blue background */
+/* Active tile: dark navy with inset pressed shadow — spec #002775 */
 .lobby-metric-card--active {
-    background: #032d60 !important;
-    box-shadow: none !important;
+    background: #002775 !important;
+    box-shadow: inset 0px 1px 0px rgba(0,0,0,0.25),
+                inset 0px 0.5px 2px rgba(0,0,0,0.5),
+                inset 2px 2px 5px rgba(0,0,0,0.1) !important;
 }
 
 .lobby-metric-card--active .lobby-metric-card__value {
@@ -322,7 +345,7 @@
 }
 
 .lobby-metric-card--active .lobby-metric-card__label {
-    color: rgba(255, 255, 255, 0.7);
+    color: #ffffff;
 }
 
 .lobby-metric-card--active .lobby-metric-card__value--red {
@@ -1839,8 +1862,9 @@
 .lobby-root--compact .lobby-appt                   { margin-bottom: 0.375rem !important; }
 .lobby-root--compact .lobby-service-number-badge    { min-width: 2.25rem; font-size: 0.6rem; padding: 0.2rem 0.3rem; }
 .lobby-root--compact .lobby-queue-participant       { margin-top: 0.25rem !important; }
-.lobby-root--compact .lobby-metric-card            { padding: 0.25rem 0.625rem; }
-.lobby-root--compact .lobby-metric-card__value     { font-size: 1.125rem; }
+.lobby-root--compact .lobby-metric-card            { padding: 10px 14px; height: auto; }
+.lobby-root--compact .lobby-metric-card__value     { font-size: 22px; }
+.lobby-root--compact .lobby-metric-card__label     { font-size: 11px; }
 
 /* Side panels (chart + summary) */
 .lobby-panel-overlay {
