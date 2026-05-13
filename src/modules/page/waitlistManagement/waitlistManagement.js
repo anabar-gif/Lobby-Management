@@ -225,7 +225,8 @@ export default class WaitlistManagement extends LightningElement {
     get noFilteredWorkTypes() {
         return this.filteredWorkTypes.length === 0 && !this.hasRecentWorkTypes;
     }
-    get noWorkTypes() { return this.creator.workTypes.length === 0; }
+    get noWorkTypes()  { return this.creator.workTypes.length === 0; }
+    get hasWorkTypes() { return this.creator.workTypes.length > 0; }
     get wtSearchWrapClass() { return `wl-creator__search-wrap${this.workTypeError ? ' wl-creator__search-wrap--error' : ''}`; }
 
     // Service Resources — grouped & searchable
@@ -246,7 +247,8 @@ export default class WaitlistManagement extends LightningElement {
     get noFilteredResources() {
         return this.filteredResources.length === 0 && !this.hasRecentResources;
     }
-    get noResources() { return this.creator.resources.length === 0; }
+    get noResources()  { return this.creator.resources.length === 0; }
+    get hasResources() { return this.creator.resources.length > 0; }
     get resSearchWrapClass() { return `wl-creator__search-wrap${this.resourceError ? ' wl-creator__search-wrap--error' : ''}`; }
 
     get activeToggleClass() {

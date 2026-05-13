@@ -237,17 +237,19 @@
                             </div>
                         </template>
                     </div>
-                    <div class="wl-creator__chip-list">
-                        <template for:each={creator.workTypes} for:item="wt">
-                            <span key={wt.value} class="wl-creator__chip">
-                                <lightning-icon icon-name="utility:work_order" size="xx-small" class="wl-creator__chip-icon" alternative-text=""></lightning-icon>
-                                {wt.label}
-                                <button class="wl-creator__chip-remove" data-value={wt.value} onclick={handleRemoveWorkType} aria-label="Remove">
-                                    <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Remove"></lightning-icon>
-                                </button>
-                            </span>
-                        </template>
-                    </div>
+                    <template lwc:if={hasWorkTypes}>
+                        <div class="wl-creator__chip-list">
+                            <template for:each={creator.workTypes} for:item="wt">
+                                <span key={wt.value} class="wl-creator__chip">
+                                    <lightning-icon icon-name="utility:work_order" size="xx-small" class="wl-creator__chip-icon" alternative-text=""></lightning-icon>
+                                    {wt.label}
+                                    <button class="wl-creator__chip-remove" data-value={wt.value} onclick={handleRemoveWorkType} aria-label="Remove">
+                                        <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Remove"></lightning-icon>
+                                    </button>
+                                </span>
+                            </template>
+                        </div>
+                    </template>
                     <template lwc:if={workTypeError}>
                         <p class="wl-creator__error">Work Type is required.</p>
                     </template>
@@ -293,17 +295,19 @@
                             </div>
                         </template>
                     </div>
-                    <div class="wl-creator__chip-list">
-                        <template for:each={creator.resources} for:item="r">
-                            <span key={r.value} class="wl-creator__chip wl-creator__chip--resource">
-                                <lightning-icon icon-name="standard:service_resource" size="xx-small" class="wl-creator__chip-icon" alternative-text=""></lightning-icon>
-                                {r.label}
-                                <button class="wl-creator__chip-remove" data-value={r.value} onclick={handleRemoveResource} aria-label="Remove">
-                                    <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Remove"></lightning-icon>
-                                </button>
-                            </span>
-                        </template>
-                    </div>
+                    <template lwc:if={hasResources}>
+                        <div class="wl-creator__chip-list">
+                            <template for:each={creator.resources} for:item="r">
+                                <span key={r.value} class="wl-creator__chip wl-creator__chip--resource">
+                                    <lightning-icon icon-name="standard:service_resource" size="xx-small" class="wl-creator__chip-icon" alternative-text=""></lightning-icon>
+                                    {r.label}
+                                    <button class="wl-creator__chip-remove" data-value={r.value} onclick={handleRemoveResource} aria-label="Remove">
+                                        <lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Remove"></lightning-icon>
+                                    </button>
+                                </span>
+                            </template>
+                        </div>
+                    </template>
                     <template lwc:if={resourceError}>
                         <p class="wl-creator__error">Service Resources is required.</p>
                     </template>
