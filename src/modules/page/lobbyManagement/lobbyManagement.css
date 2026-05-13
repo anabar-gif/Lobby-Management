@@ -821,14 +821,9 @@
 
 /* Left-align with card body / accordion content (no extra inset) */
 .lobby-queue-toolbar {
-    display: none;
-}
-
-/* Right side of the card header — expand link + button group */
-.lobby-queue-header__right {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    display: block;
+    padding-inline-start: 0;
+    margin-block-end: var(--slds-g-spacing-2, 0.5rem);
 }
 
 .lobby-expand-link {
@@ -837,19 +832,12 @@
     color: #0176d3;
     text-decoration: none;
     cursor: pointer;
+    padding-left: 12px;
 }
 
 .lobby-expand-link:hover {
     text-decoration: underline;
     color: #014486;
-}
-
-/* Header variant — sits inline with the action buttons */
-.lobby-expand-link--header {
-    font-size: 0.75rem;
-    white-space: nowrap;
-    color: #0176d3;
-    padding: 0 0.25rem;
 }
 
 .lobby-queue-accordion {
