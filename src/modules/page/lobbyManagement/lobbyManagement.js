@@ -618,9 +618,20 @@ export default class LobbyManagement extends LightningElement {
     @track filterByResource = '';
 
     get resourceFilterOptions() {
+        // Collect every unique assignedResource name from all live participants
+        const allTopics = [
+            ...(this.generalBankingTopics || []),
+            ...(this.investmentBankingTopics || []),
+            ...(this.enrichedDynamicWaitlists || []).flatMap(w => w.topics || []),
+        ];
+        const names = new Set();
+        allTopics.forEach(t => (t.participants || []).forEach(p => {
+            if (p.assignedResource) names.add(p.assignedResource);
+        }));
+        const sorted = [...names].sort((a, b) => a.localeCompare(b));
         return [
             { label: 'All Resources', value: '' },
-            ...this.checkinResourceOptions.filter(o => o.value !== ''),
+            ...sorted.map(n => ({ label: n, value: n })),
         ];
     }
 
@@ -633,9 +644,7 @@ export default class LobbyManagement extends LightningElement {
         if (!r) return topics;
         return topics.map(t => ({
             ...t,
-            participants: (t.participants || []).filter(p => (p.topic || '').toLowerCase().includes(
-                (this.checkinResourceOptions.find(o => o.value === r)?.label || '').toLowerCase()
-            )),
+            participants: (t.participants || []).filter(p => p.assignedResource === r),
         })).filter(t => t.participants.length > 0);
     }
 
