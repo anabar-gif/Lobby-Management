@@ -466,11 +466,15 @@
                                 </lightning-button-group>
                             </div>
                         </div>
-                        <div class="lobby-card__separator-slot">
+                        <div class="lobby-card__separator-slot" aria-hidden="true">
                             <div class="lobby-card__separator-line"></div>
-                            <a href="javascript:void(0);" class="lobby-expand-link lobby-expand-link--inline" onclick={handleShowAllTopicsGeneral}>{expandLabelGeneral}</a>
                         </div>
                         <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
+                            <div class="lobby-queue-toolbar">
+                                <a href="javascript:void(0);" class="lobby-expand-link" onclick={handleShowAllTopicsGeneral}>
+                                    {expandLabelGeneral}
+                                </a>
+                            </div>
                             <lightning-accordion
                                 class="lobby-queue-accordion"
                                 allow-multiple-sections-open
@@ -794,11 +798,15 @@
                                 </lightning-button-group>
                             </div>
                         </div>
-                        <div class="lobby-card__separator-slot">
+                        <div class="lobby-card__separator-slot" aria-hidden="true">
                             <div class="lobby-card__separator-line"></div>
-                            <a href="javascript:void(0);" class="lobby-expand-link lobby-expand-link--inline" onclick={handleShowAllTopicsInvestment}>{expandLabelInvestment}</a>
                         </div>
                         <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
+                            <div class="lobby-queue-toolbar">
+                                <a href="javascript:void(0);" class="lobby-expand-link" onclick={handleShowAllTopicsInvestment}>
+                                    {expandLabelInvestment}
+                                </a>
+                            </div>
                             <lightning-accordion
                                 class="lobby-queue-accordion"
                                 active-section-name={investmentBankingOpenSection}
@@ -1115,15 +1123,15 @@
                                     </lightning-button-group>
                                 </div>
                             </div>
-                            <div class="lobby-card__separator-slot">
+                            <div class="lobby-card__separator-slot" aria-hidden="true">
                                 <div class="lobby-card__separator-line"></div>
-                                <template lwc:if={wl.hasParticipants}>
-                                    <a href="javascript:void(0);" class="lobby-expand-link lobby-expand-link--inline">Expand all Waitlist</a>
-                                </template>
                             </div>
                             <!-- Body: accordion + participant list or empty state -->
                             <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
                                 <template lwc:if={wl.hasParticipants}>
+                                    <div class="lobby-queue-toolbar">
+                                        <a href="javascript:void(0);" class="lobby-expand-link">Expand all Waitlist</a>
+                                    </div>
                                     <lightning-accordion
                                         class="lobby-queue-accordion"
                                         allow-multiple-sections-open
