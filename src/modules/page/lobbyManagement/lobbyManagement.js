@@ -618,17 +618,13 @@ export default class LobbyManagement extends LightningElement {
     @track filterByResource = '';
 
     get resourceFilterOptions() {
-        // Collect every unique assignedResource name from all live participants
-        const allTopics = [
-            ...(this.generalBankingTopics || []),
-            ...(this.investmentBankingTopics || []),
-            ...(this.enrichedDynamicWaitlists || []).flatMap(w => w.topics || []),
-        ];
-        const names = new Set();
-        allTopics.forEach(t => (t.participants || []).forEach(p => {
-            if (p.assignedResource) names.add(p.assignedResource);
-        }));
-        const sorted = [...names].sort((a, b) => a.localeCompare(b));
+        // Union of all resource pools used across the app (seed + auto-assign + check-in)
+        const all = new Set([
+            ...this._assignedResourcePool,
+            'Anthony Young',  // seed data resource
+            ...this.checkinResourceOptions.filter(o => o.value).map(o => o.label),
+        ]);
+        const sorted = [...all].sort((a, b) => a.localeCompare(b));
         return [
             { label: 'All Resources', value: '' },
             ...sorted.map(n => ({ label: n, value: n })),

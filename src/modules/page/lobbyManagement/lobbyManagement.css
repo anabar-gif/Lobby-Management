@@ -199,6 +199,9 @@
     gap: 16px;
     min-height: 200px;
     box-sizing: border-box;
+    overflow: visible;
+    position: relative;
+    z-index: 10;
 }
 
 /* Top row: filters right-aligned, space-between with left side reserved for future tabs */
@@ -209,6 +212,9 @@
     gap: 16px;
     align-self: stretch;
     height: 36px;
+    position: relative;
+    z-index: 100;
+    overflow: visible;
 }
 
 .lobby-metrics__filter-group {
@@ -218,6 +224,14 @@
     align-items: center;
     gap: 12px;
     height: 36px;
+    position: relative;
+    overflow: visible;
+}
+
+/* Ensure the combobox dropdown isn't clipped — right-align it to the trigger */
+.lobby-metrics__filter-group lightning-combobox {
+    position: relative;
+    --slds-c-dropdown-position-horizontal: right;
 }
 
 .lobby-metrics__filter-label {
