@@ -235,6 +235,9 @@
     --slds-c-input-color-border-focus: #ffffff;
     --slds-c-input-text-color: #ffffff;
     --slds-c-select-color-background: #022AC0;
+    /* White chevron icon */
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
 }
 
 .lobby-metrics__filter-group .slds-combobox__form-element,
@@ -246,7 +249,27 @@
     height: 36px !important;
     font-size: 13px !important;
     font-weight: 590 !important;
+    letter-spacing: -0.006em !important;
     padding: 0 16px !important;
+}
+
+/* Force white chevron SVG inside the combobox trigger button */
+.lobby-metrics__filter-group .slds-combobox__form-element lightning-icon,
+.lobby-metrics__filter-group .slds-input-has-icon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+}
+
+.lobby-metrics__filter-group .slds-icon {
+    fill: #ffffff !important;
+}
+
+/* Remove default white background box on the input focus ring */
+.lobby-metrics__filter-group .slds-combobox__form-element:focus-within,
+.lobby-metrics__filter-group .slds-input:focus {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 1px #ffffff !important;
+    outline: none !important;
 }
 
 /* KPI tiles row */
