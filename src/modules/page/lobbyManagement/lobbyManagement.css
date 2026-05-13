@@ -192,6 +192,10 @@
     background-color: #022AC0;
     border-bottom: none;
     padding: 0.5rem 1rem 0.625rem !important;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Top row: filter dropdowns pushed to the right */
