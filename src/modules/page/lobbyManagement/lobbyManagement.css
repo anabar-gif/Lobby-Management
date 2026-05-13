@@ -228,10 +228,10 @@
     overflow: visible;
 }
 
-/* Ensure the combobox dropdown isn't clipped — right-align it to the trigger */
-.lobby-metrics__filter-group lightning-combobox {
-    position: relative;
-    --slds-c-dropdown-position-horizontal: right;
+/* Right-align the dropdown panel of the last filter so it doesn't overflow the viewport */
+.lobby-metrics__filter-group:last-child .slds-dropdown {
+    left: auto !important;
+    right: 0 !important;
 }
 
 .lobby-metrics__filter-label {
