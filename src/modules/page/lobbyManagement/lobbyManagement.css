@@ -591,11 +591,14 @@
 }
 
 .lobby-card__separator-slot {
+    display: flex;
+    align-items: center;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
 .lobby-card__separator-line {
+    flex: 1;
     border-top: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);
 }
 
@@ -821,9 +824,7 @@
 
 /* Left-align with card body / accordion content (no extra inset) */
 .lobby-queue-toolbar {
-    display: block;
-    padding-inline-start: 0;
-    margin-block-end: var(--slds-g-spacing-2, 0.5rem);
+    display: none; /* toolbar row no longer used */
 }
 
 .lobby-expand-link {
@@ -832,12 +833,20 @@
     color: #0176d3;
     text-decoration: none;
     cursor: pointer;
-    padding-left: 12px;
 }
 
 .lobby-expand-link:hover {
     text-decoration: underline;
     color: #014486;
+}
+
+/* Inline variant — sits on the separator line row */
+.lobby-expand-link--inline {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 0 0.75rem;
+    font-size: 0.75rem;
+    color: #0176d3;
 }
 
 .lobby-queue-accordion {
