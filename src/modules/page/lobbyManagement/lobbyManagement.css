@@ -189,7 +189,7 @@
 /* ── Metric summary bar ─────────────────────────────────────────────────── */
 
 .lobby-metrics {
-    background-color: #032d60;
+    background-color: #022AC0;
     border-bottom: none;
     padding: 0.625rem 1rem !important;
 }
@@ -265,25 +265,25 @@
 }
 
 .lobby-metric-card[role="button"]:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.15);
 }
 
-/* Active tile: white rounded card */
+/* Active tile: dark navy rounded card on bright blue background */
 .lobby-metric-card--active {
-    background: #ffffff !important;
+    background: #032d60 !important;
     box-shadow: none !important;
 }
 
 .lobby-metric-card--active .lobby-metric-card__value {
-    color: #032d60;
+    color: #ffffff;
 }
 
 .lobby-metric-card--active .lobby-metric-card__label {
-    color: rgba(3, 45, 96, 0.65);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .lobby-metric-card--active .lobby-metric-card__value--red {
-    color: #dc2626;
+    color: #fca5a5;
 }
 
 .lobby-metric-card__filter-hint { display: none; }
