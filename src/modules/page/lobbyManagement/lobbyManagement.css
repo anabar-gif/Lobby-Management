@@ -591,8 +591,8 @@
 }
 
 .lobby-card__separator-slot {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
 .lobby-card__separator-line {
@@ -823,7 +823,8 @@
 .lobby-queue-toolbar {
     display: block;
     padding-inline-start: 0;
-    margin-block-end: var(--slds-g-spacing-2, 0.5rem);
+    margin-block-start: 0.25rem;
+    margin-block-end: 0.25rem;
 }
 
 .lobby-expand-link {
