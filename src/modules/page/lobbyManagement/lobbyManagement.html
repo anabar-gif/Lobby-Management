@@ -36,30 +36,6 @@
                 </div>
                 <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-text-align_right slds-m-top_small">
                     <div class="lobby-toolbar__row slds-grid slds-grid_vertical-align-start slds-grid_align-end slds-wrap">
-                        <div class="slds-grid slds-grid_vertical-align-center slds-m-right_x-small slds-m-bottom_xx-small slds-medium-m-bottom_none">
-                            <span class="lobby-toolbar__label slds-p-right_x-small">Show Waitlists</span>
-                            <lightning-combobox
-                                name="waitlistFilter"
-                                label="Waitlist filter"
-                                variant="label-hidden"
-                                value={selectedWaitlistFilter}
-                                placeholder="All waitlists"
-                                options={waitlistFilterOptions}
-                                onchange={handleWaitlistFilterChange}>
-                            </lightning-combobox>
-                        </div>
-                        <div class="slds-grid slds-grid_vertical-align-center slds-m-right_x-small slds-m-bottom_xx-small slds-medium-m-bottom_none">
-                            <span class="lobby-toolbar__label slds-p-right_x-small">Resource</span>
-                            <lightning-combobox
-                                name="resourceFilter"
-                                label="Resource filter"
-                                variant="label-hidden"
-                                value={filterByResource}
-                                placeholder="All Resources"
-                                options={resourceFilterOptions}
-                                onchange={handleResourceFilterChange}>
-                            </lightning-combobox>
-                        </div>
                         <lightning-button-icon
                             class="lobby-toolbar__refresh"
                             icon-name="utility:refresh"
@@ -105,6 +81,35 @@
 
         <!-- ── Metric summary bar ── -->
         <div class="lobby-metrics">
+
+            <!-- Filters row inside blue band -->
+            <div class="lobby-metrics__filters">
+                <div class="lobby-metrics__filter-group">
+                    <span class="lobby-metrics__filter-label">Show Waitlists</span>
+                    <lightning-combobox
+                        name="waitlistFilter"
+                        label="Waitlist filter"
+                        variant="label-hidden"
+                        value={selectedWaitlistFilter}
+                        placeholder="All waitlists"
+                        options={waitlistFilterOptions}
+                        onchange={handleWaitlistFilterChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="lobby-metrics__filter-group">
+                    <span class="lobby-metrics__filter-label">Resource</span>
+                    <lightning-combobox
+                        name="resourceFilter"
+                        label="Resource filter"
+                        variant="label-hidden"
+                        value={filterByResource}
+                        placeholder="All Resources"
+                        options={resourceFilterOptions}
+                        onchange={handleResourceFilterChange}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
             <div class="lobby-metrics__grid">
 
                 <!-- 1. Total Checked In — FILTERABLE -->

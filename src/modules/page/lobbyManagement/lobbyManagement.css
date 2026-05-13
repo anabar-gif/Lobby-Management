@@ -191,7 +191,46 @@
 .lobby-metrics {
     background-color: #022AC0;
     border-bottom: none;
-    padding: 0.625rem 1rem !important;
+    padding: 0.5rem 1rem 0.625rem !important;
+}
+
+/* Top row: filter dropdowns pushed to the right */
+.lobby-metrics__filters {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.375rem;
+}
+
+.lobby-metrics__filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lobby-metrics__filter-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+}
+
+/* Style comboboxes to look native on blue background */
+.lobby-metrics__filter-group lightning-combobox {
+    --slds-c-input-color-background: transparent;
+    --slds-c-input-color-border: rgba(255, 255, 255, 0.5);
+    --slds-c-input-color-border-focus: rgba(255, 255, 255, 0.9);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-select-color-background: #022AC0;
+}
+
+.lobby-metrics__filter-group .slds-select,
+.lobby-metrics__filter-group .slds-combobox__form-element {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+    border-radius: 1rem;
 }
 
 /* Flex row, left-aligned, tiles wrap on small screens */
