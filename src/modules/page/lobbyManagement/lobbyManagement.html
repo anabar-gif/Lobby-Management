@@ -1600,21 +1600,23 @@
         <template lwc:if={showRepoConfirm}>
             <div class="lobby-modal-backdrop"></div>
             <div class="lobby-modal-container">
-                <div class="lobby-modal" role="dialog" aria-modal="true" aria-labelledby="repoModalTitle">
-                    <div class="lobby-modal__header">
-                        <h2 id="repoModalTitle" class="lobby-modal__title">Waitlist Repositioning</h2>
-                    </div>
-                    <div class="lobby-modal__body">
-                        <p>{repoConfirmMessage}</p>
-                    </div>
-                    <div class="lobby-modal__footer">
-                        <lightning-button label="Cancel"  onclick={handleRepoConfirmNo}></lightning-button>
-                        <lightning-button label="Confirm" variant="brand" onclick={handleRepoConfirmYes}></lightning-button>
+                <div class="lobby-modal-container--inner">
+                    <button class="lobby-modal__close" onclick={handleRepoConfirmNo} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                    </button>
+                    <div class="lobby-modal" role="dialog" aria-modal="true" aria-labelledby="repoModalTitle">
+                        <div class="lobby-modal__header">
+                            <h2 id="repoModalTitle" class="lobby-modal__title">Waitlist Repositioning</h2>
+                        </div>
+                        <div class="lobby-modal__body">
+                            <p>{repoConfirmMessage}</p>
+                        </div>
+                        <div class="lobby-modal__footer">
+                            <lightning-button label="Cancel"  onclick={handleRepoConfirmNo}></lightning-button>
+                            <lightning-button label="Confirm" variant="brand" onclick={handleRepoConfirmYes}></lightning-button>
+                        </div>
                     </div>
                 </div>
-                <button class="lobby-modal__close" onclick={handleRepoConfirmNo} aria-label="Close">
-                    <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
-                </button>
             </div>
         </template>
 
@@ -1694,37 +1696,39 @@
         <template lwc:if={showTransferModal}>
             <div class="lobby-modal-backdrop"></div>
             <div class="lobby-modal-container">
-                <div class="lobby-modal lobby-modal--small" role="dialog" aria-modal="true">
-                    <div class="lobby-modal__header">
-                        <h2 class="lobby-modal__title">Transfer to Another Queue</h2>
-                    </div>
-                    <div class="lobby-modal__body">
-                        <lightning-combobox
-                            label="Select Waitlist"
-                            value={transferTargetQueue}
-                            options={transferQueueOptions}
-                            placeholder="Choose a waitlist..."
-                            onchange={handleTransferTargetChange}>
-                        </lightning-combobox>
-                        <template lwc:if={transferTopicPickerVisible}>
-                            <div class="slds-m-top_small">
-                                <lightning-combobox
-                                    label="Select Work Topic"
-                                    value={transferTargetTopic}
-                                    options={transferTopicOptions}
-                                    placeholder="Choose a work topic..."
-                                    onchange={handleTransferTopicChange}>
-                                </lightning-combobox>
-                            </div>
-                        </template>
-                    </div>
-                    <div class="lobby-modal__footer">
-                        <lightning-button label="Cancel" onclick={handleTransferCancel}></lightning-button>
-                        <lightning-button label="Transfer" variant="brand" disabled={transferConfirmDisabled} onclick={handleTransferConfirm}></lightning-button>
-                    </div>
+                <div class="lobby-modal-container--inner">
                     <button class="lobby-modal__close" onclick={handleTransferCancel} aria-label="Close">
                         <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
                     </button>
+                    <div class="lobby-modal lobby-modal--small" role="dialog" aria-modal="true">
+                        <div class="lobby-modal__header">
+                            <h2 class="lobby-modal__title">Transfer to Another Queue</h2>
+                        </div>
+                        <div class="lobby-modal__body">
+                            <lightning-combobox
+                                label="Select Waitlist"
+                                value={transferTargetQueue}
+                                options={transferQueueOptions}
+                                placeholder="Choose a waitlist..."
+                                onchange={handleTransferTargetChange}>
+                            </lightning-combobox>
+                            <template lwc:if={transferTopicPickerVisible}>
+                                <div class="slds-m-top_small">
+                                    <lightning-combobox
+                                        label="Select Work Topic"
+                                        value={transferTargetTopic}
+                                        options={transferTopicOptions}
+                                        placeholder="Choose a work topic..."
+                                        onchange={handleTransferTopicChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="lobby-modal__footer">
+                            <lightning-button label="Cancel" onclick={handleTransferCancel}></lightning-button>
+                            <lightning-button label="Transfer" variant="brand" disabled={transferConfirmDisabled} onclick={handleTransferConfirm}></lightning-button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </template>

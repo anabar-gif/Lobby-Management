@@ -1311,20 +1311,34 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.72);
     z-index: 8000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
 }
 
-/* Wrapper positions modal + external close button together */
+/* Wrapper holds modal + external close button, centered by backdrop */
 .lobby-modal-container {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
     z-index: 8001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    pointer-events: none;
+}
+
+.lobby-modal-container > * {
+    pointer-events: all;
+}
+
+.lobby-modal-container--inner {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 0.5rem;
-    width: min(36rem, calc(100vw - 2rem));
+    width: min(36rem, calc(100vw - 4rem));
 }
 
 .lobby-modal {
@@ -1372,7 +1386,7 @@
     background: transparent;
 }
 
-/* External close button — white circle, blue X icon, top-right of container */
+/* External close button — white circle, blue X icon, top-right of inner container */
 .lobby-modal__close {
     background: #fff;
     border: none;
@@ -1385,7 +1399,6 @@
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     flex-shrink: 0;
-    order: -1;
     align-self: flex-end;
 }
 
