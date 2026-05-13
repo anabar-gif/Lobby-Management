@@ -272,6 +272,11 @@
     gap: 1.25rem;
 }
 
+/* Tighter gap between adjacent Work Type / Service Resources fields */
+.wl-creator__field-group--tight {
+    margin-top: -0.75rem;
+}
+
 /* Field group */
 .wl-creator__field-group {
     display: flex;
@@ -458,6 +463,11 @@
     border-color: #0176d3;
     box-shadow: 0 0 0 1px #0176d3;
     outline: none;
+}
+
+.wl-creator__search-wrap--error .wl-creator__search-input-row {
+    border-color: var(--slds-g-color-error-base-40, #c23934);
+    box-shadow: 0 0 0 1px var(--slds-g-color-error-base-40, #c23934);
 }
 
 .wl-creator__search-icon {

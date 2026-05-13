@@ -205,8 +205,8 @@
 
                 <!-- Work Types -->
                 <div class="wl-creator__field-group">
-                    <label class="wl-creator__label">Work Type</label>
-                    <div class="wl-creator__search-wrap" data-field="worktype" onclick={handleSearchWrapClick}>
+                    <label class="wl-creator__label wl-creator__label--required">Work Type</label>
+                    <div class={wtSearchWrapClass} data-field="worktype" onclick={handleSearchWrapClick}>
                         <div class="wl-creator__search-input-row">
                             <lightning-icon icon-name="utility:search" size="x-small" class="wl-creator__search-icon" alternative-text="Search"></lightning-icon>
                             <input
@@ -248,12 +248,15 @@
                             </span>
                         </template>
                     </div>
+                    <template lwc:if={workTypeError}>
+                        <p class="wl-creator__error">Work Type is required.</p>
+                    </template>
                 </div>
 
                 <!-- Service Resources -->
-                <div class="wl-creator__field-group">
-                    <label class="wl-creator__label">Service Resources</label>
-                    <div class="wl-creator__search-wrap" data-field="resource" onclick={handleSearchWrapClick}>
+                <div class="wl-creator__field-group wl-creator__field-group--tight">
+                    <label class="wl-creator__label wl-creator__label--required">Service Resources</label>
+                    <div class={resSearchWrapClass} data-field="resource" onclick={handleSearchWrapClick}>
                         <div class="wl-creator__search-input-row">
                             <lightning-icon icon-name="utility:search" size="x-small" class="wl-creator__search-icon" alternative-text="Search"></lightning-icon>
                             <input
@@ -301,6 +304,9 @@
                             </span>
                         </template>
                     </div>
+                    <template lwc:if={resourceError}>
+                        <p class="wl-creator__error">Service Resources is required.</p>
+                    </template>
                 </div>
 
                 <!-- Toggles -->

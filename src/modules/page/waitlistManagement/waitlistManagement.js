@@ -145,6 +145,8 @@ export default class WaitlistManagement extends LightningElement {
     @track resSearch             = '';
     @track nameError            = false;
     @track territoryError       = false;
+    @track workTypeError        = false;
+    @track resourceError        = false;
 
     columns = COLUMNS;
 
@@ -224,6 +226,7 @@ export default class WaitlistManagement extends LightningElement {
         return this.filteredWorkTypes.length === 0 && !this.hasRecentWorkTypes;
     }
     get noWorkTypes() { return this.creator.workTypes.length === 0; }
+    get wtSearchWrapClass() { return `wl-creator__search-wrap${this.workTypeError ? ' wl-creator__search-wrap--error' : ''}`; }
 
     // Service Resources — grouped & searchable
     get recentResources() {
@@ -244,6 +247,7 @@ export default class WaitlistManagement extends LightningElement {
         return this.filteredResources.length === 0 && !this.hasRecentResources;
     }
     get noResources() { return this.creator.resources.length === 0; }
+    get resSearchWrapClass() { return `wl-creator__search-wrap${this.resourceError ? ' wl-creator__search-wrap--error' : ''}`; }
 
     get activeToggleClass() {
         return `wl-creator__toggle${this.creator.active ? ' wl-creator__toggle--on' : ''}`;
@@ -376,8 +380,9 @@ export default class WaitlistManagement extends LightningElement {
         event.stopPropagation();
         const value = event.currentTarget.dataset.value;
         const label = event.currentTarget.dataset.label;
-        this.creator  = { ...this.creator, workTypes: [...this.creator.workTypes, { value, label }] };
-        this.wtSearch = '';
+        this.creator       = { ...this.creator, workTypes: [...this.creator.workTypes, { value, label }] };
+        this.wtSearch      = '';
+        this.workTypeError = false;
         this.showWorkTypeDropdown = false;
     }
 
@@ -401,8 +406,9 @@ export default class WaitlistManagement extends LightningElement {
         event.stopPropagation();
         const value = event.currentTarget.dataset.value;
         const label = event.currentTarget.dataset.label;
-        this.creator   = { ...this.creator, resources: [...this.creator.resources, { value, label }] };
-        this.resSearch = '';
+        this.creator       = { ...this.creator, resources: [...this.creator.resources, { value, label }] };
+        this.resSearch     = '';
+        this.resourceError = false;
         this.showResourceDropdown = false;
     }
 
@@ -424,7 +430,9 @@ export default class WaitlistManagement extends LightningElement {
     handleCreatorSave() {
         this.nameError      = !this.creator.name.trim();
         this.territoryError = !this.creator.territoryValue;
-        if (this.nameError || this.territoryError) return;
+        this.workTypeError  = this.creator.workTypes.length === 0;
+        this.resourceError  = this.creator.resources.length === 0;
+        if (this.nameError || this.territoryError || this.workTypeError || this.resourceError) return;
 
         const id   = `wl-${Date.now()}`;
         const name = this.creator.name.trim();
