@@ -310,6 +310,11 @@ export default class LobbyManagement extends LightningElement {
     }
 
     /** Computed GB topics with per-row enrichment (avatar, VIP, overdue). */
+    get liveWaitlistCount() {
+        // 2 fixed waitlists + any dynamically added ones
+        return 2 + (this.dynamicWaitlists ? this.dynamicWaitlists.length : 0);
+    }
+
     get generalBankingTopicsView() {
         return this._filterTopicsByResource(
             (this.generalBankingTopics || []).map(t => ({
