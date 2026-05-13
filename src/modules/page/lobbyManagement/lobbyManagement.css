@@ -805,7 +805,7 @@
 }
 
 .lobby-card__body-queue {
-    padding-top: var(--slds-g-spacing-3, 0.75rem);
+    padding-top: 0.25rem;
     padding-bottom: var(--slds-g-spacing-4, 1rem);
     padding-left: 0.25rem;
     padding-right: 0.25rem;
