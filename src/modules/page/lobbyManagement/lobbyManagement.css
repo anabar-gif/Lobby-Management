@@ -1336,6 +1336,7 @@
     align-items: flex-end;
     gap: 0.5rem;
     width: min(36rem, calc(100vw - 4rem));
+    transform: translateX(-20px);
 }
 
 .lobby-modal {
