@@ -448,7 +448,8 @@
                                     <p class="lobby-card__meta">{generalQueueMetaRight}</p>
                                 </div>
                             </header>
-                            <div class="slds-no-flex">
+                            <div class="slds-no-flex lobby-queue-header__right">
+                                <a href="javascript:void(0);" class="lobby-expand-link lobby-expand-link--header" onclick={handleShowAllTopicsGeneral}>{expandLabelGeneral}</a>
                                 <lightning-button-group class="lobby-queue-button-group">
                                     <lightning-button
                                         label="Check In"
@@ -470,11 +471,6 @@
                             <div class="lobby-card__separator-line"></div>
                         </div>
                         <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
-                            <div class="lobby-queue-toolbar">
-                                <a href="javascript:void(0);" class="lobby-expand-link" onclick={handleShowAllTopicsGeneral}>
-                                    {expandLabelGeneral}
-                                </a>
-                            </div>
                             <lightning-accordion
                                 class="lobby-queue-accordion"
                                 allow-multiple-sections-open
@@ -780,7 +776,8 @@
                                     <p class="lobby-card__meta">{investmentQueueMetaRight}</p>
                                 </div>
                             </header>
-                            <div class="slds-no-flex">
+                            <div class="slds-no-flex lobby-queue-header__right">
+                                <a href="javascript:void(0);" class="lobby-expand-link lobby-expand-link--header" onclick={handleShowAllTopicsInvestment}>{expandLabelInvestment}</a>
                                 <lightning-button-group class="lobby-queue-button-group">
                                     <lightning-button
                                         label="Check In"
@@ -802,11 +799,6 @@
                             <div class="lobby-card__separator-line"></div>
                         </div>
                         <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
-                            <div class="lobby-queue-toolbar">
-                                <a href="javascript:void(0);" class="lobby-expand-link" onclick={handleShowAllTopicsInvestment}>
-                                    {expandLabelInvestment}
-                                </a>
-                            </div>
                             <lightning-accordion
                                 class="lobby-queue-accordion"
                                 active-section-name={investmentBankingOpenSection}
@@ -1104,7 +1096,10 @@
                                         <p class="lobby-card__meta">{wl.metaRight}</p>
                                     </div>
                                 </header>
-                                <div class="slds-no-flex">
+                                <div class="slds-no-flex lobby-queue-header__right">
+                                    <template lwc:if={wl.hasParticipants}>
+                                        <a href="javascript:void(0);" class="lobby-expand-link lobby-expand-link--header">Expand all Waitlist</a>
+                                    </template>
                                     <lightning-button-group class="lobby-queue-button-group">
                                         <lightning-button
                                             label="Check In"
@@ -1129,9 +1124,6 @@
                             <!-- Body: accordion + participant list or empty state -->
                             <div class="slds-card__body slds-card__body_inner lobby-card__body-queue">
                                 <template lwc:if={wl.hasParticipants}>
-                                    <div class="lobby-queue-toolbar">
-                                        <a href="javascript:void(0);" class="lobby-expand-link">Expand all Waitlist</a>
-                                    </div>
                                     <lightning-accordion
                                         class="lobby-queue-accordion"
                                         allow-multiple-sections-open
