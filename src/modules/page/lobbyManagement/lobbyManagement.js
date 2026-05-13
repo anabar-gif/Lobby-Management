@@ -998,11 +998,11 @@ export default class LobbyManagement extends LightningElement {
     ];
 
     participantRecentItems = [
-        { id: 'p1', label: 'Ben Richards',  meta: '',              icon: 'standard:account' },
-        { id: 'p2', label: 'Global Media',  meta: '(905) 555-1212', icon: 'standard:account' },
-        { id: 'p3', label: 'Julie Morris',  meta: '(212) 555-5555', icon: 'standard:account' },
-        { id: 'p4', label: 'Julia Green',   meta: '6528872581',     icon: 'standard:account' },
-        { id: 'p5', label: 'Acme',          meta: '',              icon: 'standard:account' },
+        { id: 'p1', label: 'Ben Richards',  meta: '(416) 555-0101', phone: '(416) 555-0101', email: 'ben.richards@example.com',   icon: 'standard:account' },
+        { id: 'p2', label: 'Global Media',  meta: '(905) 555-1212', phone: '(905) 555-1212', email: 'contact@globalmedia.com',     icon: 'standard:account' },
+        { id: 'p3', label: 'Julie Morris',  meta: '(212) 555-5555', phone: '(212) 555-5555', email: 'julie.morris@example.com',    icon: 'standard:account' },
+        { id: 'p4', label: 'Julia Green',   meta: '6528872581',     phone: '6528872581',     email: 'julia.green@example.com',     icon: 'standard:account' },
+        { id: 'p5', label: 'Acme',          meta: '(800) 555-0199', phone: '(800) 555-0199', email: 'info@acme.com',              icon: 'standard:account' },
     ];
 
     get filteredParticipants() {
@@ -1047,7 +1047,11 @@ export default class LobbyManagement extends LightningElement {
     handleParticipantSelect(event) {
         const id = event.currentTarget.dataset.id;
         const item = this.participantRecentItems.find(p => p.id === id);
-        if (item) this.participantSearch = item.label;
+        if (item) {
+            this.participantSearch = item.label;
+            this.ciPhone = item.phone || '';
+            this.ciEmail = item.email || '';
+        }
         this.showParticipantDropdown = false;
     }
 
@@ -1088,7 +1092,11 @@ export default class LobbyManagement extends LightningElement {
     handleParticipantSelectInvestment(event) {
         const id = event.currentTarget.dataset.id;
         const item = this.participantRecentItems.find(p => p.id === id);
-        if (item) this.participantSearchInvestment = item.label;
+        if (item) {
+            this.participantSearchInvestment = item.label;
+            this.ibCiPhone = item.phone || '';
+            this.ibCiEmail = item.email || '';
+        }
         this.showParticipantDropdownInvestment = false;
     }
 
@@ -1134,6 +1142,7 @@ export default class LobbyManagement extends LightningElement {
     @track ciContact    = '';
     @track ciCompany    = '';
     @track ciEmail      = '';
+    @track ciPhone      = '';
     @track ciIsVip      = false;
 
     get ciIsNewParticipant() { return this.ciGuestType === 'new'; }
@@ -1167,6 +1176,7 @@ export default class LobbyManagement extends LightningElement {
     @track ibCiContact    = '';
     @track ibCiCompany    = '';
     @track ibCiEmail      = '';
+    @track ibCiPhone      = '';
     @track ibCiIsVip      = false;
 
     get ibCiIsNewParticipant() { return this.ibCiGuestType === 'new'; }
@@ -1286,6 +1296,7 @@ export default class LobbyManagement extends LightningElement {
             linkLabel:        participantName,
             serviceNumber:    this._nextServiceNumber(),
             email:            this.ciEmail?.trim() || null,
+            phone:            this.ciPhone?.trim() || null,
             topic:            topicLabel,
             assignedResource: resourceLabel || this._autoAssignResource(),
             slot:             this._nowSlot(),
@@ -1313,7 +1324,7 @@ export default class LobbyManagement extends LightningElement {
         this.participantSearch = '';
         this.ciGuestType = 'existing';
         this.ciFirstName = ''; this.ciLastName = ''; this.ciContact = '';
-        this.ciCompany = ''; this.ciEmail = '';
+        this.ciCompany = ''; this.ciEmail = ''; this.ciPhone = '';
         this.ciTopic    = 'general-banking';
         this.ciResource = '';
         this.ciDesc     = '';
@@ -1347,6 +1358,7 @@ export default class LobbyManagement extends LightningElement {
             linkLabel:        participantName,
             serviceNumber:    this._nextServiceNumber(),
             email:            this.ibCiEmail?.trim() || null,
+            phone:            this.ibCiPhone?.trim() || null,
             topic:            topicLabel,
             assignedResource: resourceLabel || this._autoAssignResource(),
             slot:             this._nowSlot(),
@@ -1372,7 +1384,7 @@ export default class LobbyManagement extends LightningElement {
         this.participantSearchInvestment = '';
         this.ibCiGuestType = 'existing';
         this.ibCiFirstName = ''; this.ibCiLastName = ''; this.ibCiContact = '';
-        this.ibCiCompany = ''; this.ibCiEmail = '';
+        this.ibCiCompany = ''; this.ibCiEmail = ''; this.ibCiPhone = '';
         this.ibCiTopic    = 'investment-banking';
         this.ibCiResource = '';
         this.ibCiDesc     = '';
@@ -1392,6 +1404,7 @@ export default class LobbyManagement extends LightningElement {
     @track dynCiContact    = '';
     @track dynCiCompany    = '';
     @track dynCiEmail      = '';
+    @track dynCiPhone      = '';
     @track dynCiIsVip      = false;
     @track dynParticipantSearch = '';
     @track showDynParticipantDropdown = false;
@@ -1526,7 +1539,11 @@ export default class LobbyManagement extends LightningElement {
     handleDynParticipantSelect(event) {
         const id = event.currentTarget.dataset.id;
         const item = this.participantRecentItems.find(p => p.id === id);
-        if (item) this.dynParticipantSearch = item.label;
+        if (item) {
+            this.dynParticipantSearch = item.label;
+            this.dynCiPhone = item.phone || '';
+            this.dynCiEmail = item.email || '';
+        }
         this.showDynParticipantDropdown = false;
     }
     handleDynParticipantBlur() {
@@ -1569,6 +1586,7 @@ export default class LobbyManagement extends LightningElement {
                 linkLabel:        participantName,
                 serviceNumber:    this._nextServiceNumber(),
                 email:            this.dynCiEmail?.trim() || null,
+                phone:            this.dynCiPhone?.trim() || null,
                 topic:            topicLabel,
                 assignedResource: resourceLabel || this._autoAssignResource(),
                 slot:             this._nowSlot(),
@@ -1600,7 +1618,7 @@ export default class LobbyManagement extends LightningElement {
         this.dynParticipantSearch = '';
         this.dynCiGuestType = 'existing';
         this.dynCiFirstName = ''; this.dynCiLastName = ''; this.dynCiContact = '';
-        this.dynCiCompany = ''; this.dynCiEmail = '';
+        this.dynCiCompany = ''; this.dynCiEmail = ''; this.dynCiPhone = '';
         this.dynCiResource = '';
         this.dynCiDesc = '';
         this.activeDynWlId = null;
