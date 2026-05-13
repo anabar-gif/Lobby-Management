@@ -228,48 +228,24 @@
     text-align: right;
 }
 
-/* Pill-shaped comboboxes on blue background */
+/* Pill-shaped comboboxes on blue background — all via CSS custom properties (shadow DOM safe) */
 .lobby-metrics__filter-group lightning-combobox {
+    /* Background & border */
     --slds-c-input-color-background: transparent;
     --slds-c-input-color-border: #A8CBFF;
     --slds-c-input-color-border-focus: #ffffff;
+    --slds-c-input-radius-border: 100px;
+    /* Text */
     --slds-c-input-text-color: #ffffff;
-    --slds-c-select-color-background: #022AC0;
+    --slds-c-input-font-size: 13px;
+    --slds-c-input-font-weight: 590;
     /* White chevron icon */
     --slds-c-icon-color-foreground-default: #ffffff;
     --slds-c-icon-color-foreground: #ffffff;
-}
-
-.lobby-metrics__filter-group .slds-combobox__form-element,
-.lobby-metrics__filter-group .slds-input {
-    background: transparent !important;
-    border: 1px solid #A8CBFF !important;
-    border-radius: 100px !important;
-    color: #ffffff !important;
-    height: 36px !important;
-    font-size: 13px !important;
-    font-weight: 590 !important;
-    letter-spacing: -0.006em !important;
-    padding: 0 16px !important;
-}
-
-/* Force white chevron SVG inside the combobox trigger button */
-.lobby-metrics__filter-group .slds-combobox__form-element lightning-icon,
-.lobby-metrics__filter-group .slds-input-has-icon lightning-icon {
-    --slds-c-icon-color-foreground-default: #ffffff;
-    --slds-c-icon-color-foreground: #ffffff;
-}
-
-.lobby-metrics__filter-group .slds-icon {
-    fill: #ffffff !important;
-}
-
-/* Remove default white background box on the input focus ring */
-.lobby-metrics__filter-group .slds-combobox__form-element:focus-within,
-.lobby-metrics__filter-group .slds-input:focus {
-    border-color: #ffffff !important;
-    box-shadow: 0 0 0 1px #ffffff !important;
-    outline: none !important;
+    /* Height */
+    --slds-c-input-sizing-height: 36px;
+    --slds-c-input-spacing-horizontal-start: 16px;
+    --slds-c-input-spacing-horizontal-end: 16px;
 }
 
 /* KPI tiles row */
