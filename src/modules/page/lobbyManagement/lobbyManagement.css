@@ -604,6 +604,7 @@
 
 .lobby-card__body-scroll {
     max-height: 52rem;
+    overflow: hidden;
 }
 
 .lobby-card__separator-slot {
