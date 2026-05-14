@@ -2443,8 +2443,9 @@ export default class LobbyManagement extends LightningElement {
                 };
             });
 
-        this.currentAppointments = updateList(this.currentAppointments);
+        this.currentAppointments  = updateList(this.currentAppointments);
         this.upcomingAppointments = updateList(this.upcomingAppointments);
+        this.pastAppointments     = updateList(this.pastAppointments);
     }
 
     // ── Scheduled Service Appointment row menu ──
