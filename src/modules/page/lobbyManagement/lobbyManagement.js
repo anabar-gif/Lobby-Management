@@ -120,8 +120,9 @@ export default class LobbyManagement extends LightningElement {
         ];
     }
 
-    currentSectionTime = '9-10 AM';
+    currentSectionTime  = '9-10 AM';
     upcomingSectionTime = '10-11 AM';
+    pastSectionTime     = '8-9 AM';
 
     // ── Metric card helpers ──────────────────────────────────────────────────
 
@@ -546,6 +547,15 @@ export default class LobbyManagement extends LightningElement {
         return list;
     }
 
+    get pastAppointmentsFiltered() {
+        const lower = this.globalSearch.trim().toLowerCase();
+        let list = this.pastAppointmentsView;
+        if (this.activeTileFilter === 'served')   return [];
+        if (this.activeTileFilter === 'upcoming') return [];
+        if (lower) list = list.filter(a => this._apptMatchesSearch(a, lower));
+        return list;
+    }
+
     // ── Batch 2: Avatars, VIP, Notes, Auto-refresh, Resource filter ─────────
 
     /** Returns 1-2 letter initials from a name string. */
@@ -695,6 +705,10 @@ export default class LobbyManagement extends LightningElement {
         return (this.upcomingAppointments || []).map(a => this._apptWithWaitClasses(a));
     }
 
+    get pastAppointmentsView() {
+        return (this.pastAppointments || []).map(a => this._apptWithWaitClasses(a));
+    }
+
     get currentSectionMetaLine() {
         const n = this.currentAppointments?.length ?? 0;
         const word = n === 1 ? 'appointment' : 'appointments';
@@ -705,6 +719,12 @@ export default class LobbyManagement extends LightningElement {
         const n = this.upcomingAppointments?.length ?? 0;
         const word = n === 1 ? 'appointment' : 'appointments';
         return `${this.upcomingSectionTime} · ${n} ${word}`;
+    }
+
+    get pastSectionMetaLine() {
+        const n = this.pastAppointmentsFiltered?.length ?? 0;
+        const word = n === 1 ? 'appointment' : 'appointments';
+        return `${this.pastSectionTime} · ${n} ${word}`;
     }
 
     get metaLineSecondary() {
@@ -943,6 +963,25 @@ export default class LobbyManagement extends LightningElement {
             showWaitAlert: false,
             showCheckin: true
         }
+    ];
+
+    @track pastAppointments = [
+        {
+            id: 'p1',
+            customerName: 'David Okafor',
+            subtitle: 'Commercial Loan • Anthony Young',
+            slot: '8:00 am - 8:30 am',
+            showCheckin: true,
+            isLate: true,
+        },
+        {
+            id: 'p2',
+            customerName: 'Priya Nair',
+            subtitle: 'Wealth Management • Rachel Adams',
+            slot: '8:30 am - 9:00 am',
+            showCheckin: true,
+            isLate: true,
+        },
     ];
 
     @track upcomingAppointments = [
