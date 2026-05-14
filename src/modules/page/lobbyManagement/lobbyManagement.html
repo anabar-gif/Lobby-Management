@@ -400,7 +400,21 @@
                                                             <lightning-icon class="lobby-appt__clock-icon slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
                                                             <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
                                                         </div>
-                                                        <span class="lobby-appt__late-badge slds-m-left_x-small">Late</span>
+                                                        <template lwc:if={appt.checkedIn}>
+                                                            <span class="lobby-appt__checked-in-badge slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                        </template>
+                                                        <template lwc:if={appt.showWaitAlert}>
+                                                            <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:if={appt.isLate}>
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <span class="lobby-appt__late-badge slds-m-left_x-small">Late</span>
+                                                            </template>
+                                                        </template>
                                                     </div>
                                                 </div>
                                             </div>
