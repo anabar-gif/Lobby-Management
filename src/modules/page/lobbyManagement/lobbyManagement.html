@@ -269,214 +269,146 @@
                         <div class="lobby-card__separator-slot" aria-hidden="true">
                             <div class="lobby-card__separator-line"></div>
                         </div>
-                        <div class="slds-card__body slds-card__body_inner slds-scrollable_y lobby-card__body-scroll">
-                            <div class="lobby-card__heading slds-m-bottom_medium">
-                                <div class="lobby-section__header slds-m-bottom_medium">
-                                    <div class="lobby-section__label">Current</div>
-                                    <div class="lobby-section__meta slds-m-top_xx-small">{currentSectionMetaLine}</div>
-                                </div>
-                                <template for:each={currentAppointmentsFiltered} for:item="appt">
-                                    <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
-                                        <div class="lobby-appt__body slds-p-around_small">
-                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                <div class="lobby-appt__identity">
-                                                    <div
-                                                        class="lobby-appt__name slds-truncate"
-                                                        role="button"
-                                                        tabindex="0"
-                                                        title={appt.customerName}>
-                                                        {appt.customerName}
-                                                    </div>
-                                                    <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>
-                                                        {appt.subtitle}
+                        <div class="slds-card__body slds-card__body_inner lobby-card__body-scroll">
+
+                            <!-- ── Current accordion section ── -->
+                            <div class="lobby-accordion">
+                                <button class={accordionCurrentHeaderClass} data-section="current" onclick={handleSectionToggle} aria-expanded={sectionCurrentOpen}>
+                                    <lightning-icon class="lobby-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                    <span class="lobby-accordion__label">Current</span>
+                                    <span class="lobby-accordion__meta">{currentSectionMetaLine}</span>
+                                </button>
+                                <template lwc:if={sectionCurrentOpen}>
+                                    <div class="lobby-accordion__cards">
+                                        <template for:each={currentAppointmentsFiltered} for:item="appt">
+                                            <div key={appt.id} class="lobby-appt slds-m-bottom_small">
+                                                <div class="lobby-appt__body slds-p-around_small">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lobby-appt__identity">
+                                                            <div class="lobby-appt__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>{appt.subtitle}</div>
+                                                        </div>
+                                                        <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                            </template>
+                                                            <lightning-button-icon class="lobby-appt__menu-btn" icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
-                                                    <template lwc:if={appt.showCheckin}>
-                                                        <lightning-button
-                                                            label="Check In"
-                                                            variant="neutral"
-                                                            data-id={appt.id}
-                                                            onclick={handleCheckin}>
-                                                        </lightning-button>
-                                                    </template>
-                                                    <lightning-button-icon
-                                                        class="lobby-appt__menu-btn"
-                                                        icon-name="utility:down"
-                                                        variant="border-filled"
-                                                        alternative-text="Appointment actions"
-                                                        title="Appointment actions"
-                                                        data-id={appt.id}
-                                                        onclick={handleApptMenu}>
-                                                    </lightning-button-icon>
+                                                <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                            <lightning-icon class="lobby-appt__clock-icon slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
+                                                        </div>
+                                                        <template lwc:if={appt.checkedIn}>
+                                                            <span class="lobby-appt__checked-in-badge slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                        </template>
+                                                        <template lwc:if={appt.showWaitAlert}>
+                                                            <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
-                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-                                                    <lightning-icon
-                                                        class="lobby-appt__clock-icon slds-m-right_xx-small"
-                                                        icon-name="utility:event"
-                                                        size="x-small"
-                                                        alternative-text="">
-                                                    </lightning-icon>
-                                                    <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
-                                                </div>
-                                                <template lwc:if={appt.checkedIn}>
-                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">{appt.checkedInLabel}</span>
-                                                </template>
-                                                <template lwc:if={appt.showWaitAlert}>
-                                                    <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                        <lightning-icon
-                                                            class={appt.waitClockClass}
-                                                            icon-name="utility:clock"
-                                                            size="x-small"
-                                                            alternative-text="">
-                                                        </lightning-icon>
-                                                        <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
-                                                        <span class={appt.waitTimeClass}>{appt.waitTime}</span>
-                                                    </div>
-                                                </template>
-                                            </div>
-                                        </div>
+                                        </template>
                                     </div>
                                 </template>
                             </div>
 
-                            <div class="slds-m-top_large">
-                                <div class="lobby-section__header slds-m-bottom_medium">
-                                    <div class="lobby-section__label">Upcoming</div>
-                                    <div class="lobby-section__meta slds-m-top_xx-small">{upcomingSectionMetaLine}</div>
-                                </div>
-                                <template for:each={upcomingAppointmentsFiltered} for:item="appt">
-                                    <div key={appt.id} class="lobby-appt slds-m-bottom_medium">
-                                        <div class="lobby-appt__body slds-p-around_small">
-                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                <div class="lobby-appt__identity">
-                                                    <div
-                                                        class="lobby-appt__name slds-truncate"
-                                                        role="button"
-                                                        tabindex="0"
-                                                        title={appt.customerName}>
-                                                        {appt.customerName}
-                                                    </div>
-                                                    <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>
-                                                        {appt.subtitle}
+                            <!-- ── Upcoming accordion section ── -->
+                            <div class="lobby-accordion">
+                                <button class={accordionUpcomingHeaderClass} data-section="upcoming" onclick={handleSectionToggle} aria-expanded={sectionUpcomingOpen}>
+                                    <lightning-icon class="lobby-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                    <span class="lobby-accordion__label">Upcoming</span>
+                                    <span class="lobby-accordion__meta">{upcomingSectionMetaLine}</span>
+                                </button>
+                                <template lwc:if={sectionUpcomingOpen}>
+                                    <div class="lobby-accordion__cards">
+                                        <template for:each={upcomingAppointmentsFiltered} for:item="appt">
+                                            <div key={appt.id} class="lobby-appt slds-m-bottom_small">
+                                                <div class="lobby-appt__body slds-p-around_small">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lobby-appt__identity">
+                                                            <div class="lobby-appt__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>{appt.subtitle}</div>
+                                                        </div>
+                                                        <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                            </template>
+                                                            <lightning-button-icon class="lobby-appt__menu-btn" icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
-                                                    <template lwc:if={appt.showCheckin}>
-                                                        <lightning-button
-                                                            label="Check In"
-                                                            variant="neutral"
-                                                            data-id={appt.id}
-                                                            onclick={handleCheckin}>
-                                                        </lightning-button>
-                                                    </template>
-                                                    <lightning-button-icon
-                                                        class="lobby-appt__menu-btn"
-                                                        icon-name="utility:down"
-                                                        variant="border-filled"
-                                                        alternative-text="Appointment actions"
-                                                        title="Appointment actions"
-                                                        data-id={appt.id}
-                                                        onclick={handleApptMenu}>
-                                                    </lightning-button-icon>
+                                                <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                            <lightning-icon class="lobby-appt__clock-icon slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
+                                                        </div>
+                                                        <template lwc:if={appt.checkedIn}>
+                                                            <span class="lobby-appt__checked-in-badge slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                        </template>
+                                                        <template lwc:if={appt.showWaitAlert}>
+                                                            <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
-                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-                                                    <lightning-icon
-                                                        class="lobby-appt__clock-icon slds-m-right_xx-small"
-                                                        icon-name="utility:event"
-                                                        size="x-small"
-                                                        alternative-text="">
-                                                    </lightning-icon>
-                                                    <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
-                                                </div>
-                                                <template lwc:if={appt.checkedIn}>
-                                                    <span class="lobby-appt__checked-in-badge slds-m-left_x-small">{appt.checkedInLabel}</span>
-                                                </template>
-                                                <template lwc:if={appt.showWaitAlert}>
-                                                    <div class="lobby-appt__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                        <lightning-icon
-                                                            class={appt.waitClockClass}
-                                                            icon-name="utility:clock"
-                                                            size="x-small"
-                                                            alternative-text="">
-                                                        </lightning-icon>
-                                                        <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
-                                                        <span class={appt.waitTimeClass}>{appt.waitTime}</span>
-                                                    </div>
-                                                </template>
-                                            </div>
-                                        </div>
+                                        </template>
                                     </div>
                                 </template>
                             </div>
 
-                            <div class="slds-m-top_large">
-                                <div class="lobby-section__header slds-m-bottom_medium">
-                                    <div class="lobby-section__label">Past</div>
-                                    <div class="lobby-section__meta slds-m-top_xx-small">{pastSectionMetaLine}</div>
-                                </div>
-                                <template for:each={pastAppointmentsFiltered} for:item="appt">
-                                    <div key={appt.id} class="lobby-appt lobby-appt--past slds-m-bottom_medium">
-                                        <div class="lobby-appt__body slds-p-around_small">
-                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                <div class="lobby-appt__identity">
-                                                    <div
-                                                        class="lobby-appt__name slds-truncate"
-                                                        role="button"
-                                                        tabindex="0"
-                                                        title={appt.customerName}>
-                                                        {appt.customerName}
-                                                    </div>
-                                                    <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>
-                                                        {appt.subtitle}
+                            <!-- ── Past accordion section ── -->
+                            <div class="lobby-accordion">
+                                <button class={accordionPastHeaderClass} data-section="past" onclick={handleSectionToggle} aria-expanded={sectionPastOpen}>
+                                    <lightning-icon class="lobby-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                    <span class="lobby-accordion__label">Past</span>
+                                    <span class="lobby-accordion__meta">{pastSectionMetaLine}</span>
+                                </button>
+                                <template lwc:if={sectionPastOpen}>
+                                    <div class="lobby-accordion__cards">
+                                        <template for:each={pastAppointmentsFiltered} for:item="appt">
+                                            <div key={appt.id} class="lobby-appt lobby-appt--past slds-m-bottom_small">
+                                                <div class="lobby-appt__body slds-p-around_small">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lobby-appt__identity">
+                                                            <div class="lobby-appt__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>{appt.subtitle}</div>
+                                                        </div>
+                                                        <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                            </template>
+                                                            <lightning-button-icon class="lobby-appt__menu-btn" icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="slds-col slds-no-flex slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
-                                                    <template lwc:if={appt.showCheckin}>
-                                                        <lightning-button
-                                                            label="Check In"
-                                                            variant="neutral"
-                                                            data-id={appt.id}
-                                                            onclick={handleCheckin}>
-                                                        </lightning-button>
-                                                    </template>
-                                                    <lightning-button-icon
-                                                        class="lobby-appt__menu-btn"
-                                                        icon-name="utility:down"
-                                                        variant="border-filled"
-                                                        alternative-text="Appointment actions"
-                                                        title="Appointment actions"
-                                                        data-id={appt.id}
-                                                        onclick={handleApptMenu}>
-                                                    </lightning-button-icon>
+                                                <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                            <lightning-icon class="lobby-appt__clock-icon slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
+                                                        </div>
+                                                        <span class="lobby-appt__late-badge slds-m-left_x-small">Late</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="lobby-appt__footer slds-p-horizontal_small slds-p-vertical_x-small">
-                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                <div class="lobby-appt__footer-left slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-                                                    <lightning-icon
-                                                        class="lobby-appt__clock-icon slds-m-right_xx-small"
-                                                        icon-name="utility:event"
-                                                        size="x-small"
-                                                        alternative-text="">
-                                                    </lightning-icon>
-                                                    <span class="lobby-appt__slot slds-truncate">{appt.slot}</span>
-                                                </div>
-                                                <span class="lobby-appt__late-badge slds-m-left_x-small">Late</span>
-                                            </div>
-                                        </div>
+                                        </template>
                                     </div>
                                 </template>
                             </div>
+
                         </div>
                     </article>
                 </lightning-layout-item>

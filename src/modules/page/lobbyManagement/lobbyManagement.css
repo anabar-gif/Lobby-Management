@@ -645,6 +645,59 @@
     color: var(--slds-g-color-on-surface-2, #444);
 }
 
+/* ── Accordion ── */
+.lobby-accordion {
+    border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.lobby-accordion__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.lobby-accordion__header:hover {
+    background: var(--slds-g-color-surface-2, #f8f8f8);
+}
+
+.lobby-accordion__chevron {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+    --slds-c-icon-color-foreground-default: #5c5c5c;
+}
+
+.lobby-accordion__header--open .lobby-accordion__chevron {
+    transform: rotate(90deg);
+}
+
+.lobby-accordion__label {
+    font-size: var(--slds-g-font-scale-1, 0.875rem);
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-1, #181818);
+    flex-shrink: 0;
+}
+
+.lobby-accordion__meta {
+    font-size: var(--slds-g-font-scale-neg-1, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-2, #444);
+    flex: 1;
+}
+
+.lobby-accordion__cards {
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 0.5rem 0 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: #c9c9c9 transparent;
+}
+
 .lobby-appt {
     border-radius: 20px;
     border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #e5e5e5);

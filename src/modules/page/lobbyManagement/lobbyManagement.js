@@ -124,6 +124,21 @@ export default class LobbyManagement extends LightningElement {
     upcomingSectionTime = '10-11 AM';
     pastSectionTime     = '8-9 AM';
 
+    @track sectionCurrentOpen  = true;
+    @track sectionUpcomingOpen = false;
+    @track sectionPastOpen     = false;
+
+    handleSectionToggle(event) {
+        const s = event.currentTarget.dataset.section;
+        if (s === 'current')  this.sectionCurrentOpen  = !this.sectionCurrentOpen;
+        if (s === 'upcoming') this.sectionUpcomingOpen = !this.sectionUpcomingOpen;
+        if (s === 'past')     this.sectionPastOpen     = !this.sectionPastOpen;
+    }
+
+    get accordionCurrentHeaderClass()  { return `lobby-accordion__header${this.sectionCurrentOpen  ? ' lobby-accordion__header--open' : ''}`; }
+    get accordionUpcomingHeaderClass() { return `lobby-accordion__header${this.sectionUpcomingOpen ? ' lobby-accordion__header--open' : ''}`; }
+    get accordionPastHeaderClass()     { return `lobby-accordion__header${this.sectionPastOpen     ? ' lobby-accordion__header--open' : ''}`; }
+
     // ── Metric card helpers ──────────────────────────────────────────────────
 
     _allWaitlistParticipants() {
