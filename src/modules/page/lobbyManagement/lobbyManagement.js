@@ -120,8 +120,8 @@ export default class LobbyManagement extends LightningElement {
         ];
     }
 
-    currentSectionTime = '9:10 AM';
-    upcomingSectionTime = '10:11 AM';
+    currentSectionTime = '9-10 AM';
+    upcomingSectionTime = '10-11 AM';
 
     // ── Metric card helpers ──────────────────────────────────────────────────
 
