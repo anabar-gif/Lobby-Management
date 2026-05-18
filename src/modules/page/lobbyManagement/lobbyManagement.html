@@ -274,6 +274,7 @@
                                             <div key={appt.id} class="lobby-appt slds-m-bottom_small">
                                                 <div class="lobby-appt__body slds-p-around_small">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lobby-service-number-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lobby-appt__identity">
                                                             <div class="lobby-appt__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>{appt.subtitle}</div>
@@ -323,6 +324,7 @@
                                             <div key={appt.id} class="lobby-appt slds-m-bottom_small">
                                                 <div class="lobby-appt__body slds-p-around_small">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lobby-service-number-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lobby-appt__identity">
                                                             <div class="lobby-appt__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>{appt.subtitle}</div>
@@ -372,6 +374,7 @@
                                             <div key={appt.id} class="lobby-appt lobby-appt--past slds-m-bottom_small">
                                                 <div class="lobby-appt__body slds-p-around_small">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lobby-service-number-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lobby-appt__identity">
                                                             <div class="lobby-appt__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lobby-appt__detail slds-m-top_xx-small slds-truncate" title={appt.subtitle}>{appt.subtitle}</div>
@@ -491,7 +494,7 @@
                                                                 <span class="lobby-queue-participant__link">{row.linkLabel}</span>
                                                             </span>
                                                             <template lwc:if={row.isVip}>
-                                                                <span class="lobby-vip-badge">⭐ VIP</span>
+                                                                <span class="lobby-vip-badge">VIP</span>
                                                             </template>
                                                         </div>
                                                         <template lwc:if={row.email}>
@@ -816,7 +819,7 @@
                                                             <span class="lobby-queue-participant__title slds-truncate">
                                                                 <span class="lobby-queue-participant__link">{row.linkLabel}</span>
                                                             </span>
-                                                            <template lwc:if={row.isVip}><span class="lobby-vip-badge">⭐ VIP</span></template>
+                                                            <template lwc:if={row.isVip}><span class="lobby-vip-badge">VIP</span></template>
                                                         </div>
                                                         <template lwc:if={row.email}>
                                                             <div class="lobby-queue-participant__contact slds-m-top_xx-small"><lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email" class="lobby-contact-icon"></lightning-icon> {row.email}</div>
@@ -1139,7 +1142,7 @@
                                                                     <span class="lobby-queue-participant__title slds-truncate">
                                                                         <span class="lobby-queue-participant__link">{row.linkLabel}</span>
                                                                     </span>
-                                                                    <template lwc:if={row.isVip}><span class="lobby-vip-badge">⭐ VIP</span></template>
+                                                                    <template lwc:if={row.isVip}><span class="lobby-vip-badge">VIP</span></template>
                                                                 </div>
                                                                 <template lwc:if={row.email}>
                                                                     <div class="lobby-queue-participant__contact slds-m-top_xx-small"><lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email" class="lobby-contact-icon"></lightning-icon> {row.email}</div>

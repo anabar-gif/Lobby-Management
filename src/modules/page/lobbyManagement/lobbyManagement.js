@@ -949,6 +949,7 @@ export default class LobbyManagement extends LightningElement {
     @track currentAppointments = [
         {
             id: 'a1',
+            appointmentNumber: 'A-1007',
             customerName: 'Arna Sumaiyah',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Service Appointment',
@@ -963,6 +964,7 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'a2',
+            appointmentNumber: 'A-1008',
             customerName: 'James Clain',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Interaction',
@@ -975,6 +977,7 @@ export default class LobbyManagement extends LightningElement {
     @track pastAppointments = [
         {
             id: 'p1',
+            appointmentNumber: 'A-1001',
             customerName: 'David Okafor',
             subtitle: 'Commercial Loan • Anthony Young',
             slot: '8:00 am - 8:30 am',
@@ -983,6 +986,7 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'p2',
+            appointmentNumber: 'A-1002',
             customerName: 'Priya Nair',
             subtitle: 'Wealth Management • Rachel Adams',
             slot: '8:00 am - 8:30 am',
@@ -991,6 +995,7 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'p3',
+            appointmentNumber: 'A-1003',
             customerName: 'Carlos Mendez',
             subtitle: 'Savings Account • Tom Sawyer',
             slot: '8:15 am - 8:45 am',
@@ -999,6 +1004,7 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'p4',
+            appointmentNumber: 'A-1004',
             customerName: 'Aisha Osei',
             subtitle: 'Investment Planning • Adam Milne',
             slot: '8:30 am - 9:00 am',
@@ -1007,6 +1013,7 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'p5',
+            appointmentNumber: 'A-1005',
             customerName: 'Liam Thornton',
             subtitle: 'Branch Services • Rachel Adams',
             slot: '8:30 am - 9:00 am',
@@ -1015,6 +1022,7 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'p6',
+            appointmentNumber: 'A-1006',
             customerName: 'Mei Suzuki',
             subtitle: 'Retail Loan • Michael Scott',
             slot: '8:45 am - 9:15 am',
@@ -1026,6 +1034,7 @@ export default class LobbyManagement extends LightningElement {
     @track upcomingAppointments = [
         {
             id: 'b1',
+            appointmentNumber: 'A-1009',
             customerName: 'Smith Kim',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Interaction',
@@ -1035,6 +1044,7 @@ export default class LobbyManagement extends LightningElement {
         },
         {
             id: 'b2',
+            appointmentNumber: 'A-1010',
             customerName: 'Regina Hem',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Service Appointment',
