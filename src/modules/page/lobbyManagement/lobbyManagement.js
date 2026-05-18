@@ -376,14 +376,8 @@ export default class LobbyManagement extends LightningElement {
     @track globalSearch = '';
 
     handleGlobalSearchChange(event) {
-        this.globalSearch = event.target.value || '';
+        this.globalSearch = event.detail.value || '';
     }
-
-    handleGlobalSearchClear() {
-        this.globalSearch = '';
-    }
-
-    get hasGlobalSearch() { return this.globalSearch.trim().length > 0; }
 
     _filterTopicsBySearch(topics, q) {
         if (!q) return topics;

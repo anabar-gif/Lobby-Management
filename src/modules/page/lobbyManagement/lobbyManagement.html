@@ -68,12 +68,6 @@
                             class="slds-m-left_xx-small"
                             onclick={handleExport}>
                         </lightning-button-icon>
-                        <lightning-button
-                            label={compactViewLabel}
-                            variant="neutral"
-                            class="slds-m-left_xx-small"
-                            onclick={handleToggleCompactView}>
-                        </lightning-button>
                     </div>
                 </div>
             </div>
@@ -82,33 +76,6 @@
         <!-- ── Metric summary bar ── -->
         <div class="lobby-metrics">
 
-            <!-- Filters row inside blue band -->
-            <div class="lobby-metrics__filters">
-                <div class="lobby-metrics__filter-group">
-                    <span class="lobby-metrics__filter-label">Show Waitlists</span>
-                    <lightning-combobox
-                        name="waitlistFilter"
-                        label="Waitlist filter"
-                        variant="label-hidden"
-                        value={selectedWaitlistFilter}
-                        placeholder="All waitlists"
-                        options={waitlistFilterOptions}
-                        onchange={handleWaitlistFilterChange}>
-                    </lightning-combobox>
-                </div>
-                <div class="lobby-metrics__filter-group">
-                    <span class="lobby-metrics__filter-label">Resource</span>
-                    <lightning-combobox
-                        name="resourceFilter"
-                        label="Resource filter"
-                        variant="label-hidden"
-                        value={filterByResource}
-                        placeholder="All Resources"
-                        options={resourceFilterOptions}
-                        onchange={handleResourceFilterChange}>
-                    </lightning-combobox>
-                </div>
-            </div>
 
             <div class="lobby-metrics__grid">
 
@@ -219,19 +186,42 @@
 
         </div>
 
-        <!-- ── Global search bar ── -->
+        <!-- ── Search + filters bar ── -->
         <div class="lobby-search-bar slds-p-horizontal_medium slds-p-vertical_small">
-            <div class="lobby-search-bar__inner">
-                <lightning-icon class="lobby-search-bar__icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
-                <input
-                    type="text"
-                    class="lobby-search-bar__input"
-                    placeholder="Search participants across all queues…"
-                    value={globalSearch}
-                    oninput={handleGlobalSearchChange} />
-                <template lwc:if={hasGlobalSearch}>
-                    <button class="lobby-search-bar__clear" onclick={handleGlobalSearchClear} title="Clear search">✕</button>
-                </template>
+            <lightning-input
+                type="search"
+                label="Search"
+                variant="label-hidden"
+                placeholder="Search participants across all queues…"
+                value={globalSearch}
+                onchange={handleGlobalSearchChange}
+                class="lobby-search-input">
+            </lightning-input>
+            <div class="lobby-search-bar__filters">
+                <div class="lobby-metrics__filter-group">
+                    <span class="lobby-metrics__filter-label">Show Waitlists</span>
+                    <lightning-combobox
+                        name="waitlistFilter"
+                        label="Waitlist filter"
+                        variant="label-hidden"
+                        value={selectedWaitlistFilter}
+                        placeholder="All waitlists"
+                        options={waitlistFilterOptions}
+                        onchange={handleWaitlistFilterChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="lobby-metrics__filter-group">
+                    <span class="lobby-metrics__filter-label">Resource</span>
+                    <lightning-combobox
+                        name="resourceFilter"
+                        label="Resource filter"
+                        variant="label-hidden"
+                        value={filterByResource}
+                        placeholder="All Resources"
+                        options={resourceFilterOptions}
+                        onchange={handleResourceFilterChange}>
+                    </lightning-combobox>
+                </div>
             </div>
         </div>
 
