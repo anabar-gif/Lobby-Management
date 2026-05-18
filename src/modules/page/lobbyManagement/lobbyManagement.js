@@ -780,8 +780,6 @@ export default class LobbyManagement extends LightningElement {
     investmentQueueMetaLeft = 'Showing 1 of 1 Item • Updated 8 min ago';
     investmentQueueMetaRight = 'Total Appointment Duration: 1 hr 0 min';
 
-    @track showAllTopicsGeneral = false;
-    @track showAllTopicsInvestment = false;
     @track showCheckinComposer = false;
     @track showCheckinComposerInvestment = false;
 
@@ -1719,47 +1717,6 @@ export default class LobbyManagement extends LightningElement {
         // Demo: hook for queue filter or sort
     }
 
-    get expandLabelGeneral() {
-        return this.showAllTopicsGeneral ? 'Collapse all Waitlist' : 'Expand all Waitlist';
-    }
-
-    get expandLabelInvestment() {
-        return this.showAllTopicsInvestment ? 'Collapse all Waitlist' : 'Expand all Waitlist';
-    }
-
-    handleShowAllTopicsGeneral(event) {
-        event.preventDefault();
-        if (this._generalAccToggleT) {
-            clearTimeout(this._generalAccToggleT);
-            this._generalAccToggleT = null;
-        }
-        if (this._applyShowAllClearT) {
-            clearTimeout(this._applyShowAllClearT);
-            this._applyShowAllClearT = null;
-        }
-        const on = !this.showAllTopicsGeneral;
-        this.showAllTopicsGeneral = on;
-        if (on) {
-            this._applyingShowAll = true;
-            this.generalBankingOpenSections = [...this.generalBankingTopics.map((t) => t.id)];
-            this._applyShowAllClearT = setTimeout(() => {
-                this._applyShowAllClearT = null;
-                this._applyingShowAll = false;
-                if (this.showAllTopicsGeneral) {
-                    this.generalBankingOpenSections = [...this.generalBankingTopics.map((t) => t.id)];
-                }
-            }, 500);
-        } else {
-            this._applyingShowAll = false;
-            this.generalBankingOpenSections = [];
-        }
-    }
-
-    handleShowAllTopicsInvestment(event) {
-        event.preventDefault();
-        this.showAllTopicsInvestment = !this.showAllTopicsInvestment;
-    }
-
     handleGeneralAccordionToggle(event) {
         this._lastGeneralAccDetail = event.detail;
         if (this._generalAccToggleT) {
@@ -1770,25 +1727,7 @@ export default class LobbyManagement extends LightningElement {
             const d = this._lastGeneralAccDetail;
             const open = d && d.openSections;
             const openArr = Array.isArray(open) ? [...open] : open ? [open] : [];
-            const allIds = this.generalBankingTopics.map((t) => t.id);
-            const isFullSet =
-                allIds.length > 0 &&
-                openArr.length === allIds.length &&
-                allIds.every((id) => openArr.includes(id));
-
-            if (this._applyingShowAll && !isFullSet) {
-                return;
-            }
-            if (isFullSet) {
-                this._applyingShowAll = false;
-                if (this._applyShowAllClearT) {
-                    clearTimeout(this._applyShowAllClearT);
-                    this._applyShowAllClearT = null;
-                }
-            }
-
             this.generalBankingOpenSections = openArr;
-            this.showAllTopicsGeneral = isFullSet;
         }, 16);
     }
 

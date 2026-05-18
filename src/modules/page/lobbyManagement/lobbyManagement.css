@@ -899,7 +899,7 @@
 }
 
 .lobby-card__body-queue {
-    padding-top: 0.25rem;
+    padding-top: 0;
     padding-bottom: var(--slds-g-spacing-4, 1rem);
     padding-left: 0.25rem;
     padding-right: 0.25rem;
@@ -913,27 +913,7 @@
     overflow: visible;
 }
 
-/* Left-align with card body / accordion content (no extra inset) */
-.lobby-queue-toolbar {
-    display: block;
-    padding-inline-start: 0;
-    margin-block-start: 0.25rem;
-    margin-block-end: 0.25rem;
-}
 
-.lobby-expand-link {
-    font-size: 0.8125rem;
-    font-weight: 400;
-    color: #0176d3;
-    text-decoration: none;
-    cursor: pointer;
-    padding-left: 12px;
-}
-
-.lobby-expand-link:hover {
-    text-decoration: underline;
-    color: #014486;
-}
 
 .lobby-queue-accordion {
     display: block;
