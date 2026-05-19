@@ -32,7 +32,7 @@
     --lm2-radius-pill:     var(--slds-g-radius-border-pill, 9999px);
 
     /* Semantic aliases */
-    --lm2-radius-card:     var(--slds-g-radius-border-3, 0.75rem);  /* cards = 12px */
+    --lm2-radius-card:     1rem;  /* 16px */
     --lm2-radius-sm:       var(--slds-g-radius-border-2, 0.5rem);   /* inner elements = 8px */
     --lm2-radius-xs:       var(--slds-g-radius-border-1, 0.25rem);  /* small chips = 4px */
 
