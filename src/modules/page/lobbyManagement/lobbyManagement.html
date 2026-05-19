@@ -19,6 +19,7 @@
                                     menu-alignment="left"
                                     alternative-text="Change branch"
                                     onselect={handleBranchSelect}>
+
                                     <lightning-menu-item label="Business District 2"         value="Business District 2"></lightning-menu-item>
                                     <lightning-menu-item label="High Street 1"               value="High Street 1"></lightning-menu-item>
                                     <lightning-menu-item label="Market St Branch"            value="Market St Branch"></lightning-menu-item>
@@ -29,6 +30,8 @@
                                     <lightning-menu-item label="Virtual Territory"           value="Virtual Territory"></lightning-menu-item>
                                     <lightning-menu-item label="Virtual_Test"                value="Virtual_Test"></lightning-menu-item>
                                 </lightning-button-menu>
+                                <span class="lobby-header__date-divider" aria-hidden="true">|</span>
+                                <span class="lobby-header__date">{todayLabel}</span>
                             </div>
                         </div>
                     </div>

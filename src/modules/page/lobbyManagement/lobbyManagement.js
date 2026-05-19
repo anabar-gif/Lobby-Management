@@ -109,6 +109,10 @@ export default class LobbyManagement extends LightningElement {
         this.selectedBranch = event.detail.value;
     }
 
+    get todayLabel() {
+        return new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    }
+
     @track selectedWaitlistFilter = 'all'; // matches 'All waitlists'
     @track appointmentsListFilter = 'all';
 
@@ -120,9 +124,9 @@ export default class LobbyManagement extends LightningElement {
         ];
     }
 
-    currentSectionTime  = '9-10 AM';
+    currentSectionTime  = '9-11 AM';
     upcomingSectionTime = '10-11 AM';
-    pastSectionTime     = '8-9 AM';
+    pastSectionTime     = '8-10 AM';
 
     @track sectionCurrentOpen  = true;
     @track sectionUpcomingOpen = false;
@@ -2544,8 +2548,13 @@ export default class LobbyManagement extends LightningElement {
     }
 
     handleRescheduleConfirm() {
-        const appt = this._findAppt(this.rschedApptId);
-        this.showRescheduleModal = false;
+        const id   = this.rschedApptId;
+        const appt = this._findAppt(id);
+        this.showRescheduleModal  = false;
+        this.rschedApptId         = null;
+        this.currentAppointments  = this.currentAppointments.filter(a => a.id !== id);
+        this.upcomingAppointments = this.upcomingAppointments.filter(a => a.id !== id);
+        this.pastAppointments     = this.pastAppointments.filter(a => a.id !== id);
         this._showToast(`Service Appointment for ${appt?.customerName || 'customer'} has been rescheduled.`);
     }
 

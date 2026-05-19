@@ -413,9 +413,25 @@
 
 .lobby-header__branch-menu {
     --slds-c-button-text-color: var(--slds-g-color-on-surface-1, #181818);
-    --slds-c-button-font-size: var(--slds-g-font-scale-4, 1.375rem);
-    --slds-c-button-font-weight: var(--slds-g-font-weight-7, 700);
+    --slds-c-button-font-size: 1rem;
+    --slds-c-button-font-weight: 400;
+    font-size: 1rem !important;
     text-align: left;
+}
+
+.lobby-header__date-divider {
+    margin: 0 0.625rem;
+    color: var(--slds-g-color-neutral-base-60, #aeacab);
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.lobby-header__date {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--slds-g-color-on-surface-1, #181818);
+    white-space: nowrap;
 }
 
 .lobby-toolbar__label {
