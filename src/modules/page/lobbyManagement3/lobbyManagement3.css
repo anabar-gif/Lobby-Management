@@ -192,20 +192,15 @@
     box-shadow: inset 0 -3px 0 0 rgba(255,255,255,0.85) !important;
 }
 
-/* Accent bar — brighter on dark blue background */
-.lm2-stat-tile__accent {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    height: 4px;
-    border-radius: 0;
+/* Accent bar — hidden on blue KPI background */
+.lm2-stat-tile__accent,
+.lm2-stat-tile__accent--blue,
+.lm2-stat-tile__accent--green,
+.lm2-stat-tile__accent--orange,
+.lm2-stat-tile__accent--indigo,
+.lm2-stat-tile__accent--red {
+    display: none;
 }
-.lm2-stat-tile__accent--blue   { background: #7eb8ff; }
-.lm2-stat-tile__accent--green  { background: #4cda8a; }
-.lm2-stat-tile__accent--orange { background: #ffb347; }
-.lm2-stat-tile__accent--indigo { background: #b39dff; }
-.lm2-stat-tile__accent--red    { background: #ff7575; }
 
 /* Tile value number — white on blue */
 .lm2-stat-tile__value {
