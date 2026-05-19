@@ -21,9 +21,9 @@ export const routes = [
   {
     path: '/lobby',
     component: 'page-lobby-management',
-    title: 'Lobby Management',
+    title: 'Lobby Management 1',
     navPage: 'lobby',
-    navLabel: 'Lobby Management',
+    navLabel: 'Lobby Management 1',
   },
   {
     path: '/waitlist',
@@ -42,9 +42,9 @@ export const routes = [
   {
     path: '/lobby3',
     component: 'page-lobby-management-3',
-    title: 'Lobby Mgmt 3',
+    title: 'Lobby Management 3',
     navPage: 'lobby3',
-    navLabel: 'Lobby Mgmt 3',
+    navLabel: 'Lobby Management 3',
   },
   {
     path: '/icons',
