@@ -176,10 +176,10 @@
 
         <!-- ── Main 3-Column Layout ── -->
         <div class="lm2-main">
-            <lightning-layout multiple-rows="true" pull-to-boundary="small" class="lm2-layout">
+            <div class="lm2-layout">
 
                 <!-- ── Column 1: Scheduled Appointments ── -->
-                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                <div class="lm2-col">
                     <div class="lm2-col-header">
                         <lightning-icon icon-name="utility:event" size="xx-small" alternative-text=""></lightning-icon>
                         <span>Scheduled Appointments For Today</span>
@@ -360,10 +360,10 @@
 
                         </div>
                     </article>
-                </lightning-layout-item>
+                </div>
 
                 <!-- ── Column 2: General Banking Live Waitlist ── -->
-                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                <div class="lm2-col">
                     <div class="lm2-col-header">
                         <lightning-icon icon-name="utility:people" size="xx-small" alternative-text=""></lightning-icon>
                         <span>Live Waitlists</span>
@@ -381,7 +381,7 @@
                             </header>
                             <div class="slds-no-flex">
                                 <lightning-button-group class="lm2-queue-button-group">
-                                    <lightning-button label="Check In" variant="neutral" title="Check In" onclick={handleQueueCheckIn}></lightning-button>
+                                    <button class="slds-button slds-button_neutral" type="button" onclick={handleQueueCheckIn}>Check In</button>
                                     <lightning-button-icon icon-name="utility:refresh" variant="border-filled" alternative-text="Refresh queue" title="Refresh" onclick={handleRefresh}></lightning-button-icon>
                                 </lightning-button-group>
                             </div>
@@ -466,152 +466,15 @@
                             </lightning-accordion>
                         </div>
 
-                        <!-- Check-in overlay: General Banking -->
-                        <template lwc:if={showCheckinComposer}>
-                            <div class="lm2-overlay-scrim" onclick={handleCloseCheckinComposer}></div>
-                            <div class="lm2-overlay">
-                                <div class="lm2-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                    <span class="lm2-overlay__title">Check In Customer - General Banking</span>
-                                    <button class="slds-button slds-button_icon lm2-overlay__close" title="Close" onclick={handleCloseCheckinComposer}>
-                                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
-                                    </button>
-                                </div>
-                                <div class="lm2-overlay__body">
-                                    <div class="lm2-checkin-field">
-                                        <fieldset class="slds-form-element">
-                                            <legend class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Account Status</legend>
-                                            <div class="slds-form-element__control slds-m-top_xx-small">
-                                                <div class="slds-grid slds-gutters_small">
-                                                    <div class="slds-col">
-                                                        <span class="slds-radio">
-                                                            <input type="radio" id="ci-existing" name="ci-guest-type" value="existing" checked={ciIsExisting} onchange={handleCiGuestTypeChange} />
-                                                            <label class="slds-radio__label" for="ci-existing">
-                                                                <span class="slds-radio_faux"></span>
-                                                                <span class="slds-form-element__label">Existing Customer</span>
-                                                            </label>
-                                                        </span>
-                                                    </div>
-                                                    <div class="slds-col">
-                                                        <span class="slds-radio">
-                                                            <input type="radio" id="ci-new" name="ci-guest-type" value="new" onchange={handleCiGuestTypeChange} />
-                                                            <label class="slds-radio__label" for="ci-new">
-                                                                <span class="slds-radio_faux"></span>
-                                                                <span class="slds-form-element__label">Guest</span>
-                                                            </label>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <template lwc:if={ciIsNewParticipant}>
-                                        <div class="lm2-checkin-field lm2-newp-grid">
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ci-fname"><abbr class="lm2-checkin-required" title="required">*</abbr>First Name</label>
-                                                <input id="ci-fname" type="text" class="lm2-newp-input" placeholder={ciFNamePh} value={ciFirstName} oninput={handleCiFirstNameChange} />
-                                            </div>
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ci-lname"><abbr class="lm2-checkin-required" title="required">*</abbr>Last Name</label>
-                                                <input id="ci-lname" type="text" class="lm2-newp-input" placeholder={ciLNamePh} value={ciLastName} oninput={handleCiLastNameChange} />
-                                            </div>
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ci-contact"><abbr class="lm2-checkin-required" title="required">*</abbr>Contact Number</label>
-                                                <input id="ci-contact" type="tel" class="lm2-newp-input" placeholder={ciContactPh} value={ciContact} oninput={handleCiContactChange} />
-                                            </div>
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ci-company">Company</label>
-                                                <input id="ci-company" type="text" class="lm2-newp-input" placeholder={ciCompanyPh} value={ciCompany} oninput={handleCiCompanyChange} />
-                                            </div>
-                                        </div>
-                                        <div class="lm2-checkin-field">
-                                            <label class="lm2-checkin-label" for="ci-email"><abbr class="lm2-checkin-required" title="required">*</abbr>Email</label>
-                                            <input id="ci-email" type="email" class="lm2-newp-input lm2-newp-input--full" placeholder={ciEmailPh} value={ciEmail} oninput={handleCiEmailChange} />
-                                        </div>
-                                        <div class="lm2-checkin-field">
-                                            <div class="slds-form-element__control">
-                                                <span class="slds-checkbox">
-                                                    <input type="checkbox" id="ci-vip" name="ci-vip" checked={ciIsVip} onchange={handleCiVipChange} />
-                                                    <label class="slds-checkbox__label" for="ci-vip">
-                                                        <span class="slds-checkbox_faux"></span>
-                                                        <span class="slds-form-element__label lm2-checkin-label">VIP Status</span>
-                                                    </label>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <template lwc:else>
-                                        <div class="lm2-checkin-field lm2-participant-field">
-                                            <label class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Customer</label>
-                                            <div class="lm2-grouped-combobox">
-                                                <div class="lm2-grouped-combobox__type-wrap">
-                                                    <button type="button" class="lm2-grouped-combobox__type-btn" onclick={handleParticipantTypeToggle} onblur={handleParticipantTypeBlur}>
-                                                        <span class="lm2-grouped-combobox__type-label">{selectedParticipantType}</span>
-                                                        <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
-                                                    </button>
-                                                    <template lwc:if={showParticipantTypeDropdown}>
-                                                        <div class="lm2-grouped-combobox__type-dropdown">
-                                                            <ul role="listbox">
-                                                                <template for:each={participantTypeOptions} for:item="opt">
-                                                                    <li key={opt.id} class="lm2-grouped-combobox__type-option" data-id={opt.id} role="option" onclick={handleParticipantTypeSelect}>
-                                                                        <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
-                                                                        <span>{opt.label}</span>
-                                                                    </li>
-                                                                </template>
-                                                            </ul>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                                <div class="lm2-grouped-combobox__search-wrap">
-                                                    <input type="text" class="lm2-grouped-combobox__search-input" placeholder="Search..." value={participantSearch} onfocus={handleParticipantFocus} oninput={handleParticipantInput} onblur={handleParticipantBlur} />
-                                                    <lightning-icon class="lm2-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
-                                                    <template lwc:if={showParticipantDropdown}>
-                                                        <div class="lm2-participant-dropdown">
-                                                            <div class="lm2-participant-dropdown__group-label">Recent Items</div>
-                                                            <ul class="lm2-participant-dropdown__list" role="listbox">
-                                                                <template for:each={filteredParticipants} for:item="item">
-                                                                    <li key={item.id} class="lm2-participant-dropdown__option" data-id={item.id} role="option" onclick={handleParticipantSelect}>
-                                                                        <div class="lm2-participant-dropdown__option-icon">
-                                                                            <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
-                                                                        </div>
-                                                                        <div class="lm2-participant-dropdown__option-text">
-                                                                            <div class="lm2-participant-dropdown__option-name">{item.label}</div>
-                                                                            <template lwc:if={item.meta}>
-                                                                                <div class="lm2-participant-dropdown__option-meta">{item.meta}</div>
-                                                                            </template>
-                                                                        </div>
-                                                                    </li>
-                                                                </template>
-                                                            </ul>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <div class="lm2-checkin-field">
-                                        <label class="lm2-checkin-label" for="ci-topic"><abbr class="lm2-checkin-required" title="required">*</abbr> Service Required</label>
-                                        <lightning-combobox id="ci-topic" label="Service Required" variant="label-hidden" value={ciTopic} options={checkinTopicOptions} onchange={handleCiTopicChange}></lightning-combobox>
-                                    </div>
-                                    <div class="lm2-checkin-field">
-                                        <label class="lm2-checkin-label" for="ci-desc">Description</label>
-                                        <lightning-textarea id="ci-desc" label="Description" variant="label-hidden" value={ciDesc} placeholder={ciDescPh} max-length="500" onchange={handleCiDescChange}></lightning-textarea>
-                                    </div>
-                                    <div class="lm2-checkin-field">
-                                        <label class="lm2-checkin-label" for="ci-resource">Preferred Resource</label>
-                                        <lightning-combobox id="ci-resource" label="Preferred Resource" variant="label-hidden" value={ciResource} options={checkinResourceOptions} onchange={handleCiResourceChange}></lightning-combobox>
-                                    </div>
-                                </div>
-                                <div class="lm2-overlay__footer">
-                                    <lightning-button label="Check In" variant="brand" onclick={handleSubmitCheckinComposer}></lightning-button>
-                                </div>
-                            </div>
-                        </template>
                     </article>
-                </lightning-layout-item>
+                </div>
 
                 <!-- ── Column 3: Investment Banking ── -->
-                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
-                    <div class="lm2-col-header-spacer"></div>
+                <div class="lm2-col">
+                    <div class="lm2-col-header lm2-col-header--hidden" aria-hidden="true">
+                        <lightning-icon icon-name="utility:people" size="xx-small" alternative-text=""></lightning-icon>
+                        <span>&nbsp;</span>
+                    </div>
                     <article class="lm2-card lm2-card--queue">
                         <div class="lm2-card__header slds-grid">
                             <header class="slds-col slds-has-flexi-truncate">
@@ -624,7 +487,7 @@
                             </header>
                             <div class="slds-no-flex">
                                 <lightning-button-group class="lm2-queue-button-group">
-                                    <lightning-button label="Check In" variant="neutral" title="Check In" onclick={handleInvestmentQueueCheckIn}></lightning-button>
+                                    <button class="slds-button slds-button_neutral" type="button" onclick={handleInvestmentQueueCheckIn}>Check In</button>
                                     <lightning-button-icon icon-name="utility:refresh" variant="border-filled" alternative-text="Refresh queue" title="Refresh" onclick={handleRefresh}></lightning-button-icon>
                                 </lightning-button-group>
                             </div>
@@ -706,152 +569,12 @@
                             </lightning-accordion>
                         </div>
 
-                        <!-- Check-in overlay: Investment Banking -->
-                        <template lwc:if={showCheckinComposerInvestment}>
-                            <div class="lm2-overlay-scrim" onclick={handleCloseInvestmentCheckinComposer}></div>
-                            <div class="lm2-overlay">
-                                <div class="lm2-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                    <span class="lm2-overlay__title">Check In Customer - Investment Banking</span>
-                                    <button class="slds-button slds-button_icon lm2-overlay__close" title="Close" onclick={handleCloseInvestmentCheckinComposer}>
-                                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
-                                    </button>
-                                </div>
-                                <div class="lm2-overlay__body">
-                                    <div class="lm2-checkin-field">
-                                        <fieldset class="slds-form-element">
-                                            <legend class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Account Status</legend>
-                                            <div class="slds-form-element__control slds-m-top_xx-small">
-                                                <div class="slds-grid slds-gutters_small">
-                                                    <div class="slds-col">
-                                                        <span class="slds-radio">
-                                                            <input type="radio" id="ib-ci-existing" name="ib-ci-guest-type" value="existing" checked={ibCiIsExisting} onchange={handleIbCiGuestTypeChange} />
-                                                            <label class="slds-radio__label" for="ib-ci-existing">
-                                                                <span class="slds-radio_faux"></span>
-                                                                <span class="slds-form-element__label">Existing Customer</span>
-                                                            </label>
-                                                        </span>
-                                                    </div>
-                                                    <div class="slds-col">
-                                                        <span class="slds-radio">
-                                                            <input type="radio" id="ib-ci-new" name="ib-ci-guest-type" value="new" onchange={handleIbCiGuestTypeChange} />
-                                                            <label class="slds-radio__label" for="ib-ci-new">
-                                                                <span class="slds-radio_faux"></span>
-                                                                <span class="slds-form-element__label">Guest</span>
-                                                            </label>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <template lwc:if={ibCiIsNewParticipant}>
-                                        <div class="lm2-checkin-field lm2-newp-grid">
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ib-ci-fname"><abbr class="lm2-checkin-required" title="required">*</abbr>First Name</label>
-                                                <input id="ib-ci-fname" type="text" class="lm2-newp-input" placeholder={ibCiFNamePh} value={ibCiFirstName} oninput={handleIbCiFirstNameChange} />
-                                            </div>
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ib-ci-lname"><abbr class="lm2-checkin-required" title="required">*</abbr>Last Name</label>
-                                                <input id="ib-ci-lname" type="text" class="lm2-newp-input" placeholder={ibCiLNamePh} value={ibCiLastName} oninput={handleIbCiLastNameChange} />
-                                            </div>
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ib-ci-contact"><abbr class="lm2-checkin-required" title="required">*</abbr>Contact Number</label>
-                                                <input id="ib-ci-contact" type="tel" class="lm2-newp-input" placeholder={ibCiContactPh} value={ibCiContact} oninput={handleIbCiContactChange} />
-                                            </div>
-                                            <div class="lm2-newp-col">
-                                                <label class="lm2-checkin-label" for="ib-ci-company">Company</label>
-                                                <input id="ib-ci-company" type="text" class="lm2-newp-input" placeholder={ibCiCompanyPh} value={ibCiCompany} oninput={handleIbCiCompanyChange} />
-                                            </div>
-                                        </div>
-                                        <div class="lm2-checkin-field">
-                                            <label class="lm2-checkin-label" for="ib-ci-email"><abbr class="lm2-checkin-required" title="required">*</abbr>Email</label>
-                                            <input id="ib-ci-email" type="email" class="lm2-newp-input lm2-newp-input--full" placeholder={ibCiEmailPh} value={ibCiEmail} oninput={handleIbCiEmailChange} />
-                                        </div>
-                                        <div class="lm2-checkin-field">
-                                            <div class="slds-form-element__control">
-                                                <span class="slds-checkbox">
-                                                    <input type="checkbox" id="ib-ci-vip" name="ib-ci-vip" checked={ibCiIsVip} onchange={handleIbCiVipChange} />
-                                                    <label class="slds-checkbox__label" for="ib-ci-vip">
-                                                        <span class="slds-checkbox_faux"></span>
-                                                        <span class="slds-form-element__label lm2-checkin-label">VIP Status</span>
-                                                    </label>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <template lwc:else>
-                                        <div class="lm2-checkin-field lm2-participant-field">
-                                            <label class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Customer</label>
-                                            <div class="lm2-grouped-combobox">
-                                                <div class="lm2-grouped-combobox__type-wrap">
-                                                    <button type="button" class="lm2-grouped-combobox__type-btn" onclick={handleParticipantTypeToggleInvestment} onblur={handleParticipantTypeBlurInvestment}>
-                                                        <span class="lm2-grouped-combobox__type-label">{selectedParticipantTypeInvestment}</span>
-                                                        <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
-                                                    </button>
-                                                    <template lwc:if={showParticipantTypeDropdownInvestment}>
-                                                        <div class="lm2-grouped-combobox__type-dropdown">
-                                                            <ul role="listbox">
-                                                                <template for:each={participantTypeOptions} for:item="opt">
-                                                                    <li key={opt.id} class="lm2-grouped-combobox__type-option" data-id={opt.id} role="option" onclick={handleParticipantTypeSelectInvestment}>
-                                                                        <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
-                                                                        <span>{opt.label}</span>
-                                                                    </li>
-                                                                </template>
-                                                            </ul>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                                <div class="lm2-grouped-combobox__search-wrap">
-                                                    <input type="text" class="lm2-grouped-combobox__search-input" placeholder="Search..." value={participantSearchInvestment} onfocus={handleParticipantFocusInvestment} oninput={handleParticipantInputInvestment} onblur={handleParticipantBlurInvestment} />
-                                                    <lightning-icon class="lm2-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
-                                                    <template lwc:if={showParticipantDropdownInvestment}>
-                                                        <div class="lm2-participant-dropdown">
-                                                            <div class="lm2-participant-dropdown__group-label">Recent Items</div>
-                                                            <ul class="lm2-participant-dropdown__list" role="listbox">
-                                                                <template for:each={filteredParticipantsInvestment} for:item="item">
-                                                                    <li key={item.id} class="lm2-participant-dropdown__option" data-id={item.id} role="option" onclick={handleParticipantSelectInvestment}>
-                                                                        <div class="lm2-participant-dropdown__option-icon">
-                                                                            <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
-                                                                        </div>
-                                                                        <div class="lm2-participant-dropdown__option-text">
-                                                                            <div class="lm2-participant-dropdown__option-name">{item.label}</div>
-                                                                            <template lwc:if={item.meta}>
-                                                                                <div class="lm2-participant-dropdown__option-meta">{item.meta}</div>
-                                                                            </template>
-                                                                        </div>
-                                                                    </li>
-                                                                </template>
-                                                            </ul>
-                                                        </div>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <div class="lm2-checkin-field">
-                                        <label class="lm2-checkin-label" for="ib-ci-topic"><abbr class="lm2-checkin-required" title="required">*</abbr> Service Required</label>
-                                        <lightning-combobox id="ib-ci-topic" label="Service Required" variant="label-hidden" value={ibCiTopic} options={ibCheckinTopicOptions} onchange={handleIbCiTopicChange}></lightning-combobox>
-                                    </div>
-                                    <div class="lm2-checkin-field">
-                                        <label class="lm2-checkin-label" for="ib-ci-desc">Description</label>
-                                        <lightning-textarea id="ib-ci-desc" label="Description" variant="label-hidden" value={ibCiDesc} placeholder={ibCiDescPh} max-length="500" onchange={handleIbCiDescChange}></lightning-textarea>
-                                    </div>
-                                    <div class="lm2-checkin-field">
-                                        <label class="lm2-checkin-label" for="ib-ci-resource">Preferred Resource</label>
-                                        <lightning-combobox id="ib-ci-resource" label="Preferred Resource" variant="label-hidden" value={ibCiResource} options={checkinResourceOptions} onchange={handleIbCiResourceChange}></lightning-combobox>
-                                    </div>
-                                </div>
-                                <div class="lm2-overlay__footer">
-                                    <lightning-button label="Check In" variant="brand" onclick={handleSubmitCheckinComposerInvestment}></lightning-button>
-                                </div>
-                            </div>
-                        </template>
                     </article>
-                </lightning-layout-item>
+                </div>
 
                 <!-- ── Dynamic Waitlists ── -->
                 <template for:each={enrichedDynamicWaitlists} for:item="wl">
-                    <lightning-layout-item key={wl.id} size="12" large-device-size="4" padding="horizontal-small">
+                    <div class="lm2-col" key={wl.id}>
                         <div class="lm2-col-header-spacer"></div>
                         <article class="lm2-card lm2-card--queue">
                             <div class="lm2-card__header slds-grid">
@@ -1119,11 +842,305 @@
                                 </div>
                             </template>
                         </article>
-                    </lightning-layout-item>
+                    </div>
                 </template>
 
-            </lightning-layout>
+            </div>
         </div>
+
+        <!-- ── Check-in overlay: General Banking (fixed bottom-right) ── -->
+        <template lwc:if={lm2_gbCheckinOpen}>
+            <div class="lobby-checkin-overlay-scrim" onclick={handleCloseCheckinComposer}></div>
+            <div class="lobby-checkin-overlay">
+                <div class="lobby-checkin-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <span class="lobby-checkin-overlay__title">Check In Customer - General Banking</span>
+                    <button class="slds-button slds-button_icon lobby-checkin-overlay__close" title="Close" onclick={handleCloseCheckinComposer}>
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                    </button>
+                </div>
+                <div class="lobby-checkin-overlay__body">
+                    <div class="lobby-checkin-field">
+                        <fieldset class="slds-form-element">
+                            <legend class="lobby-checkin-label">
+                                <abbr class="lobby-checkin-required" title="required">*</abbr> Account Status
+                            </legend>
+                            <div class="slds-form-element__control slds-m-top_xx-small">
+                                <div class="slds-grid slds-gutters_small">
+                                    <div class="slds-col">
+                                        <span class="slds-radio">
+                                            <input type="radio" id="ci-existing" name="ci-guest-type" value="existing" checked={ciIsExisting} onchange={handleCiGuestTypeChange} />
+                                            <label class="slds-radio__label" for="ci-existing">
+                                                <span class="slds-radio_faux"></span>
+                                                <span class="slds-form-element__label">Existing Customer</span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span class="slds-radio">
+                                            <input type="radio" id="ci-new" name="ci-guest-type" value="new" onchange={handleCiGuestTypeChange} />
+                                            <label class="slds-radio__label" for="ci-new">
+                                                <span class="slds-radio_faux"></span>
+                                                <span class="slds-form-element__label">Guest</span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <template lwc:if={ciIsNewParticipant}>
+                        <div class="lobby-checkin-field lobby-newp-grid">
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
+                                <input id="ci-fname" type="text" class="lobby-newp-input" placeholder={ciFNamePh} value={ciFirstName} oninput={handleCiFirstNameChange} />
+                            </div>
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
+                                <input id="ci-lname" type="text" class="lobby-newp-input" placeholder={ciLNamePh} value={ciLastName} oninput={handleCiLastNameChange} />
+                            </div>
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
+                                <input id="ci-contact" type="tel" class="lobby-newp-input" placeholder={ciContactPh} value={ciContact} oninput={handleCiContactChange} />
+                            </div>
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ci-company">Company</label>
+                                <input id="ci-company" type="text" class="lobby-newp-input" placeholder={ciCompanyPh} value={ciCompany} oninput={handleCiCompanyChange} />
+                            </div>
+                        </div>
+                        <div class="lobby-checkin-field">
+                            <label class="lobby-checkin-label" for="ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
+                            <input id="ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={ciEmailPh} value={ciEmail} oninput={handleCiEmailChange} />
+                        </div>
+                        <div class="lobby-checkin-field">
+                            <div class="slds-form-element__control">
+                                <span class="slds-checkbox">
+                                    <input type="checkbox" id="ci-vip" name="ci-vip" checked={ciIsVip} onchange={handleCiVipChange} />
+                                    <label class="slds-checkbox__label" for="ci-vip">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label lobby-checkin-label">VIP Status</span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="lobby-checkin-field lobby-participant-field">
+                            <label class="lobby-checkin-label">
+                                <abbr class="lobby-checkin-required" title="required">*</abbr> Customer
+                            </label>
+                            <div class="lobby-grouped-combobox">
+                                <div class="lobby-grouped-combobox__type-wrap">
+                                    <button type="button" class="lobby-grouped-combobox__type-btn" onclick={handleParticipantTypeToggle} onblur={handleParticipantTypeBlur}>
+                                        <span class="lobby-grouped-combobox__type-label">{selectedParticipantType}</span>
+                                        <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
+                                    </button>
+                                    <template lwc:if={showParticipantTypeDropdown}>
+                                        <div class="lobby-grouped-combobox__type-dropdown">
+                                            <ul role="listbox">
+                                                <template for:each={participantTypeOptions} for:item="opt">
+                                                    <li key={opt.id} class="lobby-grouped-combobox__type-option" data-id={opt.id} role="option" onclick={handleParticipantTypeSelect}>
+                                                        <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
+                                                        <span>{opt.label}</span>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="lobby-grouped-combobox__search-wrap">
+                                    <input type="text" class="lobby-grouped-combobox__search-input" placeholder="Search..." value={participantSearch} onfocus={handleParticipantFocus} oninput={handleParticipantInput} onblur={handleParticipantBlur} />
+                                    <lightning-icon class="lobby-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
+                                    <template lwc:if={showParticipantDropdown}>
+                                        <div class="lobby-participant-combobox__dropdown">
+                                            <div class="lobby-participant-combobox__group-label">Recent Items</div>
+                                            <ul class="lobby-participant-combobox__list" role="listbox">
+                                                <template for:each={filteredParticipants} for:item="item">
+                                                    <li key={item.id} class="lobby-participant-combobox__option" data-id={item.id} role="option" onclick={handleParticipantSelect}>
+                                                        <div class="lobby-participant-combobox__option-icon">
+                                                            <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
+                                                        </div>
+                                                        <div class="lobby-participant-combobox__option-text">
+                                                            <div class="lobby-participant-combobox__option-name">{item.label}</div>
+                                                            <template lwc:if={item.meta}>
+                                                                <div class="lobby-participant-combobox__option-meta">{item.meta}</div>
+                                                            </template>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="lobby-checkin-field">
+                        <label class="lobby-checkin-label" for="ci-topic">
+                            <abbr class="lobby-checkin-required" title="required">*</abbr> Service Required
+                        </label>
+                        <lightning-combobox id="ci-topic" label="Service Required" variant="label-hidden" value={ciTopic} options={checkinTopicOptions} onchange={handleCiTopicChange}></lightning-combobox>
+                    </div>
+                    <div class="lobby-checkin-field">
+                        <label class="lobby-checkin-label" for="ci-desc">Description</label>
+                        <lightning-textarea id="ci-desc" label="Description" variant="label-hidden" value={ciDesc} placeholder={ciDescPh} max-length="500" onchange={handleCiDescChange}></lightning-textarea>
+                    </div>
+                    <div class="lobby-checkin-field">
+                        <label class="lobby-checkin-label" for="ci-resource">Preferred Resource</label>
+                        <lightning-combobox id="ci-resource" label="Preferred Resource" variant="label-hidden" value={ciResource} options={checkinResourceOptions} onchange={handleCiResourceChange}></lightning-combobox>
+                    </div>
+                </div>
+                <div class="lobby-checkin-overlay__footer">
+                    <lightning-button label="Check In" variant="brand" onclick={handleSubmitCheckinComposer}></lightning-button>
+                </div>
+            </div>
+        </template>
+
+        <!-- ── Check-in overlay: Investment Banking (fixed bottom-right) ── -->
+        <template lwc:if={lm2_ibCheckinOpen}>
+            <div class="lobby-checkin-overlay-scrim" onclick={handleCloseInvestmentCheckinComposer}></div>
+            <div class="lobby-checkin-overlay">
+                <div class="lobby-checkin-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                    <span class="lobby-checkin-overlay__title">Check In Customer - Investment Banking</span>
+                    <button class="slds-button slds-button_icon lobby-checkin-overlay__close" title="Close" onclick={handleCloseInvestmentCheckinComposer}>
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                    </button>
+                </div>
+                <div class="lobby-checkin-overlay__body">
+                    <div class="lobby-checkin-field">
+                        <fieldset class="slds-form-element">
+                            <legend class="lobby-checkin-label">
+                                <abbr class="lobby-checkin-required" title="required">*</abbr> Account Status
+                            </legend>
+                            <div class="slds-form-element__control slds-m-top_xx-small">
+                                <div class="slds-grid slds-gutters_small">
+                                    <div class="slds-col">
+                                        <span class="slds-radio">
+                                            <input type="radio" id="ib-ci-existing" name="ib-ci-guest-type" value="existing" checked={ibCiIsExisting} onchange={handleIbCiGuestTypeChange} />
+                                            <label class="slds-radio__label" for="ib-ci-existing">
+                                                <span class="slds-radio_faux"></span>
+                                                <span class="slds-form-element__label">Existing Customer</span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <span class="slds-radio">
+                                            <input type="radio" id="ib-ci-new" name="ib-ci-guest-type" value="new" onchange={handleIbCiGuestTypeChange} />
+                                            <label class="slds-radio__label" for="ib-ci-new">
+                                                <span class="slds-radio_faux"></span>
+                                                <span class="slds-form-element__label">Guest</span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <template lwc:if={ibCiIsNewParticipant}>
+                        <div class="lobby-checkin-field lobby-newp-grid">
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ib-ci-fname"><abbr class="lobby-checkin-required" title="required">*</abbr>First Name</label>
+                                <input id="ib-ci-fname" type="text" class="lobby-newp-input" placeholder={ibCiFNamePh} value={ibCiFirstName} oninput={handleIbCiFirstNameChange} />
+                            </div>
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ib-ci-lname"><abbr class="lobby-checkin-required" title="required">*</abbr>Last Name</label>
+                                <input id="ib-ci-lname" type="text" class="lobby-newp-input" placeholder={ibCiLNamePh} value={ibCiLastName} oninput={handleIbCiLastNameChange} />
+                            </div>
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ib-ci-contact"><abbr class="lobby-checkin-required" title="required">*</abbr>Contact Number</label>
+                                <input id="ib-ci-contact" type="tel" class="lobby-newp-input" placeholder={ibCiContactPh} value={ibCiContact} oninput={handleIbCiContactChange} />
+                            </div>
+                            <div class="lobby-newp-col">
+                                <label class="lobby-checkin-label" for="ib-ci-company">Company</label>
+                                <input id="ib-ci-company" type="text" class="lobby-newp-input" placeholder={ibCiCompanyPh} value={ibCiCompany} oninput={handleIbCiCompanyChange} />
+                            </div>
+                        </div>
+                        <div class="lobby-checkin-field">
+                            <label class="lobby-checkin-label" for="ib-ci-email"><abbr class="lobby-checkin-required" title="required">*</abbr>Email</label>
+                            <input id="ib-ci-email" type="email" class="lobby-newp-input lobby-newp-input--full" placeholder={ibCiEmailPh} value={ibCiEmail} oninput={handleIbCiEmailChange} />
+                        </div>
+                        <div class="lobby-checkin-field">
+                            <div class="slds-form-element__control">
+                                <span class="slds-checkbox">
+                                    <input type="checkbox" id="ib-ci-vip" name="ib-ci-vip" checked={ibCiIsVip} onchange={handleIbCiVipChange} />
+                                    <label class="slds-checkbox__label" for="ib-ci-vip">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label lobby-checkin-label">VIP Status</span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="lobby-checkin-field lobby-participant-field">
+                            <label class="lobby-checkin-label">
+                                <abbr class="lobby-checkin-required" title="required">*</abbr> Customer
+                            </label>
+                            <div class="lobby-grouped-combobox">
+                                <div class="lobby-grouped-combobox__type-wrap">
+                                    <button type="button" class="lobby-grouped-combobox__type-btn" onclick={handleParticipantTypeToggleInvestment} onblur={handleParticipantTypeBlurInvestment}>
+                                        <span class="lobby-grouped-combobox__type-label">{selectedParticipantTypeInvestment}</span>
+                                        <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
+                                    </button>
+                                    <template lwc:if={showParticipantTypeDropdownInvestment}>
+                                        <div class="lobby-grouped-combobox__type-dropdown">
+                                            <ul role="listbox">
+                                                <template for:each={participantTypeOptions} for:item="opt">
+                                                    <li key={opt.id} class="lobby-grouped-combobox__type-option" data-id={opt.id} role="option" onclick={handleParticipantTypeSelectInvestment}>
+                                                        <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
+                                                        <span>{opt.label}</span>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="lobby-grouped-combobox__search-wrap">
+                                    <input type="text" class="lobby-grouped-combobox__search-input" placeholder="Search..." value={participantSearchInvestment} onfocus={handleParticipantFocusInvestment} oninput={handleParticipantInputInvestment} onblur={handleParticipantBlurInvestment} />
+                                    <lightning-icon class="lobby-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
+                                    <template lwc:if={showParticipantDropdownInvestment}>
+                                        <div class="lobby-participant-combobox__dropdown">
+                                            <div class="lobby-participant-combobox__group-label">Recent Items</div>
+                                            <ul class="lobby-participant-combobox__list" role="listbox">
+                                                <template for:each={filteredParticipantsInvestment} for:item="item">
+                                                    <li key={item.id} class="lobby-participant-combobox__option" data-id={item.id} role="option" onclick={handleParticipantSelectInvestment}>
+                                                        <div class="lobby-participant-combobox__option-icon">
+                                                            <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
+                                                        </div>
+                                                        <div class="lobby-participant-combobox__option-text">
+                                                            <div class="lobby-participant-combobox__option-name">{item.label}</div>
+                                                            <template lwc:if={item.meta}>
+                                                                <div class="lobby-participant-combobox__option-meta">{item.meta}</div>
+                                                            </template>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="lobby-checkin-field">
+                        <label class="lobby-checkin-label" for="ib-ci-topic">
+                            <abbr class="lobby-checkin-required" title="required">*</abbr> Service Required
+                        </label>
+                        <lightning-combobox id="ib-ci-topic" label="Service Required" variant="label-hidden" value={ibCiTopic} options={ibCheckinTopicOptions} onchange={handleIbCiTopicChange}></lightning-combobox>
+                    </div>
+                    <div class="lobby-checkin-field">
+                        <label class="lobby-checkin-label" for="ib-ci-desc">Description</label>
+                        <lightning-textarea id="ib-ci-desc" label="Description" variant="label-hidden" value={ibCiDesc} placeholder={ibCiDescPh} max-length="500" onchange={handleIbCiDescChange}></lightning-textarea>
+                    </div>
+                    <div class="lobby-checkin-field">
+                        <label class="lobby-checkin-label" for="ib-ci-resource">Preferred Resource</label>
+                        <lightning-combobox id="ib-ci-resource" label="Preferred Resource" variant="label-hidden" value={ibCiResource} options={checkinResourceOptions} onchange={handleIbCiResourceChange}></lightning-combobox>
+                    </div>
+                </div>
+                <div class="lobby-checkin-overlay__footer">
+                    <lightning-button label="Check In" variant="brand" onclick={handleSubmitCheckinComposerInvestment}></lightning-button>
+                </div>
+            </div>
+        </template>
 
         <!-- ── Global appointment action context menu ── -->
         <template lwc:if={activeApptMenuId}>
