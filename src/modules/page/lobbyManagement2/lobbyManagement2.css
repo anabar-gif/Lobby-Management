@@ -439,6 +439,10 @@
 
 .lm2-accordion__cards {
     padding: 0.25rem 0 0.25rem 0.5rem;
+    max-height: 580px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #c9c9c9 transparent;
 }
 
 /* ============================================================
