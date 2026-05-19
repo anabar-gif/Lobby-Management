@@ -40,6 +40,13 @@ export const routes = [
     navLabel: 'Lobby Management 2',
   },
   {
+    path: '/lobby3',
+    component: 'page-lobby-management-3',
+    title: 'Lobby Mgmt 3',
+    navPage: 'lobby3',
+    navLabel: 'Lobby Mgmt 3',
+  },
+  {
     path: '/icons',
     component: 'page-icon-test',
     title: 'Icons',
