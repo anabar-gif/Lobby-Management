@@ -18,7 +18,7 @@
                     if:true={isWaffleMenuOpen}
                     onkeydown={handleWaffleMenuKeydown}>
                     <ul class="slds-dropdown__list" role="group">
-                        <template for:each={navItems} for:item="item">
+                        <template for:each={waffleItems} for:item="item">
                             <li key={item.page} class="slds-dropdown__item" role="presentation">
                                 <a
                                     href={item.path}
@@ -40,17 +40,62 @@
         <nav class="slds-context-bar__secondary" role="navigation" aria-label="App navigation">
             <ul class="slds-grid slds-container_fluid">
                 <template for:each={navItemsWithActive} for:item="item">
-                    <li key={item.page} class={item.tabClass}>
-                        <a
-                            href={item.path}
-                            class="slds-context-bar__label-action"
-                            title={item.label}
-                            data-page={item.page}
-                            onclick={handleNavItemClick}>
-                            <span class="slds-assistive-text" if:true={item.isActive}>Current Page:</span>
-                            <span class="slds-truncate" title={item.label}>{item.label}</span>
-                        </a>
-                    </li>
+                    <!-- Plain tab (no children) -->
+                    <template lwc:if={item.isPlain}>
+                        <li key={item.page} class={item.tabClass}>
+                            <a
+                                href={item.path}
+                                class="slds-context-bar__label-action"
+                                title={item.label}
+                                data-page={item.page}
+                                onclick={handleNavItemClick}>
+                                <span class="slds-assistive-text" if:true={item.isActive}>Current Page:</span>
+                                <span class="slds-truncate" title={item.label}>{item.label}</span>
+                            </a>
+                        </li>
+                    </template>
+                    <!-- Grouped dropdown tab -->
+                    <template lwc:else>
+                        <li key={item.page} class={item.tabClass}>
+                            <a
+                                href={item.path}
+                                class="slds-context-bar__label-action"
+                                title={item.label}
+                                data-page={item.page}
+                                onclick={handleGroupTabClick}>
+                                <span class="slds-assistive-text" if:true={item.isActive}>Current Page:</span>
+                                <span class="slds-truncate" title={item.label}>{item.label}</span>
+                                <lightning-icon
+                                    icon-name="utility:chevrondown"
+                                    size="xx-small"
+                                    class="slds-m-left_xx-small nav-group__chevron">
+                                </lightning-icon>
+                            </a>
+                            <div class={item.dropdownClass} role="menu" aria-label={item.label}>
+                                <ul class="slds-dropdown__list" role="group">
+                                    <template for:each={item.children} for:item="child">
+                                        <li key={child.page} class="slds-dropdown__item" role="presentation">
+                                            <a
+                                                href={child.path}
+                                                class={child.linkClass}
+                                                role="menuitem"
+                                                tabindex="0"
+                                                data-page={child.page}
+                                                onclick={handleGroupItemClick}>
+                                                <span class="slds-truncate" title={child.label}>{child.label}</span>
+                                                <lightning-icon
+                                                    lwc:if={child.isActive}
+                                                    icon-name="utility:check"
+                                                    size="xx-small"
+                                                    class="slds-m-left_x-small nav-group__check">
+                                                </lightning-icon>
+                                            </a>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </li>
+                    </template>
                 </template>
             </ul>
         </nav>

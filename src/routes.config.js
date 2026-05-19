@@ -24,13 +24,8 @@ export const routes = [
     title: 'Lobby Management 1',
     navPage: 'lobby',
     navLabel: 'Lobby Management 1',
-  },
-  {
-    path: '/waitlist',
-    component: 'page-waitlist-management',
-    title: 'Waitlist Management',
-    navPage: 'waitlist',
-    navLabel: 'Waitlist Management',
+    navGroup: 'lobby',
+    navGroupLabel: 'Lobby Management',
   },
   {
     path: '/lobby2',
@@ -38,6 +33,8 @@ export const routes = [
     title: 'Lobby Management 2',
     navPage: 'lobby2',
     navLabel: 'Lobby Management 2',
+    navGroup: 'lobby',
+    navGroupLabel: 'Lobby Management',
   },
   {
     path: '/lobby3',
@@ -45,6 +42,15 @@ export const routes = [
     title: 'Lobby Management 3',
     navPage: 'lobby3',
     navLabel: 'Lobby Management 3',
+    navGroup: 'lobby',
+    navGroupLabel: 'Lobby Management',
+  },
+  {
+    path: '/waitlist',
+    component: 'page-waitlist-management',
+    title: 'Waitlist Management',
+    navPage: 'waitlist',
+    navLabel: 'Waitlist Management',
   },
   {
     path: '/icons',

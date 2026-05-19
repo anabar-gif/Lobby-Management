@@ -27,20 +27,54 @@ const ROUTE_COMPONENTS = {
     'page-contact-detail': ContactDetail,
 };
 
-/** Derived from routes.config: component name → nav page id (includes navHighlight for child routes) */
+/** Derived from routes.config: component name → nav page id (or group id) for active-tab highlighting */
 const ROUTE_TO_NAV_PAGE = Object.fromEntries(
-    routes.filter((r) => r.navPage || r.navHighlight).map((r) => [r.component, r.navPage ?? r.navHighlight])
+    routes
+        .filter((r) => r.navPage || r.navHighlight)
+        .map((r) => [r.component, r.navGroup ?? r.navPage ?? r.navHighlight])
 );
+
+/** Nav items for global navigation (tabs + waffle).
+ *  Routes that share a navGroup are collapsed into one dropdown entry.
+ */
+const NAV_ITEMS = (() => {
+    const items = [];
+    const groupSeen = new Set();
+    for (const r of routes.filter((r) => r.navPage)) {
+        if (r.navGroup) {
+            if (!groupSeen.has(r.navGroup)) {
+                groupSeen.add(r.navGroup);
+                const children = routes
+                    .filter((c) => c.navGroup === r.navGroup && c.navPage)
+                    .map((c) => ({ page: c.navPage, label: c.navLabel, path: c.navPath ?? c.path }));
+                items.push({
+                    page: r.navGroup,
+                    label: r.navGroupLabel,
+                    path: r.navPath ?? r.path,
+                    isGroup: true,
+                    children,
+                });
+            }
+        } else {
+            items.push({ page: r.navPage, label: r.navLabel, path: r.navPath ?? r.path });
+        }
+    }
+    return items;
+})();
 
 /** Derived from routes.config: nav page id → path for navigate() */
-const NAV_PAGE_TO_PATH = Object.fromEntries(
-    routes.filter((r) => r.navPage).map((r) => [r.navPage, r.navPath ?? r.path])
-);
-
-/** Nav items for global navigation (tabs + waffle). From routes with navPage. */
-const NAV_ITEMS = routes
-    .filter((r) => r.navPage)
-    .map((r) => ({ page: r.navPage, label: r.navLabel, path: r.navPath ?? r.path }));
+const NAV_PAGE_TO_PATH = (() => {
+    const map = Object.fromEntries(
+        routes.filter((r) => r.navPage).map((r) => [r.navPage, r.navPath ?? r.path])
+    );
+    // Map group id → first child's path
+    for (const item of NAV_ITEMS) {
+        if (item.isGroup && item.children.length) {
+            map[item.page] = item.children[0].path;
+        }
+    }
+    return map;
+})();
 
 const STORAGE_KEY_SLDS_VERSION = 'slds-ui-slds-version';
 const STORAGE_KEY_DARK_MODE = 'slds-ui-dark-mode';

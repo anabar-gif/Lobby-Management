@@ -2,3 +2,56 @@
     font-size: 20px;
     line-height: 1.25;
 }
+
+/* ── Group dropdown panel ── */
+.nav-group__dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 14rem;
+    z-index: 7000;
+    background: #fff;
+    border: 1px solid #dddbda;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.16);
+    padding: 0.25rem 0;
+}
+
+.slds-is-open .nav-group__dropdown {
+    display: block;
+}
+
+/* Chevron icon inside the group tab label */
+.nav-group__chevron {
+    --slds-c-icon-color-foreground-default: currentColor;
+    vertical-align: middle;
+    opacity: 0.75;
+}
+
+/* Dropdown link rows */
+.nav-group__item-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: #181818;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.nav-group__item-link:hover {
+    background: #f3f3f3;
+    text-decoration: none;
+}
+
+.nav-group__item-link--active {
+    font-weight: 700;
+    color: #0176d3;
+}
+
+.nav-group__check {
+    --slds-c-icon-color-foreground-default: #0176d3;
+    flex-shrink: 0;
+}
