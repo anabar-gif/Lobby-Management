@@ -32,9 +32,9 @@
     --lm2-radius-pill:     var(--slds-g-radius-border-pill, 9999px);
 
     /* Semantic aliases */
-    --lm2-radius-card:     var(--slds-g-radius-border-2, 0.5rem);   /* cards */
-    --lm2-radius-sm:       var(--slds-g-radius-border-1, 0.25rem);  /* inner elements */
-    --lm2-radius-xs:       var(--slds-g-radius-border-1, 0.25rem);  /* small chips */
+    --lm2-radius-card:     var(--slds-g-radius-border-3, 0.75rem);  /* cards = 12px */
+    --lm2-radius-sm:       var(--slds-g-radius-border-2, 0.5rem);   /* inner elements = 8px */
+    --lm2-radius-xs:       var(--slds-g-radius-border-1, 0.25rem);  /* small chips = 4px */
 
     --lm2-shadow-card:     0 1px 4px rgba(0,0,0,0.08);
     --lm2-shadow-overlay:  0 8px 32px rgba(0,0,0,0.16);
@@ -322,7 +322,7 @@
    ============================================================ */
 .lm2-card {
     background: var(--lm2-surface);
-    border-radius: var(--lm2-radius-2);  /* SLDS 2 card = border-2 = 0.5rem / 8px */
+    border-radius: var(--lm2-radius-card);  /* 12px */
     border: 1px solid var(--lm2-border);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
     overflow: hidden;
@@ -429,7 +429,7 @@
 .lm2-appt-card {
     background: var(--lm2-surface);
     border: 1px solid var(--lm2-border);
-    border-radius: var(--lm2-radius-2);   /* SLDS 2: border-2 = 0.5rem / 8px */
+    border-radius: var(--lm2-radius-card);  /* 12px */
     box-shadow: 0 1px 4px rgba(0,0,0,0.07);
     margin-bottom: 0.5rem;
     overflow: hidden;
@@ -557,7 +557,7 @@
 .lobby-queue-participant {
     background: var(--lm2-surface);
     border: 1px solid var(--lm2-border);
-    border-radius: var(--lm2-radius-2);   /* SLDS 2: border-2 = 0.5rem / 8px */
+    border-radius: var(--lm2-radius-card);  /* 12px */
     margin-bottom: 0.5rem;
     overflow: hidden;
     transition: box-shadow 0.12s ease, border-color 0.12s ease;
@@ -770,7 +770,7 @@
     z-index: 201;
     display: flex;
     flex-direction: column;
-    border-radius: var(--lm2-radius-2);   /* SLDS 2 border-2 = 0.5rem */
+    border-radius: var(--lm2-radius-card);  /* 12px */
     box-shadow: var(--lm2-shadow-overlay);
     overflow: hidden;
 }
