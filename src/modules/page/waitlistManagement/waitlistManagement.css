@@ -186,16 +186,28 @@
 
 /* ── Slide-in Creator Panel ────────────────────────────────── */
 
-/* Translucent scrim behind panel — sits below the global shell */
-.wl-creator-scrim {
+/*
+ * Full-viewport fixed overlay — gives scrim and panel a reliable
+ * containing block even when ancestor lightning-layout components
+ * apply CSS transforms (which would otherwise break position:fixed).
+ */
+.wl-creator-overlay {
     position: fixed;
+    inset: 0;
+    z-index: 8000;
+    pointer-events: none;
+}
+
+/* Translucent scrim behind panel */
+.wl-creator-scrim {
+    position: absolute;
     top: 6.5rem;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 8000;
     background: rgba(0, 0, 0, 0.25);
     animation: wl-scrim-in 0.2s ease;
+    pointer-events: all;
 }
 
 @keyframes wl-scrim-in {
@@ -203,20 +215,19 @@
     to   { opacity: 1; }
 }
 
-/* Panel shell — top offset accounts for global header (≈3.5rem) + nav bar (≈3rem) */
+/* Panel shell — positioned absolutely within .wl-creator-overlay */
 .wl-creator {
-    position: fixed;
+    position: absolute;
     top: 6.5rem;
     right: 0;
-    bottom: 2.5rem; /* leave space for footer bar */
-    z-index: 8001;
+    bottom: 2.5rem;
     width: 28rem;
     max-width: 100vw;
     background: var(--slds-g-color-surface-1, #ffffff);
     box-shadow: -4px 0 24px rgba(0, 0, 0, 0.16);
     border-radius: 0.5rem 0 0 0.5rem;
-    display: flex;
-    flex-direction: column;
+    overflow-y: auto; /* the panel itself scrolls */
+    pointer-events: all;
     transform: translateX(100%);
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -225,15 +236,17 @@
     transform: translateX(0);
 }
 
-/* Header */
+/* Header — sticks to top of the scrolling panel */
 .wl-creator__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.25rem 0.875rem 1.25rem;
     border-bottom: 1px solid var(--slds-g-color-border-base-1, #dddbda);
-    flex-shrink: 0;
     background: var(--slds-g-color-surface-1, #fff);
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .wl-creator__title {
@@ -262,10 +275,8 @@
     background: var(--slds-g-color-neutral-base-95, #f3f3f3);
 }
 
-/* Scrollable body */
+/* Body — just lays out the form fields; panel handles scrolling */
 .wl-creator__body {
-    flex: 1 1 0;
-    overflow-y: auto;
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
@@ -683,7 +694,7 @@
     left: 1.3125rem;
 }
 
-/* Footer */
+/* Footer — sticks to bottom of the scrolling panel */
 .wl-creator__footer {
     display: flex;
     align-items: center;
@@ -691,8 +702,9 @@
     gap: 0.5rem;
     padding: 0.875rem 1.25rem;
     border-top: 1px solid var(--slds-g-color-border-base-1, #dddbda);
-    flex-shrink: 0;
     background: var(--slds-g-color-surface-1, #fff);
+    position: sticky;
+    bottom: 0;
 }
 
 /* ── Modal ─────────────────────────────────────────────────── */

@@ -114,12 +114,14 @@
 
     <!-- ── Slide-in Creator Panel ─────────────────────────────── -->
     <template lwc:if={showCreator}>
+        <!-- Full-viewport fixed overlay — gives panel a reliable containing block -->
+        <div class="wl-creator-overlay">
 
-        <!-- Scrim (click to close) -->
-        <div class="wl-creator-scrim" onclick={handleCreatorCancel}></div>
+            <!-- Scrim (click to close) -->
+            <div class="wl-creator-scrim" onclick={handleCreatorCancel}></div>
 
-        <!-- Panel -->
-        <div class={creatorPanelClass} role="dialog" aria-modal="true" aria-labelledby="creatorTitle">
+            <!-- Panel -->
+            <div class={creatorPanelClass} role="dialog" aria-modal="true" aria-labelledby="creatorTitle">
 
             <!-- Header -->
             <div class="wl-creator__header">
@@ -354,6 +356,8 @@
             </div>
 
         </div><!-- /panel -->
+
+        </div><!-- /overlay -->
 
     </template>
 </template>
