@@ -1,0 +1,1380 @@
+<template>
+    <div class={rootClass}>
+
+        <!-- ── Header ── -->
+        <header class="lm2-header">
+            <div class="lm2-header__inner slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                <div class="lm2-header__left slds-grid slds-grid_vertical-align-center">
+                    <lightning-button-menu
+                        class="lm2-header__branch-menu"
+                        label={selectedBranch}
+                        variant="bare"
+                        menu-alignment="left"
+                        alternative-text="Change branch"
+                        onselect={handleBranchSelect}>
+                        <lightning-menu-item label="Business District 2"        value="Business District 2"></lightning-menu-item>
+                        <lightning-menu-item label="High Street 1"              value="High Street 1"></lightning-menu-item>
+                        <lightning-menu-item label="Market St Branch"           value="Market St Branch"></lightning-menu-item>
+                        <lightning-menu-item label="Mission St branch"          value="Mission St branch"></lightning-menu-item>
+                        <lightning-menu-item label="Scheduler DF Moscone South" value="Scheduler DF Moscone South"></lightning-menu-item>
+                        <lightning-menu-item label="Scheduler DF Tower"         value="Scheduler DF Tower"></lightning-menu-item>
+                        <lightning-menu-item label="Virtual Retail Banking"     value="Virtual Retail Banking"></lightning-menu-item>
+                        <lightning-menu-item label="Virtual Territory"          value="Virtual Territory"></lightning-menu-item>
+                        <lightning-menu-item label="Virtual_Test"               value="Virtual_Test"></lightning-menu-item>
+                    </lightning-button-menu>
+                    <span class="lm2-header__sep" aria-hidden="true">|</span>
+                    <span class="lm2-header__date">{todayLabel}</span>
+                </div>
+                <div class="lm2-toolbar slds-grid slds-grid_vertical-align-center">
+                    <lightning-button-icon
+                        class="lm2-toolbar__btn"
+                        icon-name="utility:refresh"
+                        variant="border-filled"
+                        alternative-text="Refresh"
+                        title="Refresh"
+                        onclick={handleRefresh}>
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        class="lm2-toolbar__btn"
+                        icon-name="utility:chart"
+                        variant="border-filled"
+                        alternative-text="Peak Hours"
+                        title="Peak Hours Chart"
+                        onclick={handleTogglePeakChart}>
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        class="lm2-toolbar__btn"
+                        icon-name="utility:summary"
+                        variant="border-filled"
+                        alternative-text="Daily Summary"
+                        title="Daily Summary"
+                        onclick={handleToggleDailySummary}>
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        class="lm2-toolbar__btn"
+                        icon-name="utility:download"
+                        variant="border-filled"
+                        alternative-text="Export CSV"
+                        title="Export to CSV"
+                        onclick={handleExport}>
+                    </lightning-button-icon>
+                </div>
+            </div>
+        </header>
+
+        <!-- ── KPI Stats Bar ── -->
+        <div class="lm2-stats-bar">
+            <div class="lm2-stats-bar__grid">
+
+                <div class={tileFilterClassCheckedIn}
+                     data-filter="checkedin"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show all checked-in participants">
+                    <div class="lm2-stat-tile__accent lm2-stat-tile__accent--blue"></div>
+                    <div class="lm2-stat-tile__value">{metricTotalCheckedIn}</div>
+                    <div class="lm2-stat-tile__label">Total Checked In</div>
+                </div>
+
+                <div class={tileFilterClassServed}
+                     data-filter="served"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show participants currently being served">
+                    <div class="lm2-stat-tile__accent lm2-stat-tile__accent--green"></div>
+                    <div class="lm2-stat-tile__value">{metricCurrentlyServed}</div>
+                    <div class="lm2-stat-tile__label">Currently Served</div>
+                </div>
+
+                <div class={tileFilterClassAvgWait}
+                     data-filter="avgwait"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show participants waiting above average">
+                    <div class="lm2-stat-tile__accent lm2-stat-tile__accent--orange"></div>
+                    <div class="lm2-stat-tile__value lm2-stat-tile__value--sm">{metricAvgWait}</div>
+                    <div class="lm2-stat-tile__label">Avg Wait Time</div>
+                </div>
+
+                <div class={tileFilterClassVip}
+                     data-filter="vip"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show only VIP participants">
+                    <div class="lm2-stat-tile__accent lm2-stat-tile__accent--indigo"></div>
+                    <div class="lm2-stat-tile__value">{metricVipCount}</div>
+                    <div class="lm2-stat-tile__label">VIP Participants</div>
+                </div>
+
+                <div class={tileFilterClassOverdue}
+                     data-filter="overdue"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show only overdue participants">
+                    <div class="lm2-stat-tile__accent lm2-stat-tile__accent--red"></div>
+                    <div class="lm2-stat-tile__value lm2-stat-tile__value--red">{metricOverdueCount}</div>
+                    <div class="lm2-stat-tile__label">Overdue (&gt;45 min)</div>
+                </div>
+
+                <div class={tileFilterClassAvgService}
+                     data-filter="avgservice"
+                     onclick={handleTileClick}
+                     role="button"
+                     tabindex="0"
+                     title="Click to show participants by service time">
+                    <div class="lm2-stat-tile__accent lm2-stat-tile__accent--orange"></div>
+                    <div class="lm2-stat-tile__value lm2-stat-tile__value--sm">{metricAvgServiceTime}</div>
+                    <div class="lm2-stat-tile__label">Avg Service Time</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── Search + Filters Bar ── -->
+        <div class="lm2-search-bar">
+            <lightning-input
+                type="search"
+                label="Search"
+                variant="label-hidden"
+                placeholder="Search participants across all queues…"
+                value={globalSearch}
+                onchange={handleGlobalSearchChange}
+                class="lm2-search-input">
+            </lightning-input>
+            <div class="lm2-search-bar__filters">
+                <div class="lm2-filter-group">
+                    <span class="lm2-filter-label">Show Waitlists</span>
+                    <lightning-combobox
+                        name="waitlistFilter"
+                        label="Waitlist filter"
+                        variant="label-hidden"
+                        value={selectedWaitlistFilter}
+                        placeholder="All waitlists"
+                        options={waitlistFilterOptions}
+                        onchange={handleWaitlistFilterChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="lm2-filter-group">
+                    <span class="lm2-filter-label">Resource</span>
+                    <lightning-combobox
+                        name="resourceFilter"
+                        label="Resource filter"
+                        variant="label-hidden"
+                        value={filterByResource}
+                        placeholder="All Resources"
+                        options={resourceFilterOptions}
+                        onchange={handleResourceFilterChange}>
+                    </lightning-combobox>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Main 3-Column Layout ── -->
+        <div class="lm2-main">
+            <lightning-layout multiple-rows="true" pull-to-boundary="small" class="lm2-layout">
+
+                <!-- ── Column 1: Scheduled Appointments ── -->
+                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                    <div class="lm2-col-header">
+                        <lightning-icon icon-name="utility:event" size="xx-small" alternative-text=""></lightning-icon>
+                        <span>Scheduled Appointments For Today</span>
+                    </div>
+                    <article class="lm2-card lm2-card--scheduled">
+                        <div class="lm2-card__header slds-grid">
+                            <header class="slds-col slds-has-flexi-truncate">
+                                <h2 class="lm2-card__title slds-truncate" title="Appointments">Appointments</h2>
+                                <p class="lm2-card__meta">{metaLinePrimary}</p>
+                                <p class="lm2-card__meta">{metaLineSecondary}</p>
+                            </header>
+                            <div class="slds-no-flex">
+                                <lightning-button-icon
+                                    icon-name="utility:refresh"
+                                    variant="border-filled"
+                                    alternative-text="Refresh"
+                                    title="Refresh"
+                                    onclick={handleRefresh}>
+                                </lightning-button-icon>
+                            </div>
+                        </div>
+                        <div class="lm2-card__body">
+
+                            <!-- Current accordion -->
+                            <div class="lm2-accordion">
+                                <button class={accordionCurrentHeaderClass} data-section="current" onclick={handleSectionToggle} aria-expanded={sectionCurrentOpen}>
+                                    <lightning-icon class="lm2-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                    <span class="lm2-accordion__label">Current</span>
+                                    <span class="lm2-accordion__meta">{currentSectionMetaLine}</span>
+                                </button>
+                                <template lwc:if={sectionCurrentOpen}>
+                                    <div class="lm2-accordion__cards">
+                                        <template for:each={currentAppointmentsFiltered} for:item="appt">
+                                            <div key={appt.id} class="lm2-appt-card">
+                                                <div class="lm2-appt-card__body">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
+                                                        <div class="lm2-appt-card__identity">
+                                                            <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
+                                                        </div>
+                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                            </template>
+                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="lm2-appt-card__footer">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <div class="lm2-appt-card__slot slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                            <lightning-icon class="slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="slds-truncate">{appt.slot}</span>
+                                                        </div>
+                                                        <template lwc:if={appt.checkedIn}>
+                                                            <span class="lm2-badge lm2-badge--checkedin slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                        </template>
+                                                        <template lwc:if={appt.showWaitAlert}>
+                                                            <div class="lm2-appt-card__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Upcoming accordion -->
+                            <div class="lm2-accordion">
+                                <button class={accordionUpcomingHeaderClass} data-section="upcoming" onclick={handleSectionToggle} aria-expanded={sectionUpcomingOpen}>
+                                    <lightning-icon class="lm2-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                    <span class="lm2-accordion__label">Upcoming</span>
+                                    <span class="lm2-accordion__meta">{upcomingSectionMetaLine}</span>
+                                </button>
+                                <template lwc:if={sectionUpcomingOpen}>
+                                    <div class="lm2-accordion__cards">
+                                        <template for:each={upcomingAppointmentsFiltered} for:item="appt">
+                                            <div key={appt.id} class="lm2-appt-card">
+                                                <div class="lm2-appt-card__body">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
+                                                        <div class="lm2-appt-card__identity">
+                                                            <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
+                                                        </div>
+                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                            </template>
+                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="lm2-appt-card__footer">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <div class="lm2-appt-card__slot slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                            <lightning-icon class="slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="slds-truncate">{appt.slot}</span>
+                                                        </div>
+                                                        <template lwc:if={appt.checkedIn}>
+                                                            <span class="lm2-badge lm2-badge--checkedin slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                        </template>
+                                                        <template lwc:if={appt.showWaitAlert}>
+                                                            <div class="lm2-appt-card__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Past accordion -->
+                            <div class="lm2-accordion">
+                                <button class={accordionPastHeaderClass} data-section="past" onclick={handleSectionToggle} aria-expanded={sectionPastOpen}>
+                                    <lightning-icon class="lm2-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
+                                    <span class="lm2-accordion__label">Past</span>
+                                    <span class="lm2-accordion__meta">{pastSectionMetaLine}</span>
+                                </button>
+                                <template lwc:if={sectionPastOpen}>
+                                    <div class="lm2-accordion__cards">
+                                        <template for:each={pastAppointmentsFiltered} for:item="appt">
+                                            <div key={appt.id} class="lm2-appt-card lm2-appt-card--past">
+                                                <div class="lm2-appt-card__body">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
+                                                        <div class="lm2-appt-card__identity">
+                                                            <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
+                                                        </div>
+                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                            </template>
+                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="lm2-appt-card__footer">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <div class="lm2-appt-card__slot slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                                            <lightning-icon class="slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="slds-truncate">{appt.slot}</span>
+                                                        </div>
+                                                        <template lwc:if={appt.checkedIn}>
+                                                            <span class="lm2-badge lm2-badge--checkedin slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                        </template>
+                                                        <template lwc:if={appt.showWaitAlert}>
+                                                            <div class="lm2-appt-card__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
+                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:if={appt.isLate}>
+                                                            <template lwc:if={appt.showCheckin}>
+                                                                <span class="lm2-badge lm2-badge--late slds-m-left_x-small">Late</span>
+                                                            </template>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+
+                        </div>
+                    </article>
+                </lightning-layout-item>
+
+                <!-- ── Column 2: General Banking Live Waitlist ── -->
+                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                    <div class="lm2-col-header">
+                        <lightning-icon icon-name="utility:people" size="xx-small" alternative-text=""></lightning-icon>
+                        <span>Live Waitlists</span>
+                        <span class="lm2-col-header__count">{liveWaitlistCount}</span>
+                    </div>
+                    <article class="lm2-card lm2-card--queue">
+                        <div class="lm2-card__header slds-grid">
+                            <header class="slds-col slds-has-flexi-truncate">
+                                <div class="slds-grid slds-grid_vertical-align-center">
+                                    <span class={generalBankingDotClass} aria-hidden="true"></span>
+                                    <h2 class="lm2-card__queue-name slds-m-left_x-small">General Banking</h2>
+                                </div>
+                                <p class="lm2-card__meta">{generalQueueMetaLeft}</p>
+                                <p class="lm2-card__meta">{generalQueueMetaRight}</p>
+                            </header>
+                            <div class="slds-no-flex">
+                                <lightning-button-group class="lm2-queue-button-group">
+                                    <lightning-button label="Check In" variant="neutral" title="Check In" onclick={handleQueueCheckIn}></lightning-button>
+                                    <lightning-button-icon icon-name="utility:refresh" variant="border-filled" alternative-text="Refresh queue" title="Refresh" onclick={handleRefresh}></lightning-button-icon>
+                                </lightning-button-group>
+                            </div>
+                        </div>
+                        <div class="lm2-card__body lm2-card__body--queue">
+                            <lightning-accordion
+                                class="lm2-queue-accordion"
+                                allow-multiple-sections-open
+                                active-section-name={generalBankingOpenSections}
+                                onsectiontoggle={handleGeneralAccordionToggle}>
+                                <template for:each={generalBankingTopicsFiltered} for:item="topic">
+                                    <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                        <template for:each={topic.participants} for:item="row">
+                                            <div key={row.id}
+                                                class={row.cardClass}
+                                                draggable="true"
+                                                data-id={row.id}
+                                                data-topic-id={topic.id}
+                                                data-section="gb"
+                                                ondragstart={handleDragStart}
+                                                ondragover={handleDragOver}
+                                                ondragleave={handleDragLeave}
+                                                ondrop={handleDrop}
+                                                ondragend={handleDragEnd}>
+                                                <div class="lm2-participant slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lm2-drag-handle" title="Drag to reorder" aria-hidden="true">
+                                                        <svg class="lm2-drag-handle__grip" viewBox="0 0 10 16" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/>
+                                                            <circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/>
+                                                            <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="lm2-service-badge">{row.serviceNumber}</div>
+                                                    <div class="lm2-participant__identity slds-m-left_x-small">
+                                                        <div class="lm2-participant__name-row">
+                                                            <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
+                                                            <template lwc:if={row.isVip}>
+                                                                <span class="lm2-vip-badge">VIP</span>
+                                                            </template>
+                                                        </div>
+                                                        <template lwc:if={row.email}>
+                                                            <div class="lm2-participant__contact">
+                                                                <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {row.email}
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:if={row.phone}>
+                                                            <div class="lm2-participant__contact">📞 {row.phone}</div>
+                                                        </template>
+                                                        <template lwc:if={row.showAssignedResource}>
+                                                            <div class="lm2-participant__resource">Assigned Resource — {row.assignedResource}</div>
+                                                        </template>
+                                                    </div>
+                                                    <div class="slds-no-flex slds-m-left_x-small">
+                                                        <lightning-button-icon
+                                                            icon-name="utility:down"
+                                                            variant="border-filled"
+                                                            alternative-text="Participant actions"
+                                                            title="Participant actions"
+                                                            data-id={row.id}
+                                                            onclick={handleQueueParticipantMenu}>
+                                                        </lightning-button-icon>
+                                                    </div>
+                                                </div>
+                                                <template lwc:if={row.showNotes}>
+                                                    <div class="lm2-notes-field">
+                                                        <textarea class="lm2-notes-field__input" placeholder="Add a note…" data-id={row.id} oninput={handleNotesInput}>{row.notes}</textarea>
+                                                    </div>
+                                                </template>
+                                                <div class="lm2-participant__footer">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <span class="lm2-badge lm2-badge--checkedin">Check In: {row.checkInTime}</span>
+                                                        <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
+                                                            <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class={row.waitTimeClass}>{row.waitTime}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </div>
+
+                        <!-- Check-in overlay: General Banking -->
+                        <template lwc:if={showCheckinComposer}>
+                            <div class="lm2-overlay-scrim" onclick={handleCloseCheckinComposer}></div>
+                            <div class="lm2-overlay">
+                                <div class="lm2-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                    <span class="lm2-overlay__title">Check In Customer - General Banking</span>
+                                    <button class="slds-button slds-button_icon lm2-overlay__close" title="Close" onclick={handleCloseCheckinComposer}>
+                                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                                    </button>
+                                </div>
+                                <div class="lm2-overlay__body">
+                                    <div class="lm2-checkin-field">
+                                        <fieldset class="slds-form-element">
+                                            <legend class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Account Status</legend>
+                                            <div class="slds-form-element__control slds-m-top_xx-small">
+                                                <div class="slds-grid slds-gutters_small">
+                                                    <div class="slds-col">
+                                                        <span class="slds-radio">
+                                                            <input type="radio" id="ci-existing" name="ci-guest-type" value="existing" checked={ciIsExisting} onchange={handleCiGuestTypeChange} />
+                                                            <label class="slds-radio__label" for="ci-existing">
+                                                                <span class="slds-radio_faux"></span>
+                                                                <span class="slds-form-element__label">Existing Customer</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                    <div class="slds-col">
+                                                        <span class="slds-radio">
+                                                            <input type="radio" id="ci-new" name="ci-guest-type" value="new" onchange={handleCiGuestTypeChange} />
+                                                            <label class="slds-radio__label" for="ci-new">
+                                                                <span class="slds-radio_faux"></span>
+                                                                <span class="slds-form-element__label">Guest</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <template lwc:if={ciIsNewParticipant}>
+                                        <div class="lm2-checkin-field lm2-newp-grid">
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ci-fname"><abbr class="lm2-checkin-required" title="required">*</abbr>First Name</label>
+                                                <input id="ci-fname" type="text" class="lm2-newp-input" placeholder={ciFNamePh} value={ciFirstName} oninput={handleCiFirstNameChange} />
+                                            </div>
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ci-lname"><abbr class="lm2-checkin-required" title="required">*</abbr>Last Name</label>
+                                                <input id="ci-lname" type="text" class="lm2-newp-input" placeholder={ciLNamePh} value={ciLastName} oninput={handleCiLastNameChange} />
+                                            </div>
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ci-contact"><abbr class="lm2-checkin-required" title="required">*</abbr>Contact Number</label>
+                                                <input id="ci-contact" type="tel" class="lm2-newp-input" placeholder={ciContactPh} value={ciContact} oninput={handleCiContactChange} />
+                                            </div>
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ci-company">Company</label>
+                                                <input id="ci-company" type="text" class="lm2-newp-input" placeholder={ciCompanyPh} value={ciCompany} oninput={handleCiCompanyChange} />
+                                            </div>
+                                        </div>
+                                        <div class="lm2-checkin-field">
+                                            <label class="lm2-checkin-label" for="ci-email"><abbr class="lm2-checkin-required" title="required">*</abbr>Email</label>
+                                            <input id="ci-email" type="email" class="lm2-newp-input lm2-newp-input--full" placeholder={ciEmailPh} value={ciEmail} oninput={handleCiEmailChange} />
+                                        </div>
+                                        <div class="lm2-checkin-field">
+                                            <div class="slds-form-element__control">
+                                                <span class="slds-checkbox">
+                                                    <input type="checkbox" id="ci-vip" name="ci-vip" checked={ciIsVip} onchange={handleCiVipChange} />
+                                                    <label class="slds-checkbox__label" for="ci-vip">
+                                                        <span class="slds-checkbox_faux"></span>
+                                                        <span class="slds-form-element__label lm2-checkin-label">VIP Status</span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template lwc:else>
+                                        <div class="lm2-checkin-field lm2-participant-field">
+                                            <label class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Customer</label>
+                                            <div class="lm2-grouped-combobox">
+                                                <div class="lm2-grouped-combobox__type-wrap">
+                                                    <button type="button" class="lm2-grouped-combobox__type-btn" onclick={handleParticipantTypeToggle} onblur={handleParticipantTypeBlur}>
+                                                        <span class="lm2-grouped-combobox__type-label">{selectedParticipantType}</span>
+                                                        <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
+                                                    </button>
+                                                    <template lwc:if={showParticipantTypeDropdown}>
+                                                        <div class="lm2-grouped-combobox__type-dropdown">
+                                                            <ul role="listbox">
+                                                                <template for:each={participantTypeOptions} for:item="opt">
+                                                                    <li key={opt.id} class="lm2-grouped-combobox__type-option" data-id={opt.id} role="option" onclick={handleParticipantTypeSelect}>
+                                                                        <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
+                                                                        <span>{opt.label}</span>
+                                                                    </li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                                <div class="lm2-grouped-combobox__search-wrap">
+                                                    <input type="text" class="lm2-grouped-combobox__search-input" placeholder="Search..." value={participantSearch} onfocus={handleParticipantFocus} oninput={handleParticipantInput} onblur={handleParticipantBlur} />
+                                                    <lightning-icon class="lm2-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
+                                                    <template lwc:if={showParticipantDropdown}>
+                                                        <div class="lm2-participant-dropdown">
+                                                            <div class="lm2-participant-dropdown__group-label">Recent Items</div>
+                                                            <ul class="lm2-participant-dropdown__list" role="listbox">
+                                                                <template for:each={filteredParticipants} for:item="item">
+                                                                    <li key={item.id} class="lm2-participant-dropdown__option" data-id={item.id} role="option" onclick={handleParticipantSelect}>
+                                                                        <div class="lm2-participant-dropdown__option-icon">
+                                                                            <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
+                                                                        </div>
+                                                                        <div class="lm2-participant-dropdown__option-text">
+                                                                            <div class="lm2-participant-dropdown__option-name">{item.label}</div>
+                                                                            <template lwc:if={item.meta}>
+                                                                                <div class="lm2-participant-dropdown__option-meta">{item.meta}</div>
+                                                                            </template>
+                                                                        </div>
+                                                                    </li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <div class="lm2-checkin-field">
+                                        <label class="lm2-checkin-label" for="ci-topic"><abbr class="lm2-checkin-required" title="required">*</abbr> Service Required</label>
+                                        <lightning-combobox id="ci-topic" label="Service Required" variant="label-hidden" value={ciTopic} options={checkinTopicOptions} onchange={handleCiTopicChange}></lightning-combobox>
+                                    </div>
+                                    <div class="lm2-checkin-field">
+                                        <label class="lm2-checkin-label" for="ci-desc">Description</label>
+                                        <lightning-textarea id="ci-desc" label="Description" variant="label-hidden" value={ciDesc} placeholder={ciDescPh} max-length="500" onchange={handleCiDescChange}></lightning-textarea>
+                                    </div>
+                                    <div class="lm2-checkin-field">
+                                        <label class="lm2-checkin-label" for="ci-resource">Preferred Resource</label>
+                                        <lightning-combobox id="ci-resource" label="Preferred Resource" variant="label-hidden" value={ciResource} options={checkinResourceOptions} onchange={handleCiResourceChange}></lightning-combobox>
+                                    </div>
+                                </div>
+                                <div class="lm2-overlay__footer">
+                                    <lightning-button label="Check In" variant="brand" onclick={handleSubmitCheckinComposer}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </article>
+                </lightning-layout-item>
+
+                <!-- ── Column 3: Investment Banking ── -->
+                <lightning-layout-item size="12" large-device-size="4" padding="horizontal-small">
+                    <div class="lm2-col-header-spacer"></div>
+                    <article class="lm2-card lm2-card--queue">
+                        <div class="lm2-card__header slds-grid">
+                            <header class="slds-col slds-has-flexi-truncate">
+                                <div class="slds-grid slds-grid_vertical-align-center">
+                                    <span class={investmentBankingDotClass} aria-hidden="true"></span>
+                                    <h2 class="lm2-card__queue-name slds-m-left_x-small">Investment Banking</h2>
+                                </div>
+                                <p class="lm2-card__meta">{investmentQueueMetaLeft}</p>
+                                <p class="lm2-card__meta">{investmentQueueMetaRight}</p>
+                            </header>
+                            <div class="slds-no-flex">
+                                <lightning-button-group class="lm2-queue-button-group">
+                                    <lightning-button label="Check In" variant="neutral" title="Check In" onclick={handleInvestmentQueueCheckIn}></lightning-button>
+                                    <lightning-button-icon icon-name="utility:refresh" variant="border-filled" alternative-text="Refresh queue" title="Refresh" onclick={handleRefresh}></lightning-button-icon>
+                                </lightning-button-group>
+                            </div>
+                        </div>
+                        <div class="lm2-card__body lm2-card__body--queue">
+                            <lightning-accordion
+                                class="lm2-queue-accordion"
+                                active-section-name={investmentBankingOpenSection}
+                                onsectiontoggle={handleInvestmentAccordionToggle}>
+                                <template for:each={investmentBankingTopicsFiltered} for:item="topic">
+                                    <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                        <template for:each={topic.participants} for:item="row">
+                                            <div key={row.id}
+                                                class={row.cardClass}
+                                                draggable="true"
+                                                data-id={row.id}
+                                                data-topic-id={topic.id}
+                                                data-section="ib"
+                                                ondragstart={handleDragStart}
+                                                ondragover={handleDragOver}
+                                                ondragleave={handleDragLeave}
+                                                ondrop={handleDrop}
+                                                ondragend={handleDragEnd}>
+                                                <div class="lm2-participant slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lm2-drag-handle" title="Drag to reorder" aria-hidden="true">
+                                                        <svg class="lm2-drag-handle__grip" viewBox="0 0 10 16" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/>
+                                                            <circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/>
+                                                            <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="lm2-service-badge">{row.serviceNumber}</div>
+                                                    <div class="lm2-participant__identity slds-m-left_x-small">
+                                                        <div class="lm2-participant__name-row">
+                                                            <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
+                                                            <template lwc:if={row.isVip}><span class="lm2-vip-badge">VIP</span></template>
+                                                        </div>
+                                                        <template lwc:if={row.email}>
+                                                            <div class="lm2-participant__contact">
+                                                                <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {row.email}
+                                                            </div>
+                                                        </template>
+                                                        <template lwc:if={row.phone}>
+                                                            <div class="lm2-participant__contact">📞 {row.phone}</div>
+                                                        </template>
+                                                        <template lwc:if={row.showAssignedResource}>
+                                                            <div class="lm2-participant__resource">Assigned Resource — {row.assignedResource}</div>
+                                                        </template>
+                                                    </div>
+                                                    <div class="slds-no-flex slds-m-left_x-small">
+                                                        <lightning-button-icon
+                                                            icon-name="utility:down"
+                                                            variant="border-filled"
+                                                            alternative-text="Participant actions"
+                                                            title="Participant actions"
+                                                            data-id={row.id}
+                                                            onclick={handleQueueParticipantMenu}>
+                                                        </lightning-button-icon>
+                                                    </div>
+                                                </div>
+                                                <template lwc:if={row.showNotes}>
+                                                    <div class="lm2-notes-field">
+                                                        <textarea class="lm2-notes-field__input" placeholder="Add a note…" data-id={row.id} oninput={handleNotesInput}>{row.notes}</textarea>
+                                                    </div>
+                                                </template>
+                                                <div class="lm2-participant__footer">
+                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                        <span class="lm2-badge lm2-badge--checkedin">Check In: {row.checkInTime}</span>
+                                                        <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
+                                                            <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class={row.waitTimeClass}>{row.waitTime}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </div>
+
+                        <!-- Check-in overlay: Investment Banking -->
+                        <template lwc:if={showCheckinComposerInvestment}>
+                            <div class="lm2-overlay-scrim" onclick={handleCloseInvestmentCheckinComposer}></div>
+                            <div class="lm2-overlay">
+                                <div class="lm2-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                    <span class="lm2-overlay__title">Check In Customer - Investment Banking</span>
+                                    <button class="slds-button slds-button_icon lm2-overlay__close" title="Close" onclick={handleCloseInvestmentCheckinComposer}>
+                                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                                    </button>
+                                </div>
+                                <div class="lm2-overlay__body">
+                                    <div class="lm2-checkin-field">
+                                        <fieldset class="slds-form-element">
+                                            <legend class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Account Status</legend>
+                                            <div class="slds-form-element__control slds-m-top_xx-small">
+                                                <div class="slds-grid slds-gutters_small">
+                                                    <div class="slds-col">
+                                                        <span class="slds-radio">
+                                                            <input type="radio" id="ib-ci-existing" name="ib-ci-guest-type" value="existing" checked={ibCiIsExisting} onchange={handleIbCiGuestTypeChange} />
+                                                            <label class="slds-radio__label" for="ib-ci-existing">
+                                                                <span class="slds-radio_faux"></span>
+                                                                <span class="slds-form-element__label">Existing Customer</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                    <div class="slds-col">
+                                                        <span class="slds-radio">
+                                                            <input type="radio" id="ib-ci-new" name="ib-ci-guest-type" value="new" onchange={handleIbCiGuestTypeChange} />
+                                                            <label class="slds-radio__label" for="ib-ci-new">
+                                                                <span class="slds-radio_faux"></span>
+                                                                <span class="slds-form-element__label">Guest</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <template lwc:if={ibCiIsNewParticipant}>
+                                        <div class="lm2-checkin-field lm2-newp-grid">
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ib-ci-fname"><abbr class="lm2-checkin-required" title="required">*</abbr>First Name</label>
+                                                <input id="ib-ci-fname" type="text" class="lm2-newp-input" placeholder={ibCiFNamePh} value={ibCiFirstName} oninput={handleIbCiFirstNameChange} />
+                                            </div>
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ib-ci-lname"><abbr class="lm2-checkin-required" title="required">*</abbr>Last Name</label>
+                                                <input id="ib-ci-lname" type="text" class="lm2-newp-input" placeholder={ibCiLNamePh} value={ibCiLastName} oninput={handleIbCiLastNameChange} />
+                                            </div>
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ib-ci-contact"><abbr class="lm2-checkin-required" title="required">*</abbr>Contact Number</label>
+                                                <input id="ib-ci-contact" type="tel" class="lm2-newp-input" placeholder={ibCiContactPh} value={ibCiContact} oninput={handleIbCiContactChange} />
+                                            </div>
+                                            <div class="lm2-newp-col">
+                                                <label class="lm2-checkin-label" for="ib-ci-company">Company</label>
+                                                <input id="ib-ci-company" type="text" class="lm2-newp-input" placeholder={ibCiCompanyPh} value={ibCiCompany} oninput={handleIbCiCompanyChange} />
+                                            </div>
+                                        </div>
+                                        <div class="lm2-checkin-field">
+                                            <label class="lm2-checkin-label" for="ib-ci-email"><abbr class="lm2-checkin-required" title="required">*</abbr>Email</label>
+                                            <input id="ib-ci-email" type="email" class="lm2-newp-input lm2-newp-input--full" placeholder={ibCiEmailPh} value={ibCiEmail} oninput={handleIbCiEmailChange} />
+                                        </div>
+                                        <div class="lm2-checkin-field">
+                                            <div class="slds-form-element__control">
+                                                <span class="slds-checkbox">
+                                                    <input type="checkbox" id="ib-ci-vip" name="ib-ci-vip" checked={ibCiIsVip} onchange={handleIbCiVipChange} />
+                                                    <label class="slds-checkbox__label" for="ib-ci-vip">
+                                                        <span class="slds-checkbox_faux"></span>
+                                                        <span class="slds-form-element__label lm2-checkin-label">VIP Status</span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template lwc:else>
+                                        <div class="lm2-checkin-field lm2-participant-field">
+                                            <label class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Customer</label>
+                                            <div class="lm2-grouped-combobox">
+                                                <div class="lm2-grouped-combobox__type-wrap">
+                                                    <button type="button" class="lm2-grouped-combobox__type-btn" onclick={handleParticipantTypeToggleInvestment} onblur={handleParticipantTypeBlurInvestment}>
+                                                        <span class="lm2-grouped-combobox__type-label">{selectedParticipantTypeInvestment}</span>
+                                                        <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
+                                                    </button>
+                                                    <template lwc:if={showParticipantTypeDropdownInvestment}>
+                                                        <div class="lm2-grouped-combobox__type-dropdown">
+                                                            <ul role="listbox">
+                                                                <template for:each={participantTypeOptions} for:item="opt">
+                                                                    <li key={opt.id} class="lm2-grouped-combobox__type-option" data-id={opt.id} role="option" onclick={handleParticipantTypeSelectInvestment}>
+                                                                        <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
+                                                                        <span>{opt.label}</span>
+                                                                    </li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                                <div class="lm2-grouped-combobox__search-wrap">
+                                                    <input type="text" class="lm2-grouped-combobox__search-input" placeholder="Search..." value={participantSearchInvestment} onfocus={handleParticipantFocusInvestment} oninput={handleParticipantInputInvestment} onblur={handleParticipantBlurInvestment} />
+                                                    <lightning-icon class="lm2-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
+                                                    <template lwc:if={showParticipantDropdownInvestment}>
+                                                        <div class="lm2-participant-dropdown">
+                                                            <div class="lm2-participant-dropdown__group-label">Recent Items</div>
+                                                            <ul class="lm2-participant-dropdown__list" role="listbox">
+                                                                <template for:each={filteredParticipantsInvestment} for:item="item">
+                                                                    <li key={item.id} class="lm2-participant-dropdown__option" data-id={item.id} role="option" onclick={handleParticipantSelectInvestment}>
+                                                                        <div class="lm2-participant-dropdown__option-icon">
+                                                                            <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
+                                                                        </div>
+                                                                        <div class="lm2-participant-dropdown__option-text">
+                                                                            <div class="lm2-participant-dropdown__option-name">{item.label}</div>
+                                                                            <template lwc:if={item.meta}>
+                                                                                <div class="lm2-participant-dropdown__option-meta">{item.meta}</div>
+                                                                            </template>
+                                                                        </div>
+                                                                    </li>
+                                                                </template>
+                                                            </ul>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <div class="lm2-checkin-field">
+                                        <label class="lm2-checkin-label" for="ib-ci-topic"><abbr class="lm2-checkin-required" title="required">*</abbr> Service Required</label>
+                                        <lightning-combobox id="ib-ci-topic" label="Service Required" variant="label-hidden" value={ibCiTopic} options={ibCheckinTopicOptions} onchange={handleIbCiTopicChange}></lightning-combobox>
+                                    </div>
+                                    <div class="lm2-checkin-field">
+                                        <label class="lm2-checkin-label" for="ib-ci-desc">Description</label>
+                                        <lightning-textarea id="ib-ci-desc" label="Description" variant="label-hidden" value={ibCiDesc} placeholder={ibCiDescPh} max-length="500" onchange={handleIbCiDescChange}></lightning-textarea>
+                                    </div>
+                                    <div class="lm2-checkin-field">
+                                        <label class="lm2-checkin-label" for="ib-ci-resource">Preferred Resource</label>
+                                        <lightning-combobox id="ib-ci-resource" label="Preferred Resource" variant="label-hidden" value={ibCiResource} options={checkinResourceOptions} onchange={handleIbCiResourceChange}></lightning-combobox>
+                                    </div>
+                                </div>
+                                <div class="lm2-overlay__footer">
+                                    <lightning-button label="Check In" variant="brand" onclick={handleSubmitCheckinComposerInvestment}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </article>
+                </lightning-layout-item>
+
+                <!-- ── Dynamic Waitlists ── -->
+                <template for:each={enrichedDynamicWaitlists} for:item="wl">
+                    <lightning-layout-item key={wl.id} size="12" large-device-size="4" padding="horizontal-small">
+                        <div class="lm2-col-header-spacer"></div>
+                        <article class="lm2-card lm2-card--queue">
+                            <div class="lm2-card__header slds-grid">
+                                <header class="slds-col slds-has-flexi-truncate">
+                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                        <span class={wl.dotClass} aria-hidden="true"></span>
+                                        <h2 class="lm2-card__queue-name slds-m-left_x-small">{wl.name}</h2>
+                                    </div>
+                                    <p class="lm2-card__meta">{wl.metaLeft}</p>
+                                    <p class="lm2-card__meta">{wl.metaRight}</p>
+                                </header>
+                                <div class="slds-no-flex">
+                                    <lightning-button-group class="lm2-queue-button-group">
+                                        <lightning-button label="Check In" variant="neutral" title="Check In" data-id={wl.id} onclick={handleDynQueueCheckIn}></lightning-button>
+                                        <lightning-button-icon icon-name="utility:refresh" variant="border-filled" alternative-text="Refresh queue" title="Refresh" onclick={handleRefresh}></lightning-button-icon>
+                                    </lightning-button-group>
+                                </div>
+                            </div>
+                            <div class="lm2-card__body lm2-card__body--queue">
+                                <template lwc:if={wl.hasParticipants}>
+                                    <lightning-accordion class="lm2-queue-accordion" allow-multiple-sections-open active-section-name={wl.openSections}>
+                                        <template for:each={wl.topics} for:item="topic">
+                                            <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                                <template for:each={topic.participants} for:item="row">
+                                                    <div key={row.id}
+                                                        class={row.cardClass}
+                                                        draggable="true"
+                                                        data-id={row.id}
+                                                        data-topic-id={topic.id}
+                                                        data-section="dyn"
+                                                        data-wl-id={wl.id}
+                                                        ondragstart={handleDragStart}
+                                                        ondragover={handleDragOver}
+                                                        ondragleave={handleDragLeave}
+                                                        ondrop={handleDrop}
+                                                        ondragend={handleDragEnd}>
+                                                        <div class="lm2-participant slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                            <div class="lm2-drag-handle" title="Drag to reorder" aria-hidden="true">
+                                                                <svg class="lm2-drag-handle__grip" viewBox="0 0 10 16" xmlns="http://www.w3.org/2000/svg">
+                                                                    <circle cx="3" cy="3" r="1.5"/><circle cx="7" cy="3" r="1.5"/>
+                                                                    <circle cx="3" cy="8" r="1.5"/><circle cx="7" cy="8" r="1.5"/>
+                                                                    <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
+                                                                </svg>
+                                                            </div>
+                                                            <div class="lm2-service-badge">{row.serviceNumber}</div>
+                                                            <div class="lm2-participant__identity slds-m-left_x-small">
+                                                                <div class="lm2-participant__name-row">
+                                                                    <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
+                                                                    <template lwc:if={row.isVip}><span class="lm2-vip-badge">VIP</span></template>
+                                                                </div>
+                                                                <template lwc:if={row.email}>
+                                                                    <div class="lm2-participant__contact">
+                                                                        <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {row.email}
+                                                                    </div>
+                                                                </template>
+                                                                <template lwc:if={row.phone}>
+                                                                    <div class="lm2-participant__contact">📞 {row.phone}</div>
+                                                                </template>
+                                                                <template lwc:if={row.showAssignedResource}>
+                                                                    <div class="lm2-participant__resource">Assigned Resource — {row.assignedResource}</div>
+                                                                </template>
+                                                            </div>
+                                                            <div class="slds-no-flex slds-m-left_x-small">
+                                                                <lightning-button-icon
+                                                                    icon-name="utility:down"
+                                                                    variant="border-filled"
+                                                                    alternative-text="Participant actions"
+                                                                    title="Participant actions"
+                                                                    data-id={row.id}
+                                                                    onclick={handleQueueParticipantMenu}>
+                                                                </lightning-button-icon>
+                                                            </div>
+                                                        </div>
+                                                        <template lwc:if={row.showNotes}>
+                                                            <div class="lm2-notes-field">
+                                                                <textarea class="lm2-notes-field__input" placeholder="Add a note…" data-id={row.id} oninput={handleNotesInput}>{row.notes}</textarea>
+                                                            </div>
+                                                        </template>
+                                                        <div class="lm2-participant__footer">
+                                                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                                <span class="lm2-badge lm2-badge--checkedin">Check In: {row.checkInTime}</span>
+                                                                <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
+                                                                    <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                    <span class={row.waitTimeClass}>{row.waitTime}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </lightning-accordion-section>
+                                        </template>
+                                    </lightning-accordion>
+                                </template>
+                                <template lwc:else>
+                                    <div class="lm2-empty-state">
+                                        <div class="lm2-empty-state__illustration" aria-hidden="true">
+                                            <svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" class="lm2-empty-state__svg">
+                                                <line x1="20" y1="128" x2="200" y2="128" stroke="#b8dff5" stroke-width="2" stroke-linecap="round"/>
+                                                <circle cx="158" cy="38" r="22" fill="none" stroke="#b8dff5" stroke-width="2.5"/>
+                                                <circle cx="158" cy="38" r="14" fill="#c8e8f8"/>
+                                                <circle cx="158" cy="38" r="30" fill="none" stroke="#daeefa" stroke-width="1.5"/>
+                                                <circle cx="158" cy="38" r="38" fill="none" stroke="#e8f5fc" stroke-width="1"/>
+                                                <ellipse cx="100" cy="52" rx="18" ry="10" fill="#daeefa"/>
+                                                <ellipse cx="114" cy="48" rx="14" ry="10" fill="#daeefa"/>
+                                                <ellipse cx="86" cy="56" rx="12" ry="8" fill="#daeefa"/>
+                                                <ellipse cx="52" cy="62" rx="11" ry="6" fill="#e8f5fc"/>
+                                                <ellipse cx="62" cy="59" rx="9" ry="6" fill="#e8f5fc"/>
+                                                <rect x="96" y="72" width="14" height="56" rx="7" fill="#b8dff5"/>
+                                                <rect x="82" y="88" width="14" height="8" rx="4" fill="#b8dff5"/>
+                                                <rect x="82" y="80" width="8" height="20" rx="4" fill="#b8dff5"/>
+                                                <rect x="110" y="96" width="14" height="8" rx="4" fill="#b8dff5"/>
+                                                <rect x="116" y="88" width="8" height="20" rx="4" fill="#b8dff5"/>
+                                                <rect x="58" y="106" width="8" height="22" rx="4" fill="#c8e8f8"/>
+                                                <rect x="52" y="112" width="8" height="6" rx="3" fill="#c8e8f8"/>
+                                                <rect x="152" y="110" width="7" height="18" rx="3.5" fill="#c8e8f8"/>
+                                                <rect x="152" y="114" width="7" height="5" rx="2.5" fill="#c8e8f8"/>
+                                                <polygon points="128,128 148,98 168,128" fill="none" stroke="#c8e8f8" stroke-width="2" stroke-linejoin="round"/>
+                                                <polygon points="142,128 158,106 174,128" fill="none" stroke="#daeefa" stroke-width="1.5" stroke-linejoin="round"/>
+                                            </svg>
+                                        </div>
+                                        <p class="lm2-empty-state__title">No participants found</p>
+                                        <p class="lm2-empty-state__body">There aren&apos;t any participants added to this waitlist.</p>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Check-in overlay for dynamic queues -->
+                            <template lwc:if={wl.showCheckinComposer}>
+                                <div class="lm2-overlay-scrim" onclick={handleCloseDynCheckinComposer}></div>
+                                <div class="lm2-overlay">
+                                    <div class="lm2-overlay__header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                        <span class="lm2-overlay__title">Check In Customer - {wl.name}</span>
+                                        <button class="slds-button slds-button_icon lm2-overlay__close" title="Close" onclick={handleCloseDynCheckinComposer}>
+                                            <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                                        </button>
+                                    </div>
+                                    <div class="lm2-overlay__body">
+                                        <div class="lm2-checkin-field">
+                                            <fieldset class="slds-form-element">
+                                                <legend class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Account Status</legend>
+                                                <div class="slds-form-element__control slds-m-top_xx-small">
+                                                    <div class="slds-grid slds-gutters_small">
+                                                        <div class="slds-col">
+                                                            <span class="slds-radio">
+                                                                <input type="radio" id="dyn-ci-existing" name="dyn-ci-guest-type" value="existing" checked={dynCiIsExisting} onchange={handleDynCiGuestTypeChange} />
+                                                                <label class="slds-radio__label" for="dyn-ci-existing">
+                                                                    <span class="slds-radio_faux"></span>
+                                                                    <span class="slds-form-element__label">Existing Customer</span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                        <div class="slds-col">
+                                                            <span class="slds-radio">
+                                                                <input type="radio" id="dyn-ci-new" name="dyn-ci-guest-type" value="new" onchange={handleDynCiGuestTypeChange} />
+                                                                <label class="slds-radio__label" for="dyn-ci-new">
+                                                                    <span class="slds-radio_faux"></span>
+                                                                    <span class="slds-form-element__label">Guest</span>
+                                                                </label>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <template lwc:if={dynCiIsNewParticipant}>
+                                            <div class="lm2-checkin-field lm2-newp-grid">
+                                                <div class="lm2-newp-col">
+                                                    <label class="lm2-checkin-label" for="dyn-ci-fname"><abbr class="lm2-checkin-required" title="required">*</abbr>First Name</label>
+                                                    <input id="dyn-ci-fname" type="text" class="lm2-newp-input" placeholder={dynCiFNamePh} value={dynCiFirstName} oninput={handleDynCiFirstNameChange} />
+                                                </div>
+                                                <div class="lm2-newp-col">
+                                                    <label class="lm2-checkin-label" for="dyn-ci-lname"><abbr class="lm2-checkin-required" title="required">*</abbr>Last Name</label>
+                                                    <input id="dyn-ci-lname" type="text" class="lm2-newp-input" placeholder={dynCiLNamePh} value={dynCiLastName} oninput={handleDynCiLastNameChange} />
+                                                </div>
+                                                <div class="lm2-newp-col">
+                                                    <label class="lm2-checkin-label" for="dyn-ci-contact"><abbr class="lm2-checkin-required" title="required">*</abbr>Contact Number</label>
+                                                    <input id="dyn-ci-contact" type="tel" class="lm2-newp-input" placeholder={dynCiContactPh} value={dynCiContact} oninput={handleDynCiContactChange} />
+                                                </div>
+                                                <div class="lm2-newp-col">
+                                                    <label class="lm2-checkin-label" for="dyn-ci-company">Company</label>
+                                                    <input id="dyn-ci-company" type="text" class="lm2-newp-input" placeholder={dynCiCompanyPh} value={dynCiCompany} oninput={handleDynCiCompanyChange} />
+                                                </div>
+                                            </div>
+                                            <div class="lm2-checkin-field">
+                                                <label class="lm2-checkin-label" for="dyn-ci-email"><abbr class="lm2-checkin-required" title="required">*</abbr>Email</label>
+                                                <input id="dyn-ci-email" type="email" class="lm2-newp-input lm2-newp-input--full" placeholder={dynCiEmailPh} value={dynCiEmail} oninput={handleDynCiEmailChange} />
+                                            </div>
+                                            <div class="lm2-checkin-field">
+                                                <div class="slds-form-element__control">
+                                                    <span class="slds-checkbox">
+                                                        <input type="checkbox" id="dyn-ci-vip" name="dyn-ci-vip" checked={dynCiIsVip} onchange={handleDynCiVipChange} />
+                                                        <label class="slds-checkbox__label" for="dyn-ci-vip">
+                                                            <span class="slds-checkbox_faux"></span>
+                                                            <span class="slds-form-element__label lm2-checkin-label">VIP Status</span>
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template lwc:else>
+                                            <div class="lm2-checkin-field lm2-participant-field">
+                                                <label class="lm2-checkin-label"><abbr class="lm2-checkin-required" title="required">*</abbr> Customer</label>
+                                                <div class="lm2-grouped-combobox">
+                                                    <div class="lm2-grouped-combobox__type-wrap">
+                                                        <button type="button" class="lm2-grouped-combobox__type-btn" onclick={handleDynParticipantTypeToggle} onblur={handleDynParticipantTypeBlur}>
+                                                            <span class="lm2-grouped-combobox__type-label">{selectedDynParticipantType}</span>
+                                                            <lightning-icon icon-name="utility:down" size="x-small" alternative-text="Open"></lightning-icon>
+                                                        </button>
+                                                        <template lwc:if={showDynParticipantTypeDropdown}>
+                                                            <div class="lm2-grouped-combobox__type-dropdown">
+                                                                <ul role="listbox">
+                                                                    <template for:each={participantTypeOptions} for:item="opt">
+                                                                        <li key={opt.id} class="lm2-grouped-combobox__type-option" data-id={opt.id} role="option" onclick={handleDynParticipantTypeSelect}>
+                                                                            <lightning-icon icon-name={opt.icon} size="small" alternative-text={opt.label}></lightning-icon>
+                                                                            <span>{opt.label}</span>
+                                                                        </li>
+                                                                    </template>
+                                                                </ul>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                    <div class="lm2-grouped-combobox__search-wrap">
+                                                        <input type="text" class="lm2-grouped-combobox__search-input" placeholder="Search..." value={dynParticipantSearch} onfocus={handleDynParticipantFocus} oninput={handleDynParticipantInput} onblur={handleDynParticipantBlur} />
+                                                        <lightning-icon class="lm2-grouped-combobox__search-icon" icon-name="utility:search" size="x-small" alternative-text="Search"></lightning-icon>
+                                                        <template lwc:if={showDynParticipantDropdown}>
+                                                            <div class="lm2-participant-dropdown">
+                                                                <div class="lm2-participant-dropdown__group-label">Recent Items</div>
+                                                                <ul class="lm2-participant-dropdown__list" role="listbox">
+                                                                    <template for:each={filteredParticipantsDyn} for:item="item">
+                                                                        <li key={item.id} class="lm2-participant-dropdown__option" data-id={item.id} role="option" onclick={handleDynParticipantSelect}>
+                                                                            <div class="lm2-participant-dropdown__option-icon">
+                                                                                <lightning-icon icon-name={item.icon} size="small" alternative-text="Account"></lightning-icon>
+                                                                            </div>
+                                                                            <div class="lm2-participant-dropdown__option-text">
+                                                                                <div class="lm2-participant-dropdown__option-name">{item.label}</div>
+                                                                                <template lwc:if={item.meta}>
+                                                                                    <div class="lm2-participant-dropdown__option-meta">{item.meta}</div>
+                                                                                </template>
+                                                                            </div>
+                                                                        </li>
+                                                                    </template>
+                                                                </ul>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div class="lm2-checkin-field">
+                                            <label class="lm2-checkin-label" for="dyn-ci-topic"><abbr class="lm2-checkin-required" title="required">*</abbr> Service Required</label>
+                                            <lightning-combobox id="dyn-ci-topic" label="Service Required" variant="label-hidden" value={dynCiTopic} options={dynCheckinTopicOptions} onchange={handleDynCiTopicChange}></lightning-combobox>
+                                        </div>
+                                        <div class="lm2-checkin-field">
+                                            <label class="lm2-checkin-label" for="dyn-ci-desc">Description</label>
+                                            <lightning-textarea id="dyn-ci-desc" label="Description" variant="label-hidden" value={dynCiDesc} placeholder={dynCiDescPh} max-length="500" onchange={handleDynCiDescChange}></lightning-textarea>
+                                        </div>
+                                        <div class="lm2-checkin-field">
+                                            <label class="lm2-checkin-label" for="dyn-ci-resource">Preferred Resource</label>
+                                            <lightning-combobox id="dyn-ci-resource" label="Preferred Resource" variant="label-hidden" value={dynCiResource} options={checkinResourceOptions} onchange={handleDynCiResourceChange}></lightning-combobox>
+                                        </div>
+                                    </div>
+                                    <div class="lm2-overlay__footer">
+                                        <lightning-button label="Check In" variant="brand" onclick={handleSubmitCheckinComposerDyn}></lightning-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </article>
+                    </lightning-layout-item>
+                </template>
+
+            </lightning-layout>
+        </div>
+
+        <!-- ── Global appointment action context menu ── -->
+        <template lwc:if={activeApptMenuId}>
+            <div class="lm2-context-menu" style={apptMenuDropdownStyle}>
+                <ul role="menu">
+                    <li role="menuitem" class="lm2-context-menu__item" data-id={activeApptMenuId} onclick={handleApptModify}>Modify Service Appointment</li>
+                    <li role="menuitem" class="lm2-context-menu__item" data-id={activeApptMenuId} onclick={handleApptNoShow}>Mark as No Show</li>
+                </ul>
+            </div>
+        </template>
+
+        <!-- ── Global participant action context menu ── -->
+        <template lwc:if={activeMenuRowId}>
+            <div class="lm2-context-menu" style={menuDropdownStyle}>
+                <ul role="menu">
+                    <li role="menuitem" class="lm2-context-menu__item" data-id={activeMenuRowId} onclick={handleToggleVip}>Toggle VIP Priority</li>
+                    <li role="menuitem" class="lm2-context-menu__item" data-id={activeMenuRowId} onclick={handleToggleNotes}>Add / View Notes</li>
+                    <li role="menuitem" class="lm2-context-menu__item" data-id={activeMenuRowId} onclick={handleTransferRequest}>Transfer to Another Queue</li>
+                    <li role="menuitem" class="lm2-context-menu__item" data-id={activeMenuRowId} onclick={handleParticipantNoShow}>Mark as No-Show</li>
+                </ul>
+            </div>
+        </template>
+
+        <!-- ── Reschedule Appointment Modal ── -->
+        <template lwc:if={showRescheduleModal}>
+            <div class="lm2-modal-backdrop"></div>
+            <div class="lm2-rsched-container">
+                <button class="lm2-modal__close lm2-rsched-close" onclick={handleRescheduleClose} aria-label="Close">
+                    <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                </button>
+                <div class="lm2-rsched-modal" role="dialog" aria-modal="true" aria-labelledby="lm2RschedTitle">
+                    <div class="lm2-rsched-modal__header">
+                        <h2 id="lm2RschedTitle" class="lm2-rsched-modal__title">Schedule Appointment</h2>
+                    </div>
+                    <div class="lm2-rsched-modal__body">
+                        <div class="lm2-rsched-sidebar">
+                            <ul class="lm2-rsched-sidebar__nav">
+                                <li class={rschedTabAvailableClass} onclick={handleRschedTabAvailable}>
+                                    <lightning-icon icon-name="utility:date_time" size="x-small"></lightning-icon>
+                                    <span>By Available Slots</span>
+                                </li>
+                                <li class={rschedTabResourceClass} onclick={handleRschedTabResource}>
+                                    <lightning-icon icon-name="utility:people" size="x-small"></lightning-icon>
+                                    <span>By Required Resources</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="lm2-rsched-cal-panel">
+                            <div class="lm2-rsched-cal__card">
+                                <div class="lm2-rsched-cal__nav">
+                                    <button class="lm2-rsched-cal__arrow" onclick={handleCalPrev} aria-label="Previous month">
+                                        <lightning-icon icon-name="utility:chevronleft" size="x-small"></lightning-icon>
+                                    </button>
+                                    <span class="lm2-rsched-cal__month">{calMonthLabel}</span>
+                                    <button class="lm2-rsched-cal__arrow" onclick={handleCalNext} aria-label="Next month">
+                                        <lightning-icon icon-name="utility:chevronright" size="x-small"></lightning-icon>
+                                    </button>
+                                    <div class="lm2-rsched-cal__year-wrap">
+                                        <select class="lm2-rsched-cal__year-select" onchange={handleCalYearChange}>
+                                            <template for:each={calYearOptions} for:item="yr">
+                                                <option key={yr.value} value={yr.value} selected={yr.selected}>{yr.label}</option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                </div>
+                                <table class="lm2-rsched-cal__grid" aria-label="Calendar">
+                                    <thead>
+                                        <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={calWeeks} for:item="week">
+                                            <tr key={week.key}>
+                                                <template for:each={week.days} for:item="day">
+                                                    <td key={day.key} class={day.cls} data-date={day.dateStr} onclick={handleCalDayClick}>
+                                                        <span>{day.label}</span>
+                                                    </td>
+                                                </template>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                                <div class="lm2-rsched-cal__today-wrap">
+                                    <button class="lm2-rsched-cal__today-btn" onclick={handleCalToday}>Today</button>
+                                </div>
+                            </div>
+                            <div class="lm2-rsched-info-banner">
+                                <lightning-icon icon-name="utility:info_alt" size="small"></lightning-icon>
+                                <span>Service resource will be assigned based on availability for the preferred slot.</span>
+                            </div>
+                        </div>
+                        <div class="lm2-rsched-slots-panel">
+                            <p class="lm2-rsched-slots__date-label">{calSelectedDateLabel}</p>
+                            <ul class="lm2-rsched-slots__list">
+                                <template for:each={calTimeSlots} for:item="slot">
+                                    <li key={slot.id} class={slot.cls} data-id={slot.id} onclick={handleSlotSelect}>
+                                        <div class="lm2-rsched-slot__icon-cell">
+                                            <lightning-icon icon-name="utility:event" size="x-small"></lightning-icon>
+                                        </div>
+                                        <span class="lm2-rsched-slot__time">{slot.time}</span>
+                                        <span class={slot.badgeCls}>{slot.capacity}</span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lm2-rsched-modal__footer">
+                        <lightning-button label="Cancel" onclick={handleRescheduleClose}></lightning-button>
+                        <div class="lm2-rsched-footer__right">
+                            <lightning-button label="Previous" onclick={handleRescheduleClose}></lightning-button>
+                            <lightning-button label="Reschedule" variant="brand" onclick={handleRescheduleConfirm}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- ── Waitlist Repositioning Confirmation Modal ── -->
+        <template lwc:if={showRepoConfirm}>
+            <div class="lm2-modal-backdrop"></div>
+            <div class="lm2-modal-container">
+                <div class="lm2-modal-container__inner">
+                    <button class="lm2-modal__close" onclick={handleRepoConfirmNo} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                    </button>
+                    <div class="lm2-modal" role="dialog" aria-modal="true" aria-labelledby="lm2RepoTitle">
+                        <div class="lm2-modal__header">
+                            <h2 id="lm2RepoTitle" class="lm2-modal__title">Waitlist Repositioning</h2>
+                        </div>
+                        <div class="lm2-modal__body">
+                            <p>{repoConfirmMessage}</p>
+                        </div>
+                        <div class="lm2-modal__footer">
+                            <lightning-button label="Cancel" onclick={handleRepoConfirmNo}></lightning-button>
+                            <lightning-button label="Confirm" variant="brand" onclick={handleRepoConfirmYes}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- ── Peak Hours Chart Panel ── -->
+        <template lwc:if={showPeakChart}>
+            <div class="lm2-panel-overlay" onclick={handleTogglePeakChart}></div>
+            <div class="lm2-panel lm2-panel--chart">
+                <div class="lm2-panel__header">
+                    <span class="lm2-panel__title">Check-in Activity</span>
+                    <button class="lm2-panel__close" onclick={handleTogglePeakChart} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                    </button>
+                </div>
+                <div class="lm2-chart-tabs">
+                    <button class={peakPeriodDailyClass} onclick={handlePeakPeriodDaily}>Daily</button>
+                    <button class={peakPeriodWeeklyClass} onclick={handlePeakPeriodWeekly}>Weekly</button>
+                    <button class={peakPeriodMonthlyClass} onclick={handlePeakPeriodMonthly}>Monthly</button>
+                </div>
+                <div class="lm2-peak-chart">
+                    <div class="lm2-peak-chart__bars">
+                        <template for:each={peakHoursBars} for:item="bar">
+                            <div key={bar.hour} class="lm2-peak-chart__col">
+                                <div class="lm2-peak-chart__bar-wrap">
+                                    <span class="lm2-peak-chart__count">{bar.label}</span>
+                                    <div class={bar.barClass} style={bar.barStyle}></div>
+                                </div>
+                                <div class="lm2-peak-chart__hour">{bar.hour}</div>
+                            </div>
+                        </template>
+                    </div>
+                    <p class="lm2-peak-chart__caption">{peakChartCaption}</p>
+                </div>
+            </div>
+        </template>
+
+        <!-- ── Daily Summary Panel ── -->
+        <template lwc:if={showDailySummary}>
+            <div class="lm2-panel-overlay" onclick={handleToggleDailySummary}></div>
+            <div class="lm2-panel lm2-panel--summary">
+                <div class="lm2-panel__header">
+                    <span class="lm2-panel__title">Daily Summary</span>
+                    <button class="lm2-panel__close" onclick={handleToggleDailySummary} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close"></lightning-icon>
+                    </button>
+                </div>
+                <div class="lm2-summary-grid">
+                    <div class="lm2-summary-stat">
+                        <div class="lm2-summary-stat__value">{dailySummaryTotalServed}</div>
+                        <div class="lm2-summary-stat__label">Total Served Today</div>
+                    </div>
+                    <div class="lm2-summary-stat">
+                        <div class="lm2-summary-stat__value">{metricTotalCheckedIn}</div>
+                        <div class="lm2-summary-stat__label">Currently in Queue</div>
+                    </div>
+                    <div class="lm2-summary-stat">
+                        <div class="lm2-summary-stat__value lm2-summary-stat__value--orange">{dailySummaryAvgWait}</div>
+                        <div class="lm2-summary-stat__label">Avg Wait Time</div>
+                    </div>
+                    <div class="lm2-summary-stat">
+                        <div class="lm2-summary-stat__value lm2-summary-stat__value--red">{dailySummaryNoShows}</div>
+                        <div class="lm2-summary-stat__label">No-Shows Today</div>
+                    </div>
+                    <div class="lm2-summary-stat">
+                        <div class="lm2-summary-stat__value">{metricActiveWaitlists}</div>
+                        <div class="lm2-summary-stat__label">Active Waitlists</div>
+                    </div>
+                    <div class="lm2-summary-stat">
+                        <div class="lm2-summary-stat__value">{metricUpcoming}</div>
+                        <div class="lm2-summary-stat__label">Upcoming Appointments</div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- ── Transfer to Another Queue Modal ── -->
+        <template lwc:if={showTransferModal}>
+            <div class="lm2-modal-backdrop"></div>
+            <div class="lm2-modal-container">
+                <div class="lm2-modal-container__inner">
+                    <button class="lm2-modal__close" onclick={handleTransferCancel} aria-label="Close">
+                        <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
+                    </button>
+                    <div class="lm2-modal lm2-modal--small" role="dialog" aria-modal="true">
+                        <div class="lm2-modal__header">
+                            <h2 class="lm2-modal__title">Transfer to Another Queue</h2>
+                        </div>
+                        <div class="lm2-modal__body">
+                            <lightning-combobox
+                                label="Select Waitlist"
+                                value={transferTargetQueue}
+                                options={transferQueueOptions}
+                                placeholder="Choose a waitlist..."
+                                onchange={handleTransferTargetChange}>
+                            </lightning-combobox>
+                            <template lwc:if={transferTopicPickerVisible}>
+                                <div class="slds-m-top_small">
+                                    <lightning-combobox
+                                        label="Select Work Topic"
+                                        value={transferTargetTopic}
+                                        options={transferTopicOptions}
+                                        placeholder="Choose a work topic..."
+                                        onchange={handleTransferTopicChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="lm2-modal__footer">
+                            <lightning-button label="Cancel" onclick={handleTransferCancel}></lightning-button>
+                            <lightning-button label="Transfer" variant="brand" disabled={transferConfirmDisabled} onclick={handleTransferConfirm}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</template>

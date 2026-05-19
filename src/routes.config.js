@@ -33,6 +33,13 @@ export const routes = [
     navLabel: 'Waitlist Management',
   },
   {
+    path: '/lobby2',
+    component: 'page-lobby-management-2',
+    title: 'Lobby Management 2',
+    navPage: 'lobby2',
+    navLabel: 'Lobby Management 2',
+  },
+  {
     path: '/icons',
     component: 'page-icon-test',
     title: 'Icons',

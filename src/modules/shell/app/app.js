@@ -9,12 +9,14 @@ import User from 'page/user';
 import Contacts from 'page/contacts';
 import ContactDetail from 'page/contactDetail';
 import LobbyManagement from 'page/lobbyManagement';
+import LobbyManagement2 from 'page/lobbyManagement2';
 import WaitlistManagement from 'page/waitlistManagement';
 
 /** Option A: explicit registration – add one import + one entry here when adding a route */
 const ROUTE_COMPONENTS = {
     'page-home': Home,
     'page-lobby-management': LobbyManagement,
+    'page-lobby-management-2': LobbyManagement2,
     'page-waitlist-management': WaitlistManagement,
     'page-icon-test': IconTest,
     'page-settings': Settings,
