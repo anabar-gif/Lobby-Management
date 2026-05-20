@@ -271,12 +271,43 @@
 
 .lm2-filter-group {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 0.375rem;
+    gap: 8px;
+    height: 36px;
+    position: relative;
+    overflow: visible;
     white-space: nowrap;
 }
 
+.lm2-filter-group:last-child .slds-dropdown {
+    left: auto !important;
+    right: 0 !important;
+}
+
 .lm2-filter-label {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--slds-g-color-on-surface-2, #444);
+    white-space: nowrap;
+}
+
+/* Pill-shaped comboboxes matching LM1 */
+.lm2-filter-group lightning-combobox {
+    --slds-c-input-color-background: #ffffff;
+    --slds-c-input-color-border: var(--slds-g-color-border-base-2, #c9c9c9);
+    --slds-c-input-color-border-focus: var(--slds-g-color-brand-base-50, #0176d3);
+    --slds-c-input-radius-border: 100px;
+    --slds-c-input-text-color: var(--slds-g-color-on-surface-1, #181818);
+    --slds-c-input-font-size: 13px;
+    --slds-c-input-font-weight: 590;
+    --slds-c-input-sizing-height: 36px;
+    --slds-c-input-spacing-horizontal-start: 16px;
+    --slds-c-input-spacing-horizontal-end: 16px;
+}
+
+/* (keep old label below for compat) */
+.lm2-filter-label-old {
     font-size: var(--lm2-font-sm);
     color: var(--lm2-text-secondary);
     font-weight: 500;
