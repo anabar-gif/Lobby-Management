@@ -27,11 +27,11 @@ const ROUTE_COMPONENTS = {
     'page-contact-detail': ContactDetail,
 };
 
-/** Derived from routes.config: component name → nav page id (or group id) for active-tab highlighting */
+/** Derived from routes.config: component name → specific nav page id for active-tab highlighting */
 const ROUTE_TO_NAV_PAGE = Object.fromEntries(
     routes
         .filter((r) => r.navPage || r.navHighlight)
-        .map((r) => [r.component, r.navGroup ?? r.navPage ?? r.navHighlight])
+        .map((r) => [r.component, r.navPage ?? r.navHighlight])
 );
 
 /** Nav items for global navigation (tabs + waffle).
