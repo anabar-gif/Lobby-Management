@@ -217,15 +217,28 @@
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
                                                         <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
+                                                            <template lwc:if={appt.showCheckin}></template>
+                                                            <template lwc:else>
+                                                                <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
+                                                            </template>
                                                             <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
-                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                        <div class="slds-no-flex lm2-appt-card__actions slds-m-left_x-small">
                                                             <template lwc:if={appt.showCheckin}>
-                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                                <div class="lm2-appt-card__checkin-group">
+                                                                    <div class="lm2-service-badge lm2-service-badge--right">{appt.appointmentNumber}</div>
+                                                                    <div class="lm2-appt-card__checkin-row">
+                                                                        <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                                        <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                                    </div>
+                                                                </div>
                                                             </template>
-                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                            <template lwc:else>
+                                                                <div class="slds-grid slds-grid_vertical-align-center">
+                                                                    <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                                </div>
+                                                            </template>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -267,15 +280,28 @@
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
                                                         <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
+                                                            <template lwc:if={appt.showCheckin}></template>
+                                                            <template lwc:else>
+                                                                <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
+                                                            </template>
                                                             <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
-                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                        <div class="slds-no-flex lm2-appt-card__actions slds-m-left_x-small">
                                                             <template lwc:if={appt.showCheckin}>
-                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                                <div class="lm2-appt-card__checkin-group">
+                                                                    <div class="lm2-service-badge lm2-service-badge--right">{appt.appointmentNumber}</div>
+                                                                    <div class="lm2-appt-card__checkin-row">
+                                                                        <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                                        <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                                    </div>
+                                                                </div>
                                                             </template>
-                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                            <template lwc:else>
+                                                                <div class="slds-grid slds-grid_vertical-align-center">
+                                                                    <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                                </div>
+                                                            </template>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -317,15 +343,28 @@
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
                                                         <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
+                                                            <template lwc:if={appt.showCheckin}></template>
+                                                            <template lwc:else>
+                                                                <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
+                                                            </template>
                                                             <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
-                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                        <div class="slds-no-flex lm2-appt-card__actions slds-m-left_x-small">
                                                             <template lwc:if={appt.showCheckin}>
-                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                                <div class="lm2-appt-card__checkin-group">
+                                                                    <div class="lm2-service-badge lm2-service-badge--right">{appt.appointmentNumber}</div>
+                                                                    <div class="lm2-appt-card__checkin-row">
+                                                                        <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                                        <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                                    </div>
+                                                                </div>
                                                             </template>
-                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                            <template lwc:else>
+                                                                <div class="slds-grid slds-grid_vertical-align-center">
+                                                                    <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
+                                                                </div>
+                                                            </template>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -534,10 +534,31 @@
     letter-spacing: 0.01em;
 }
 
-/* Badge stacked above the name (LM2 card layout) */
+/* Badge stacked above the name (left side, no Check In button) */
 .lm2-service-badge--stacked {
     display: inline-flex;
     margin-bottom: 0.3rem;
+}
+
+/* Badge on the right side, above Check In button */
+.lm2-service-badge--right {
+    display: inline-flex;
+    margin-bottom: 0.3rem;
+    align-self: flex-end;
+}
+
+/* Right-side column: badge on top, then [Check In] [▼] below */
+.lm2-appt-card__checkin-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.lm2-appt-card__checkin-row {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 /* ============================================================
