@@ -479,7 +479,7 @@
 .lm2-appt-card__identity {
     flex: 1;
     min-width: 0;
-    margin: 0 0.5rem;
+    margin: 0 0.5rem 0 0;
 }
 
 .lm2-appt-card__name {
@@ -529,9 +529,15 @@
     color: #ffffff;
     font-size: var(--lm2-font-xs);
     font-weight: 700;
-    border-radius: var(--lm2-radius-1);   /* SLDS 2 border-1 = 0.25rem / 4px — badge shape */
+    border-radius: var(--lm2-radius-1);
     flex-shrink: 0;
     letter-spacing: 0.01em;
+}
+
+/* Badge stacked above the name (LM2 card layout) */
+.lm2-service-badge--stacked {
+    display: inline-flex;
+    margin-bottom: 0.3rem;
 }
 
 /* ============================================================

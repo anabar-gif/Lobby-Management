@@ -216,8 +216,8 @@
                                             <div key={appt.id} class="lm2-appt-card">
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lm2-appt-card__identity">
+                                                            <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
                                                             <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
@@ -266,8 +266,8 @@
                                             <div key={appt.id} class="lm2-appt-card">
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lm2-appt-card__identity">
+                                                            <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
                                                             <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
@@ -316,8 +316,8 @@
                                             <div key={appt.id} class="lm2-appt-card lm2-appt-card--past">
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lm2-appt-card__identity">
+                                                            <div class="lm2-service-badge lm2-service-badge--stacked">{appt.appointmentNumber}</div>
                                                             <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
@@ -519,8 +519,8 @@
                                                             <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                         </svg>
                                                     </div>
-                                                    <div class="lm2-service-badge">{row.serviceNumber}</div>
                                                     <div class="lm2-participant__identity slds-m-left_x-small">
+                                                        <div class="lm2-service-badge lm2-service-badge--stacked">{row.serviceNumber}</div>
                                                         <div class="lm2-participant__name-row">
                                                             <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
                                                             <template lwc:if={row.isVip}><span class="lm2-vip-badge">VIP</span></template>
@@ -619,8 +619,8 @@
                                                                     <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                                 </svg>
                                                             </div>
-                                                            <div class="lm2-service-badge">{row.serviceNumber}</div>
                                                             <div class="lm2-participant__identity slds-m-left_x-small">
+                                                                <div class="lm2-service-badge lm2-service-badge--stacked">{row.serviceNumber}</div>
                                                                 <div class="lm2-participant__name-row">
                                                                     <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
                                                                     <template lwc:if={row.isVip}><span class="lm2-vip-badge">VIP</span></template>
