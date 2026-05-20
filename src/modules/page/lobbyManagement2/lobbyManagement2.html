@@ -455,7 +455,9 @@
                                                     </div>
                                                     <div class="lm2-participant__identity slds-m-left_x-small">
                                                         <div class="lm2-participant__name-row">
-                                                            <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
+                                                            <a class="lm2-participant__name-link" href="#" onclick={handleQueueNameClick} data-id={row.id}>{row.linkLabel}</a>
+                                                            <span class="lm2-participant__name-sep">|</span>
+                                                            <a class="lm2-participant__number-link" href="#" onclick={handleQueueBadgeClick} data-id={row.id}>{row.serviceNumber}</a>
                                                             <template lwc:if={row.isVip}>
                                                                 <span class="lm2-vip-badge">VIP</span>
                                                             </template>
@@ -472,8 +474,7 @@
                                                             <div class="lm2-participant__resource">Assigned Resource — {row.assignedResource}</div>
                                                         </template>
                                                     </div>
-                                                    <div class="slds-no-flex slds-m-left_x-small lm2-participant__menu-group">
-                                                        <div class="lm2-service-badge lm2-service-badge--right">{row.serviceNumber}</div>
+                                                    <div class="slds-no-flex slds-m-left_x-small">
                                                         <lightning-button-icon
                                                             icon-name="utility:down"
                                                             variant="border-filled"

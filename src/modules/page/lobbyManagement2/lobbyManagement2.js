@@ -42,6 +42,15 @@ export default class LobbyManagement2 extends LobbyManagement {
         this.lm2_ibCheckinOpen = false;
     }
 
+                // ── Queue participant inline links (GB name | number) ─────────────
+                handleQueueNameClick(event) {
+                    event.preventDefault();
+                }
+
+                handleQueueBadgeClick(event) {
+                    event.preventDefault();
+                }
+
                 // ── Appointment badge link ────────────────────────────────────────
                 handleApptBadgeClick(event) {
                     event.preventDefault();
