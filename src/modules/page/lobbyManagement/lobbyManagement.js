@@ -543,13 +543,17 @@ export default class LobbyManagement extends LightningElement {
         return result;
     }
 
+    _apptWithSlotStart(a) {
+        return { ...a, slotStart: a.slot ? a.slot.split(' - ')[0].trim() : '' };
+    }
+
     get currentAppointmentsFiltered() {
         const lower = this.globalSearch.trim().toLowerCase();
         let list = this.currentAppointmentsView;
         if (this.activeTileFilter === 'served')   list = list.filter(a => a.checkedIn);
         if (this.activeTileFilter === 'upcoming')  return [];
         if (lower) list = list.filter(a => this._apptMatchesSearch(a, lower));
-        return list;
+        return list.map(a => this._apptWithSlotStart(a));
     }
 
     get upcomingAppointmentsFiltered() {
@@ -557,7 +561,7 @@ export default class LobbyManagement extends LightningElement {
         let list = this.upcomingAppointmentsView;
         if (this.activeTileFilter === 'served')   return [];
         if (lower) list = list.filter(a => this._apptMatchesSearch(a, lower));
-        return list;
+        return list.map(a => this._apptWithSlotStart(a));
     }
 
     get pastAppointmentsFiltered() {
@@ -566,7 +570,7 @@ export default class LobbyManagement extends LightningElement {
         if (this.activeTileFilter === 'served')   return [];
         if (this.activeTileFilter === 'upcoming') return [];
         if (lower) list = list.filter(a => this._apptMatchesSearch(a, lower));
-        return list;
+        return list.map(a => this._apptWithSlotStart(a));
     }
 
     // ── Batch 2: Avatars, VIP, Notes, Auto-refresh, Resource filter ─────────
@@ -955,6 +959,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'a1',
             appointmentNumber: 'A-1007',
             customerName: 'Arna Sumaiyah',
+            phone: '+1 (415) 555-0182',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Service Appointment',
             slot: '9:00 am - 9:30 am',
@@ -970,6 +975,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'a2',
             appointmentNumber: 'A-1008',
             customerName: 'James Clain',
+            phone: '+1 (408) 555-0774',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Interaction',
             slot: '9:30 am - 10:00 am',
@@ -983,6 +989,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'p1',
             appointmentNumber: 'A-1001',
             customerName: 'David Okafor',
+            phone: '+1 (510) 555-0391',
             subtitle: 'Commercial Loan • Anthony Young',
             slot: '8:00 am - 8:30 am',
             showCheckin: true,
@@ -992,6 +999,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'p2',
             appointmentNumber: 'A-1002',
             customerName: 'Priya Nair',
+            email: 'priya.nair@example.com',
             subtitle: 'Wealth Management • Rachel Adams',
             slot: '8:00 am - 8:30 am',
             showCheckin: true,
@@ -1001,6 +1009,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'p3',
             appointmentNumber: 'A-1003',
             customerName: 'Carlos Mendez',
+            phone: '+1 (628) 555-0247',
             subtitle: 'Savings Account • Tom Sawyer',
             slot: '8:15 am - 8:45 am',
             showCheckin: true,
@@ -1010,6 +1019,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'p4',
             appointmentNumber: 'A-1004',
             customerName: 'Aisha Osei',
+            email: 'aisha.osei@example.com',
             subtitle: 'Investment Planning • Adam Milne',
             slot: '8:30 am - 9:00 am',
             showCheckin: true,
@@ -1019,6 +1029,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'p5',
             appointmentNumber: 'A-1005',
             customerName: 'Liam Thornton',
+            phone: '+1 (415) 555-0563',
             subtitle: 'Branch Services • Rachel Adams',
             slot: '8:30 am - 9:00 am',
             showCheckin: true,
@@ -1028,6 +1039,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'p6',
             appointmentNumber: 'A-1006',
             customerName: 'Mei Suzuki',
+            email: 'mei.suzuki@example.com',
             subtitle: 'Retail Loan • Michael Scott',
             slot: '8:45 am - 9:15 am',
             showCheckin: true,
@@ -1040,6 +1052,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'b1',
             appointmentNumber: 'A-1009',
             customerName: 'Smith Kim',
+            phone: '+1 (650) 555-0123',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Interaction',
             slot: '10:00 am - 10:30 am',
@@ -1050,6 +1063,7 @@ export default class LobbyManagement extends LightningElement {
             id: 'b2',
             appointmentNumber: 'A-1010',
             customerName: 'Regina Hem',
+            email: 'regina.hem@example.com',
             subtitle: 'Savings Account • Rachel Adams',
             serviceApptLabel: 'Service Appointment',
             slot: '10:00 am - 10:30 am',

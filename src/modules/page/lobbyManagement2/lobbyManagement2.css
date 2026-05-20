@@ -508,7 +508,9 @@
 .lm2-appt-card__footer {
     background: #f7f7f7;
     border-top: 1px solid #eeeeee;
-    padding: 0.375rem 0.75rem;
+    padding: 0.35rem 0.625rem;
+    min-height: 2.125rem;
+    box-sizing: border-box;
 }
 
 .lm2-appt-card__identity {
@@ -782,12 +784,22 @@
     background: #f7f7f7;
     border-top: 1px solid #eeeeee;
     padding: 0.35rem 0.625rem;
+    min-height: 2.125rem;
+    box-sizing: border-box;
 }
 
 .lm2-participant__wait {
     gap: 0.25rem;
     font-size: var(--lm2-font-sm);
     font-weight: 600;
+}
+.lm2-participant__wait-label {
+    font-size: var(--lm2-font-sm);
+    font-weight: 400;
+    color: var(--lm2-text-secondary);
+}
+.lm2-appt-card__detail-sep {
+    color: var(--lm2-text-secondary);
 }
 
 /* Drag handle */
@@ -1406,7 +1418,7 @@
     border-top: 1px solid var(--lm2-border);
     background: #f8f8f8;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 

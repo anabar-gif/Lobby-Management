@@ -222,7 +222,15 @@
                                                                 <span class="lm2-participant__name-sep">|</span>
                                                                 <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
                                                             </div>
-                                                            <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
+                                                            <template lwc:if={appt.phone}>
+                                                                <div class="lm2-participant__contact">📞 {appt.phone}</div>
+                                                            </template>
+                                                            <template lwc:if={appt.email}>
+                                                                <div class="lm2-participant__contact">
+                                                                    <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
+                                                                </div>
+                                                            </template>
+                                                            <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
                                                         </div>
                                                         <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
                                                             <template lwc:if={appt.showCheckin}>
@@ -234,17 +242,13 @@
                                                 </div>
                                                 <div class="lm2-appt-card__footer">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                        <div class="lm2-appt-card__slot slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-                                                            <lightning-icon class="slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
-                                                            <span class="slds-truncate">{appt.slot}</span>
-                                                        </div>
                                                         <template lwc:if={appt.checkedIn}>
-                                                            <span class="lm2-badge lm2-badge--checkedin slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                            <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
                                                         </template>
                                                         <template lwc:if={appt.showWaitAlert}>
-                                                            <div class="lm2-appt-card__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
-                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                            <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
+                                                                <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class="lm2-participant__wait-label">Wait Time:</span>
                                                                 <span class={appt.waitTimeClass}>{appt.waitTime}</span>
                                                             </div>
                                                         </template>
@@ -275,7 +279,15 @@
                                                                 <span class="lm2-participant__name-sep">|</span>
                                                                 <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
                                                             </div>
-                                                            <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
+                                                            <template lwc:if={appt.phone}>
+                                                                <div class="lm2-participant__contact">📞 {appt.phone}</div>
+                                                            </template>
+                                                            <template lwc:if={appt.email}>
+                                                                <div class="lm2-participant__contact">
+                                                                    <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
+                                                                </div>
+                                                            </template>
+                                                            <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
                                                         </div>
                                                         <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
                                                             <template lwc:if={appt.showCheckin}>
@@ -287,17 +299,13 @@
                                                 </div>
                                                 <div class="lm2-appt-card__footer">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                        <div class="lm2-appt-card__slot slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-                                                            <lightning-icon class="slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
-                                                            <span class="slds-truncate">{appt.slot}</span>
-                                                        </div>
                                                         <template lwc:if={appt.checkedIn}>
-                                                            <span class="lm2-badge lm2-badge--checkedin slds-m-left_x-small">{appt.checkedInLabel}</span>
+                                                            <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
                                                         </template>
                                                         <template lwc:if={appt.showWaitAlert}>
-                                                            <div class="lm2-appt-card__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
-                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
+                                                            <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
+                                                                <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                <span class="lm2-participant__wait-label">Wait Time:</span>
                                                                 <span class={appt.waitTimeClass}>{appt.waitTime}</span>
                                                             </div>
                                                         </template>
@@ -328,7 +336,15 @@
                                                                 <span class="lm2-participant__name-sep">|</span>
                                                                 <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
                                                             </div>
-                                                            <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
+                                                            <template lwc:if={appt.phone}>
+                                                                <div class="lm2-participant__contact">📞 {appt.phone}</div>
+                                                            </template>
+                                                            <template lwc:if={appt.email}>
+                                                                <div class="lm2-participant__contact">
+                                                                    <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
+                                                                </div>
+                                                            </template>
+                                                            <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
                                                         </div>
                                                         <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
                                                             <template lwc:if={appt.showCheckin}>
@@ -340,19 +356,8 @@
                                                 </div>
                                                 <div class="lm2-appt-card__footer">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                        <div class="lm2-appt-card__slot slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-                                                            <lightning-icon class="slds-m-right_xx-small" icon-name="utility:event" size="x-small" alternative-text=""></lightning-icon>
-                                                            <span class="slds-truncate">{appt.slot}</span>
-                                                        </div>
                                                         <template lwc:if={appt.checkedIn}>
-                                                            <span class="lm2-badge lm2-badge--checkedin slds-m-left_x-small">{appt.checkedInLabel}</span>
-                                                        </template>
-                                                        <template lwc:if={appt.showWaitAlert}>
-                                                            <div class="lm2-appt-card__wait slds-grid slds-grid_vertical-align-center slds-no-flex slds-m-left_x-small">
-                                                                <lightning-icon class={appt.waitClockClass} icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
-                                                                <span class={appt.waitLabelClass}>{appt.waitLabel}</span>
-                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
-                                                            </div>
+                                                            <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
                                                         </template>
                                                         <template lwc:if={appt.isLate}>
                                                             <template lwc:if={appt.showCheckin}>
@@ -465,6 +470,7 @@
                                                         <span class="lm2-badge lm2-badge--checkedin">Check In: {row.checkInTime}</span>
                                                         <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
                                                             <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="lm2-participant__wait-label">Wait Time:</span>
                                                             <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                         </div>
                                                     </div>
@@ -569,6 +575,7 @@
                                                         <span class="lm2-badge lm2-badge--checkedin">Check In: {row.checkInTime}</span>
                                                         <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
                                                             <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="lm2-participant__wait-label">Wait Time:</span>
                                                             <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                         </div>
                                                     </div>
@@ -670,6 +677,7 @@
                                                                 <span class="lm2-badge lm2-badge--checkedin">Check In: {row.checkInTime}</span>
                                                                 <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
                                                                     <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                                    <span class="lm2-participant__wait-label">Wait Time:</span>
                                                                     <span class={row.waitTimeClass}>{row.waitTime}</span>
                                                                 </div>
                                                             </div>
@@ -1259,9 +1267,8 @@
                         </div>
                     </div>
                     <div class="lm2-rsched-modal__footer">
-                        <lightning-button label="Cancel" onclick={handleRescheduleClose}></lightning-button>
                         <div class="lm2-rsched-footer__right">
-                            <lightning-button label="Previous" onclick={handleRescheduleClose}></lightning-button>
+                            <lightning-button label="Cancel" onclick={handleRescheduleClose}></lightning-button>
                             <lightning-button label="Reschedule" variant="brand" onclick={handleRescheduleConfirm}></lightning-button>
                         </div>
                     </div>

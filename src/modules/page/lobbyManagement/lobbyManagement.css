@@ -1904,7 +1904,7 @@
 .rsched-modal__footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 0.875rem 1.75rem;
     border-top: 1px solid var(--slds-g-color-border-1, #e5e5e5);
     background: var(--slds-g-color-surface-1, #fff);
