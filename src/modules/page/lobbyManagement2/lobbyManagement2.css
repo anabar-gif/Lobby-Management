@@ -569,43 +569,42 @@
     letter-spacing: 0.01em;
 }
 
-/* Badge stacked above the name (left side, no Check In button) */
-.lm2-service-badge--stacked {
-    display: inline-flex;
-    margin-bottom: 0.3rem;
+/* Badge-as-link above the name — no pill background, plain link style */
+.lm2-service-badge--stacked,
+.lm2-service-badge--right {
+    background: none;
+    color: var(--lm2-blue);
+    padding: 0;
+    height: auto;
+    min-width: unset;
+    border-radius: 0;
+    font-size: var(--lm2-font-xs);
+    font-weight: 700;
+    letter-spacing: 0.01em;
     text-decoration: none;
     cursor: pointer;
-}
-
-.lm2-service-badge--stacked:hover {
-    text-decoration: underline;
-    text-decoration-color: rgba(255, 255, 255, 0.8);
-    opacity: 0.88;
-}
-
-.lm2-service-badge--stacked:focus {
-    outline: 2px solid #0176d3;
-    outline-offset: 2px;
-}
-
-/* Badge on the right side, above Check In button */
-.lm2-service-badge--right {
     display: inline-flex;
+}
+
+.lm2-service-badge--stacked {
+    margin-bottom: 0.2rem;
+}
+
+.lm2-service-badge--right {
     margin-bottom: 0.3rem;
     align-self: flex-end;
-    text-decoration: none;
-    cursor: pointer;
 }
 
+.lm2-service-badge--stacked:hover,
 .lm2-service-badge--right:hover {
     text-decoration: underline;
-    text-decoration-color: rgba(255, 255, 255, 0.8);
-    opacity: 0.88;
 }
 
+.lm2-service-badge--stacked:focus,
 .lm2-service-badge--right:focus {
     outline: 2px solid #0176d3;
     outline-offset: 2px;
+    border-radius: 2px;
 }
 
 /* Right-side column: badge on top, then [Check In] [▼] below */
