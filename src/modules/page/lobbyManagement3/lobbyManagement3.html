@@ -216,9 +216,12 @@
                                             <div key={appt.id} class="lm2-appt-card">
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lm2-participant__name-row">
+                                                                <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
+                                                                <span class="lm2-participant__name-sep">|</span>
+                                                                <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
+                                                            </div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
                                                         <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
@@ -266,9 +269,12 @@
                                             <div key={appt.id} class="lm2-appt-card">
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lm2-participant__name-row">
+                                                                <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
+                                                                <span class="lm2-participant__name-sep">|</span>
+                                                                <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
+                                                            </div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
                                                         <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
@@ -316,9 +322,12 @@
                                             <div key={appt.id} class="lm2-appt-card lm2-appt-card--past">
                                                 <div class="lm2-appt-card__body">
                                                     <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-service-badge slds-m-right_x-small">{appt.appointmentNumber}</div>
                                                         <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-appt-card__name slds-truncate" role="button" tabindex="0" title={appt.customerName}>{appt.customerName}</div>
+                                                            <div class="lm2-participant__name-row">
+                                                                <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
+                                                                <span class="lm2-participant__name-sep">|</span>
+                                                                <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
+                                                            </div>
                                                             <div class="lm2-appt-card__detail slds-truncate">{appt.subtitle}</div>
                                                         </div>
                                                         <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
