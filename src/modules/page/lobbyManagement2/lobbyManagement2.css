@@ -252,17 +252,21 @@
     padding: 0.5rem 1rem;
     background: var(--lm2-surface);
     border-bottom: 1px solid var(--lm2-border-light);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .lm2-search-input {
-    flex: 1 1 220px;
+    flex: 1;
+    max-width: 480px;
 }
 
 .lm2-search-bar__filters {
     display: flex;
+    align-items: center;
     gap: 0.75rem;
-    flex-wrap: wrap;
+    flex-shrink: 0;
+    margin-left: auto;
+    flex-wrap: nowrap;
 }
 
 .lm2-filter-group {
