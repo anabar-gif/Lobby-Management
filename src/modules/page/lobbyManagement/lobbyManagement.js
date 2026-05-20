@@ -774,12 +774,14 @@ export default class LobbyManagement extends LightningElement {
     }
 
     get metaLinePrimary() {
-        const n = (this.currentAppointments?.length ?? 0) + (this.upcomingAppointments?.length ?? 0);
+        const n = (this.currentAppointments?.length ?? 0)
+                + (this.upcomingAppointments?.length ?? 0)
+                + (this.pastAppointments?.length ?? 0);
         const w = n === 1 ? 'Item' : 'Items';
         return `${n} ${w} • Updated 8 min ago`;
     }
 
-    investmentQueueMetaLeft = 'Showing 1 of 1 Item • Updated 8 min ago';
+    investmentQueueMetaLeft = '1 Item • Updated 8 min ago';
     investmentQueueMetaRight = 'Total Appointment Duration: 1 hr 0 min';
 
     @track showCheckinComposer = false;
@@ -944,7 +946,7 @@ export default class LobbyManagement extends LightningElement {
     get generalQueueMetaLeft() {
         const n = this.generalBankingParticipantCount;
         const itemWord = n === 1 ? 'Item' : 'Items';
-        return `Showing ${n} of ${n} ${itemWord} ∙ Updated 6 min ago`;
+        return `${n} ${itemWord} • Updated 8 min ago`;
     }
 
     get generalQueueMetaRight() {

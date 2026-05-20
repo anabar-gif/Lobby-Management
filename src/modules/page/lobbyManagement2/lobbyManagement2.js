@@ -60,6 +60,26 @@ export default class LobbyManagement2 extends LobbyManagement {
                     this.dispatchEvent(new CustomEvent('apptbadgeclick', { detail: { id }, bubbles: true, composed: true }));
                 }
 
+    // ── Appointment accordion (SLDS lightning-accordion) ─────────────
+    get apptOpenSections() {
+        const open = [];
+        if (this.sectionCurrentOpen)  open.push('current');
+        if (this.sectionUpcomingOpen) open.push('upcoming');
+        if (this.sectionPastOpen)     open.push('past');
+        return open;
+    }
+
+    handleApptAccordionToggle(event) {
+        const open = event.detail.openSections || [];
+        this.sectionCurrentOpen  = open.includes('current');
+        this.sectionUpcomingOpen = open.includes('upcoming');
+        this.sectionPastOpen     = open.includes('past');
+    }
+
+    get currentSectionLabel()  { return `Current \u2022 ${this.currentSectionMetaLine}`; }
+    get upcomingSectionLabel() { return `Upcoming \u2022 ${this.upcomingSectionMetaLine}`; }
+    get pastSectionLabel()     { return `Past \u2022 ${this.pastSectionMetaLine}`; }
+
                 // ── Other inherited modals (kept for parity) ──────────────────────
     @track showRepoConfirm = false;
     @track showTransferModal = false;

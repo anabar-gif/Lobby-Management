@@ -201,176 +201,163 @@
                                 </lightning-button-icon>
                             </div>
                         </div>
-                        <div class="lm2-card__body">
+                        <div class="lm2-card__body lm2-card__body--queue">
 
-                            <!-- Current accordion -->
-                            <div class="lm2-accordion">
-                                <button class={accordionCurrentHeaderClass} data-section="current" onclick={handleSectionToggle} aria-expanded={sectionCurrentOpen}>
-                                    <lightning-icon class="lm2-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
-                                    <span class="lm2-accordion__label">Current</span>
-                                    <span class="lm2-accordion__meta">{currentSectionMetaLine}</span>
-                                </button>
-                                <template lwc:if={sectionCurrentOpen}>
-                                    <div class="lm2-accordion__cards">
-                                        <template for:each={currentAppointmentsFiltered} for:item="appt">
-                                            <div key={appt.id} class="lm2-appt-card">
-                                                <div class="lm2-appt-card__body">
-                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-participant__name-row">
-                                                                <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
-                                                                <span class="lm2-participant__name-sep">|</span>
-                                                                <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
+                            <lightning-accordion
+                                class="lm2-queue-accordion"
+                                allow-multiple-sections-open
+                                active-section-name={apptOpenSections}
+                                onsectiontoggle={handleApptAccordionToggle}>
+
+                                <!-- Current section -->
+                                <lightning-accordion-section name="current" label={currentSectionLabel}>
+                                    <div class="lm2-accordion-content lm2-accordion-content--current-appt">
+                                    <template for:each={currentAppointmentsFiltered} for:item="appt">
+                                        <div key={appt.id} class="lm2-appt-card">
+                                            <div class="lm2-appt-card__body">
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lm2-appt-card__identity">
+                                                        <div class="lm2-participant__name-row">
+                                                            <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
+                                                            <span class="lm2-participant__name-sep">|</span>
+                                                            <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
+                                                        </div>
+                                                        <template lwc:if={appt.phone}>
+                                                            <div class="lm2-participant__contact">📞 {appt.phone}</div>
+                                                        </template>
+                                                        <template lwc:if={appt.email}>
+                                                            <div class="lm2-participant__contact">
+                                                                <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
                                                             </div>
-                                                            <template lwc:if={appt.phone}>
-                                                                <div class="lm2-participant__contact">📞 {appt.phone}</div>
-                                                            </template>
-                                                            <template lwc:if={appt.email}>
-                                                                <div class="lm2-participant__contact">
-                                                                    <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
-                                                                </div>
-                                                            </template>
-                                                            <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
-                                                        </div>
-                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
-                                                            <template lwc:if={appt.showCheckin}>
-                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
-                                                            </template>
-                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
-                                                        </div>
+                                                        </template>
+                                                        <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
                                                     </div>
-                                                </div>
-                                                <div class="lm2-appt-card__footer">
-                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                        <template lwc:if={appt.checkedIn}>
-                                                            <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
+                                                    <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                        <template lwc:if={appt.showCheckin}>
+                                                            <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
                                                         </template>
-                                                        <template lwc:if={appt.showWaitAlert}>
-                                                            <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
-                                                                <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
-                                                                <span class="lm2-participant__wait-label">Wait Time:</span>
-                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
-                                                            </div>
-                                                        </template>
+                                                        <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </template>
-                                    </div>
-                                </template>
-                            </div>
-
-                            <!-- Upcoming accordion -->
-                            <div class="lm2-accordion">
-                                <button class={accordionUpcomingHeaderClass} data-section="upcoming" onclick={handleSectionToggle} aria-expanded={sectionUpcomingOpen}>
-                                    <lightning-icon class="lm2-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
-                                    <span class="lm2-accordion__label">Upcoming</span>
-                                    <span class="lm2-accordion__meta">{upcomingSectionMetaLine}</span>
-                                </button>
-                                <template lwc:if={sectionUpcomingOpen}>
-                                    <div class="lm2-accordion__cards">
-                                        <template for:each={upcomingAppointmentsFiltered} for:item="appt">
-                                            <div key={appt.id} class="lm2-appt-card">
-                                                <div class="lm2-appt-card__body">
-                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-participant__name-row">
-                                                                <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
-                                                                <span class="lm2-participant__name-sep">|</span>
-                                                                <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
-                                                            </div>
-                                                            <template lwc:if={appt.phone}>
-                                                                <div class="lm2-participant__contact">📞 {appt.phone}</div>
-                                                            </template>
-                                                            <template lwc:if={appt.email}>
-                                                                <div class="lm2-participant__contact">
-                                                                    <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
-                                                                </div>
-                                                            </template>
-                                                            <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
+                                            <div class="lm2-appt-card__footer">
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                    <template lwc:if={appt.checkedIn}>
+                                                        <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
+                                                    </template>
+                                                    <template lwc:if={appt.showWaitAlert}>
+                                                        <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
+                                                            <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="lm2-participant__wait-label">Wait Time:</span>
+                                                            <span class={appt.waitTimeClass}>{appt.waitTime}</span>
                                                         </div>
-                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
-                                                            <template lwc:if={appt.showCheckin}>
-                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
-                                                            </template>
-                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
-                                                        </div>
-                                                    </div>
+                                                    </template>
                                                 </div>
-                                                <div class="lm2-appt-card__footer">
-                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                        <template lwc:if={appt.checkedIn}>
-                                                            <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    </div>
+                                </lightning-accordion-section>
+
+                                <!-- Upcoming section -->
+                                <lightning-accordion-section name="upcoming" label={upcomingSectionLabel}>
+                                    <div class="lm2-accordion-content">
+                                    <template for:each={upcomingAppointmentsFiltered} for:item="appt">
+                                        <div key={appt.id} class="lm2-appt-card">
+                                            <div class="lm2-appt-card__body">
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lm2-appt-card__identity">
+                                                        <div class="lm2-participant__name-row">
+                                                            <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
+                                                            <span class="lm2-participant__name-sep">|</span>
+                                                            <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
+                                                        </div>
+                                                        <template lwc:if={appt.phone}>
+                                                            <div class="lm2-participant__contact">📞 {appt.phone}</div>
                                                         </template>
-                                                        <template lwc:if={appt.showWaitAlert}>
-                                                            <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
-                                                                <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
-                                                                <span class="lm2-participant__wait-label">Wait Time:</span>
-                                                                <span class={appt.waitTimeClass}>{appt.waitTime}</span>
+                                                        <template lwc:if={appt.email}>
+                                                            <div class="lm2-participant__contact">
+                                                                <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
                                                             </div>
                                                         </template>
+                                                        <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
+                                                    </div>
+                                                    <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                        <template lwc:if={appt.showCheckin}>
+                                                            <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                        </template>
+                                                        <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </template>
-                                    </div>
-                                </template>
-                            </div>
-
-                            <!-- Past accordion -->
-                            <div class="lm2-accordion">
-                                <button class={accordionPastHeaderClass} data-section="past" onclick={handleSectionToggle} aria-expanded={sectionPastOpen}>
-                                    <lightning-icon class="lm2-accordion__chevron" icon-name="utility:chevronright" size="x-small" alternative-text=""></lightning-icon>
-                                    <span class="lm2-accordion__label">Past</span>
-                                    <span class="lm2-accordion__meta">{pastSectionMetaLine}</span>
-                                </button>
-                                <template lwc:if={sectionPastOpen}>
-                                    <div class="lm2-accordion__cards">
-                                        <template for:each={pastAppointmentsFiltered} for:item="appt">
-                                            <div key={appt.id} class="lm2-appt-card lm2-appt-card--past">
-                                                <div class="lm2-appt-card__body">
-                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
-                                                        <div class="lm2-appt-card__identity">
-                                                            <div class="lm2-participant__name-row">
-                                                                <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
-                                                                <span class="lm2-participant__name-sep">|</span>
-                                                                <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
-                                                            </div>
-                                                            <template lwc:if={appt.phone}>
-                                                                <div class="lm2-participant__contact">📞 {appt.phone}</div>
-                                                            </template>
-                                                            <template lwc:if={appt.email}>
-                                                                <div class="lm2-participant__contact">
-                                                                    <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
-                                                                </div>
-                                                            </template>
-                                                            <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
+                                            <div class="lm2-appt-card__footer">
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                    <template lwc:if={appt.checkedIn}>
+                                                        <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
+                                                    </template>
+                                                    <template lwc:if={appt.showWaitAlert}>
+                                                        <div class="lm2-participant__wait slds-grid slds-grid_vertical-align-center">
+                                                            <lightning-icon icon-name="utility:clock" size="x-small" alternative-text=""></lightning-icon>
+                                                            <span class="lm2-participant__wait-label">Wait Time:</span>
+                                                            <span class={appt.waitTimeClass}>{appt.waitTime}</span>
                                                         </div>
-                                                        <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
-                                                            <template lwc:if={appt.showCheckin}>
-                                                                <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
-                                                            </template>
-                                                            <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
-                                                        </div>
-                                                    </div>
+                                                    </template>
                                                 </div>
-                                                <div class="lm2-appt-card__footer">
-                                                    <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
-                                                        <template lwc:if={appt.checkedIn}>
-                                                            <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    </div>
+                                </lightning-accordion-section>
+
+                                <!-- Past section -->
+                                <lightning-accordion-section name="past" label={pastSectionLabel}>
+                                    <div class="lm2-accordion-content">
+                                    <template for:each={pastAppointmentsFiltered} for:item="appt">
+                                        <div key={appt.id} class="lm2-appt-card lm2-appt-card--past">
+                                            <div class="lm2-appt-card__body">
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                                    <div class="lm2-appt-card__identity">
+                                                        <div class="lm2-participant__name-row">
+                                                            <a class="lm2-participant__name-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.customerName}</a>
+                                                            <span class="lm2-participant__name-sep">|</span>
+                                                            <a class="lm2-participant__number-link" href="#" onclick={handleApptBadgeClick} data-id={appt.id}>{appt.appointmentNumber}</a>
+                                                        </div>
+                                                        <template lwc:if={appt.phone}>
+                                                            <div class="lm2-participant__contact">📞 {appt.phone}</div>
                                                         </template>
-                                                        <template lwc:if={appt.isLate}>
-                                                            <template lwc:if={appt.showCheckin}>
-                                                                <span class="lm2-badge lm2-badge--late slds-m-left_x-small">Late</span>
-                                                            </template>
+                                                        <template lwc:if={appt.email}>
+                                                            <div class="lm2-participant__contact">
+                                                                <lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Email"></lightning-icon> {appt.email}
+                                                            </div>
                                                         </template>
+                                                        <div class="lm2-appt-card__detail slds-truncate"><span>{appt.subtitle}</span><template lwc:if={appt.slot}><span class="lm2-appt-card__detail-sep"> • </span><span>{appt.slot}</span></template></div>
+                                                    </div>
+                                                    <div class="slds-no-flex lm2-appt-card__actions slds-grid slds-grid_vertical-align-center slds-m-left_x-small">
+                                                        <template lwc:if={appt.showCheckin}>
+                                                            <lightning-button label="Check In" variant="neutral" data-id={appt.id} onclick={handleCheckin}></lightning-button>
+                                                        </template>
+                                                        <lightning-button-icon icon-name="utility:down" variant="border-filled" alternative-text="Appointment actions" title="Appointment actions" data-id={appt.id} onclick={handleApptMenu}></lightning-button-icon>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </template>
+                                            <div class="lm2-appt-card__footer">
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                    <template lwc:if={appt.checkedIn}>
+                                                        <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
+                                                    </template>
+                                                    <template lwc:if={appt.isLate}>
+                                                        <template lwc:if={appt.showCheckin}>
+                                                            <span class="lm2-badge lm2-badge--late slds-m-left_x-small">Late</span>
+                                                        </template>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
                                     </div>
-                                </template>
-                            </div>
+                                </lightning-accordion-section>
+
+                            </lightning-accordion>
 
                         </div>
                     </article>
@@ -408,6 +395,7 @@
                                 onsectiontoggle={handleGeneralAccordionToggle}>
                                 <template for:each={generalBankingTopicsFiltered} for:item="topic">
                                     <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                        <div class="lm2-accordion-content lm2-accordion-content--queue">
                                         <template for:each={topic.participants} for:item="row">
                                             <div key={row.id}
                                                 class={row.cardClass}
@@ -477,6 +465,7 @@
                                                 </div>
                                             </div>
                                         </template>
+                                        </div>
                                     </lightning-accordion-section>
                                 </template>
                             </lightning-accordion>
@@ -515,6 +504,7 @@
                                 onsectiontoggle={handleInvestmentAccordionToggle}>
                                 <template for:each={investmentBankingTopicsFiltered} for:item="topic">
                                     <lightning-accordion-section key={topic.id} name={topic.id} label={topic.label}>
+                                        <div class="lm2-accordion-content lm2-accordion-content--queue">
                                         <template for:each={topic.participants} for:item="row">
                                             <div key={row.id}
                                                 class={row.cardClass}
@@ -582,6 +572,7 @@
                                                 </div>
                                             </div>
                                         </template>
+                                        </div>
                                     </lightning-accordion-section>
                                 </template>
                             </lightning-accordion>
