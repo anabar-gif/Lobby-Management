@@ -775,7 +775,7 @@
     font-size: var(--lm2-font-sm);
     color: var(--lm2-text-secondary);
     margin-top: 0.125rem;
-    font-style: italic;
+    font-style: normal;
 }
 
 .lm2-participant__footer {
