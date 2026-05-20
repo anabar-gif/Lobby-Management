@@ -573,6 +573,19 @@
 .lm2-service-badge--stacked {
     display: inline-flex;
     margin-bottom: 0.3rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lm2-service-badge--stacked:hover {
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.8);
+    opacity: 0.88;
+}
+
+.lm2-service-badge--stacked:focus {
+    outline: 2px solid #0176d3;
+    outline-offset: 2px;
 }
 
 /* Badge on the right side, above Check In button */
@@ -580,6 +593,19 @@
     display: inline-flex;
     margin-bottom: 0.3rem;
     align-self: flex-end;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lm2-service-badge--right:hover {
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.8);
+    opacity: 0.88;
+}
+
+.lm2-service-badge--right:focus {
+    outline: 2px solid #0176d3;
+    outline-offset: 2px;
 }
 
 /* Right-side column: badge on top, then [Check In] [▼] below */

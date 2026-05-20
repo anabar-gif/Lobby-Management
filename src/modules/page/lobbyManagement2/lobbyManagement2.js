@@ -42,7 +42,16 @@ export default class LobbyManagement2 extends LobbyManagement {
         this.lm2_ibCheckinOpen = false;
     }
 
-    // ── Other inherited modals (kept for parity) ──────────────────────
+                // ── Appointment badge link ────────────────────────────────────────
+                handleApptBadgeClick(event) {
+                    event.preventDefault();
+                    const id = event.currentTarget.dataset.id;
+                    // In production this would navigate to the Service Appointment record.
+                    // For the prototype we fire the same appt-menu so reviewers can see it's interactive.
+                    this.dispatchEvent(new CustomEvent('apptbadgeclick', { detail: { id }, bubbles: true, composed: true }));
+                }
+
+                // ── Other inherited modals (kept for parity) ──────────────────────
     @track showRepoConfirm = false;
     @track showTransferModal = false;
     @track showDailySummary = false;
