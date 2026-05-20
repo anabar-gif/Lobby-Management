@@ -414,10 +414,11 @@
                                                             <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                         </svg>
                                                     </div>
-                                                    <div class="lm2-service-badge">{row.serviceNumber}</div>
                                                     <div class="lm2-participant__identity slds-m-left_x-small">
                                                         <div class="lm2-participant__name-row">
-                                                            <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
+                                                            <a class="lm2-participant__name-link" href="#" onclick={handleQueueNameClick} data-id={row.id}>{row.linkLabel}</a>
+                                                            <span class="lm2-participant__name-sep">|</span>
+                                                            <a class="lm2-participant__number-link" href="#" onclick={handleQueueBadgeClick} data-id={row.id}>{row.serviceNumber}</a>
                                                             <template lwc:if={row.isVip}>
                                                                 <span class="lm2-vip-badge">VIP</span>
                                                             </template>
@@ -519,10 +520,11 @@
                                                             <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                         </svg>
                                                     </div>
-                                                    <div class="lm2-service-badge">{row.serviceNumber}</div>
                                                     <div class="lm2-participant__identity slds-m-left_x-small">
                                                         <div class="lm2-participant__name-row">
-                                                            <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
+                                                            <a class="lm2-participant__name-link" href="#" onclick={handleQueueNameClick} data-id={row.id}>{row.linkLabel}</a>
+                                                            <span class="lm2-participant__name-sep">|</span>
+                                                            <a class="lm2-participant__number-link" href="#" onclick={handleQueueBadgeClick} data-id={row.id}>{row.serviceNumber}</a>
                                                             <template lwc:if={row.isVip}><span class="lm2-vip-badge">VIP</span></template>
                                                         </div>
                                                         <template lwc:if={row.email}>
@@ -619,10 +621,11 @@
                                                                     <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                                 </svg>
                                                             </div>
-                                                            <div class="lm2-service-badge">{row.serviceNumber}</div>
                                                             <div class="lm2-participant__identity slds-m-left_x-small">
                                                                 <div class="lm2-participant__name-row">
-                                                                    <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
+                                                                    <a class="lm2-participant__name-link" href="#" onclick={handleQueueNameClick} data-id={row.id}>{row.linkLabel}</a>
+                                                                    <span class="lm2-participant__name-sep">|</span>
+                                                                    <a class="lm2-participant__number-link" href="#" onclick={handleQueueBadgeClick} data-id={row.id}>{row.serviceNumber}</a>
                                                                     <template lwc:if={row.isVip}><span class="lm2-vip-badge">VIP</span></template>
                                                                 </div>
                                                                 <template lwc:if={row.email}>
