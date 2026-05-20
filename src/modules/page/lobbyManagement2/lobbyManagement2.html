@@ -453,7 +453,6 @@
                                                             <circle cx="3" cy="13" r="1.5"/><circle cx="7" cy="13" r="1.5"/>
                                                         </svg>
                                                     </div>
-                                                    <div class="lm2-service-badge">{row.serviceNumber}</div>
                                                     <div class="lm2-participant__identity slds-m-left_x-small">
                                                         <div class="lm2-participant__name-row">
                                                             <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
@@ -473,7 +472,8 @@
                                                             <div class="lm2-participant__resource">Assigned Resource — {row.assignedResource}</div>
                                                         </template>
                                                     </div>
-                                                    <div class="slds-no-flex slds-m-left_x-small">
+                                                    <div class="slds-no-flex slds-m-left_x-small lm2-participant__menu-group">
+                                                        <div class="lm2-service-badge lm2-service-badge--right">{row.serviceNumber}</div>
                                                         <lightning-button-icon
                                                             icon-name="utility:down"
                                                             variant="border-filled"
@@ -659,7 +659,6 @@
                                                                 </svg>
                                                             </div>
                                                             <div class="lm2-participant__identity slds-m-left_x-small">
-                                                                <div class="lm2-service-badge lm2-service-badge--stacked">{row.serviceNumber}</div>
                                                                 <div class="lm2-participant__name-row">
                                                                     <span class="lm2-participant__name slds-truncate">{row.linkLabel}</span>
                                                                     <template lwc:if={row.isVip}><span class="lm2-vip-badge">VIP</span></template>
@@ -676,7 +675,8 @@
                                                                     <div class="lm2-participant__resource">Assigned Resource — {row.assignedResource}</div>
                                                                 </template>
                                                             </div>
-                                                            <div class="slds-no-flex slds-m-left_x-small">
+                                                            <div class="slds-no-flex slds-m-left_x-small lm2-participant__menu-group">
+                                                                <div class="lm2-service-badge lm2-service-badge--right">{row.serviceNumber}</div>
                                                                 <lightning-button-icon
                                                                     icon-name="utility:down"
                                                                     variant="border-filled"
