@@ -26,6 +26,7 @@ export const routes = [
     navLabel: 'Lobby Management 1',
     navGroup: 'lobby',
     navGroupLabel: 'Lobby Management',
+    hidden: true,
   },
   {
     path: '/lobby2',
@@ -35,15 +36,14 @@ export const routes = [
     navLabel: 'Lobby Management 2',
     navGroup: 'lobby',
     navGroupLabel: 'Lobby Management',
+    hidden: true,
   },
   {
     path: '/lobby3',
     component: 'page-lobby-management-3',
-    title: 'Lobby Management 3',
+    title: 'Lobby Management',
     navPage: 'lobby3',
-    navLabel: 'Lobby Management 3',
-    navGroup: 'lobby',
-    navGroupLabel: 'Lobby Management',
+    navLabel: 'Lobby Management',
   },
   {
     path: '/waitlist',

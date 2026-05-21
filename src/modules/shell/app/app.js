@@ -40,12 +40,12 @@ const ROUTE_TO_NAV_PAGE = Object.fromEntries(
 const NAV_ITEMS = (() => {
     const items = [];
     const groupSeen = new Set();
-    for (const r of routes.filter((r) => r.navPage)) {
+    for (const r of routes.filter((r) => r.navPage && !r.hidden)) {
         if (r.navGroup) {
             if (!groupSeen.has(r.navGroup)) {
                 groupSeen.add(r.navGroup);
                 const children = routes
-                    .filter((c) => c.navGroup === r.navGroup && c.navPage)
+                    .filter((c) => c.navGroup === r.navGroup && c.navPage && !c.hidden)
                     .map((c) => ({ page: c.navPage, label: c.navLabel, path: c.navPath ?? c.path }));
                 items.push({
                     page: r.navGroup,
