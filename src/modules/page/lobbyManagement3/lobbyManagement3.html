@@ -117,7 +117,10 @@
                      tabindex="0"
                      title="Click to show only overdue participants">
                     <div class="lm2-stat-tile__accent lm2-stat-tile__accent--red"></div>
-                    <div class="lm2-stat-tile__value lm2-stat-tile__value--red">{metricOverdueCount}</div>
+                    <div class="lm2-stat-tile__value lm2-stat-tile__value--red lm2-stat-tile__value--overdue">
+                        <span class="lm2-overdue-icon" role="img" aria-label="Warning: overdue participants">⚠</span>
+                        {metricOverdueCount}
+                    </div>
                     <div class="lm2-stat-tile__label">Overdue (&gt;45 min)</div>
                 </div>
 
