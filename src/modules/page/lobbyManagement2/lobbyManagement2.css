@@ -1316,6 +1316,7 @@
 
 .lm2-modal-container__inner {
     position: relative;
+    overflow: visible;
     width: 100%;
     max-width: 520px;
 }
@@ -1395,10 +1396,17 @@
     padding: 1rem;
 }
 
+.lm2-rsched-container__inner {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    max-width: 860px;
+}
+
 .lm2-rsched-close {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: calc(-2rem - 10px);
+    right: 0;
     z-index: 8002;
     background: var(--lm2-surface);
     border: 1px solid var(--lm2-border);

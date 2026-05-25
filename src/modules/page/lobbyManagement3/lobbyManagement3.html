@@ -1182,6 +1182,7 @@
         <template lwc:if={showRescheduleModal}>
             <div class="lm2-modal-backdrop"></div>
             <div class="lm2-rsched-container">
+                <div class="lm2-rsched-container__inner">
                 <button class="lm2-modal__close lm2-rsched-close" onclick={handleRescheduleClose} aria-label="Close">
                     <lightning-icon icon-name="utility:close" size="small" style="--slds-c-icon-color-foreground: #0176d3;"></lightning-icon>
                 </button>
@@ -1266,6 +1267,7 @@
                             <lightning-button label="Reschedule" variant="brand" onclick={handleRescheduleConfirm}></lightning-button>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </template>
