@@ -201,7 +201,7 @@
 /* Translucent scrim behind panel */
 .wl-creator-scrim {
     position: absolute;
-    top: 6.5rem;
+    top: 90px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -218,7 +218,7 @@
 /* Panel shell — positioned absolutely within .wl-creator-overlay */
 .wl-creator {
     position: absolute;
-    top: 6.5rem;
+    top: 90px;
     right: 0;
     bottom: 2.5rem;
     width: 28rem;
