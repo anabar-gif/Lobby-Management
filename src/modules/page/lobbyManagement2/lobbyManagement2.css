@@ -1428,11 +1428,12 @@
     padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--lm2-border);
     background: #f8f8f8;
+    text-align: center;
 }
 
 .lm2-rsched-modal__title {
     font-size: var(--lm2-font-lg);
-    font-weight: 700;
+    font-weight: 400;
     color: var(--lm2-text-primary);
     margin: 0;
 }
