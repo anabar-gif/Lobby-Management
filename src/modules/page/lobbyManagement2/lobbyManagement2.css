@@ -1321,6 +1321,10 @@
     max-width: 520px;
 }
 
+.lm2-modal-container__inner--small {
+    max-width: 400px;
+}
+
 .lm2-modal__close {
     position: absolute;
     top: calc(-2rem - 10px);
