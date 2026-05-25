@@ -220,13 +220,15 @@
     position: absolute;
     top: 90px;
     right: 0;
-    bottom: 2.5rem;
+    bottom: 0;
     width: 28rem;
     max-width: 100vw;
     background: var(--slds-g-color-surface-1, #ffffff);
     box-shadow: -4px 0 24px rgba(0, 0, 0, 0.16);
     border-radius: 0.5rem 0 0 0.5rem;
-    overflow-y: auto; /* the panel itself scrolls */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     pointer-events: all;
     transform: translateX(100%);
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
@@ -236,7 +238,7 @@
     transform: translateX(0);
 }
 
-/* Header — sticks to top of the scrolling panel */
+/* Header — fixed at top of the flex panel */
 .wl-creator__header {
     display: flex;
     align-items: center;
@@ -244,9 +246,7 @@
     padding: 1rem 1.25rem 0.875rem 1.25rem;
     border-bottom: 1px solid var(--slds-g-color-border-base-1, #dddbda);
     background: var(--slds-g-color-surface-1, #fff);
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    flex-shrink: 0;
 }
 
 .wl-creator__title {
@@ -275,12 +275,14 @@
     background: var(--slds-g-color-neutral-base-95, #f3f3f3);
 }
 
-/* Body — just lays out the form fields; panel handles scrolling */
+/* Body — scrollable, fills available space between header and footer */
 .wl-creator__body {
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    flex: 1;
+    overflow-y: auto;
 }
 
 /* Tighter gap between adjacent Work Type / Service Resources fields */
@@ -694,17 +696,16 @@
     left: 1.3125rem;
 }
 
-/* Footer — sticks to bottom of the scrolling panel */
+/* Footer — pinned to the bottom of the flex panel */
 .wl-creator__footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 0.5rem;
-    padding: 0.875rem 1.25rem;
+    padding: 0.625rem 1.25rem;
     border-top: 1px solid var(--slds-g-color-border-base-1, #dddbda);
     background: var(--slds-g-color-surface-1, #fff);
-    position: sticky;
-    bottom: 0;
+    flex-shrink: 0;
 }
 
 /* ── Modal ─────────────────────────────────────────────────── */
