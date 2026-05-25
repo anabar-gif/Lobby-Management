@@ -1322,8 +1322,8 @@
 
 .lm2-modal__close {
     position: absolute;
-    top: -0.75rem;
-    right: -0.75rem;
+    top: calc(-2rem - 10px);
+    right: 0;
     z-index: 8002;
     background: var(--lm2-surface);
     border: 1px solid var(--lm2-border);
