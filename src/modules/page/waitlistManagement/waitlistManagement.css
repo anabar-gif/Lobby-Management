@@ -178,9 +178,9 @@
 /* ── Table — boxed card inside gray canvas ──────────────────── */
 .wl-table-container {
     background: var(--slds-g-color-neutral-base-100, #fff);
-    margin: 0 1rem 1rem 1rem;
+    margin: 0;
     border: 1px solid var(--slds-g-color-border-base-1, #dddbda);
-    border-radius: var(--slds-g-radius-border-2, 0.25rem);
+    border-radius: 0;
     overflow: hidden;
 }
 
