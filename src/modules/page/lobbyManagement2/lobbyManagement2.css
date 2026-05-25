@@ -1733,7 +1733,7 @@
 
 .lm2-panel {
     position: fixed;
-    top: 0;
+    top: 52px;
     right: 0;
     bottom: 0;
     width: 360px;
