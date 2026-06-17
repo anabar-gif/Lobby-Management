@@ -1037,6 +1037,7 @@ export default class LobbyManagement extends LightningElement {
             slot: '8:30 am - 9:00 am',
             showCheckin: true,
             isLate: true,
+            isCompleted: true,
         },
         {
             id: 'p6',
@@ -1047,6 +1048,7 @@ export default class LobbyManagement extends LightningElement {
             slot: '8:45 am - 9:15 am',
             showCheckin: true,
             isLate: true,
+            isCompleted: true,
         },
     ];
 
