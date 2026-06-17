@@ -121,6 +121,7 @@
     border-bottom: none;
     box-shadow: 0 4px 12px rgba(2,42,192,0.35);
     padding: 0;
+    display: none;
 }
 
 .lm2-stats-bar__grid {
