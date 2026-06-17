@@ -348,9 +348,15 @@
                                                     <template lwc:if={appt.checkedIn}>
                                                         <span class="lm2-badge lm2-badge--checkedin">Check In: {appt.slotStart}</span>
                                                     </template>
+                                                    <template lwc:if={appt.isCompleted}>
+                                                        <span class="lm2-badge lm2-badge--completed slds-m-left_x-small">Completed</span>
+                                                    </template>
                                                     <template lwc:if={appt.isLate}>
                                                         <template lwc:if={appt.showCheckin}>
-                                                            <span class="lm2-badge lm2-badge--late slds-m-left_x-small">Late</span>
+                                                            <template lwc:if={appt.isCompleted}></template>
+                                                            <template lwc:else>
+                                                                <span class="lm2-badge lm2-badge--late slds-m-left_x-small">Late</span>
+                                                            </template>
                                                         </template>
                                                     </template>
                                                 </div>
